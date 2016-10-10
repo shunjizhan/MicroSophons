@@ -9,11 +9,14 @@ Vision Statement: https://docs.google.com/document/d/1pvJi7ddoG9eyexfnZNy28vOJWH
 Daily Scrum: https://docs.google.com/document/d/1vnLllrs-WLumZ5hgPkQIIkqAU_sfLdqkAUAH6sapK3E/edit?usp=sharing
 (Check out meeting notes, sprint planning here)
 
-Git repo: https://github.com/shunjizhan/Microsoft-Capstone
+Git repo:
+https://github.com/shunjizhan/Microsoft-Capstone
 
-Slack: https://cs189capstone.slack.com
+Slack: 
+https://cs189capstone.slack.com
 
-Project requirement document (PRD) v1: https://docs.google.com/document/d/1NzaSN5uDl7_3EMkKL8sUlOqDQc2IUT9zaPb29dJWHcQ/edit?usp=sharing 
+Project requirement document (PRD) v1: 
+https://docs.google.com/document/d/1NzaSN5uDl7_3EMkKL8sUlOqDQc2IUT9zaPb29dJWHcQ/edit?usp=sharing 
 
 Each individual folder reflects each member's own learning process, it will record his daily progress and codes that he wrote. Those are not directly related to the project itself, but reflect the process of each member's learning of relevent technoledgies that will be used for this project.
 
