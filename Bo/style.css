@@ -7,11 +7,18 @@ h1 {
 .box {
     background-color: Blue;
 	text-align: center;
-	vertical-align: middle;
-	padding: auto;
     height: 100px;
     width: 100px;
     border-radius: 5px;
     display: inline-block;
     margin-right: 5px;
+	margin-bottom: 5px;
+}
+
+.box-text{
+	text-align: center;
+	vertical-align: middle;
+	position: relative;
+	top: 40%;
+	display: none;
 }
