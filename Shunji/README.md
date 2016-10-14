@@ -1,7 +1,8 @@
-10.12
+10.14\n
+tried the simple HTML page with Monaco
 
-10.11
-Started to learn Typescript and Ruby on Rails. Bought a book that teaches Ruby.
+10.11\n
+started to learn Typescript and Ruby on Rails. Bought a book that teaches Ruby.
 
-10.10
-Today I started to try examples of socket.io
+10.10\n
+started to try examples of socket.io
