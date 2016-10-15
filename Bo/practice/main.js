@@ -1,6 +1,19 @@
 function main(){
     console.log("yes");
-    alert("Bazinga!");
+    alert("Bazinga!");	
+	
+	for(var i=0;i<5;i++){
+		$('<div/>', {
+			'class': 'box-row',
+		}).appendTo('.box-array');
+		//$('<br/>').appendTo('.box-array');
+	}
+	for(var i=0;i<5;i++){
+		$('<div/>',{
+			'class': 'box',
+		}).appendTo('.box-row');
+	}
+	
     $('.box').css('background-color',random_color());
 	$('.box').on('click', change_color);
 }
