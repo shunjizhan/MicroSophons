@@ -103,8 +103,57 @@ document.getElementById("demo").innerHTML="段落已修改。";
 
 使用 console.log() 写入到浏览器的控制台
 
+5. sensative case
 
 
+6. button
+
+<button onclick="myFunction()">点击这里</button>
+
+7. array
+
+var cars=new Array(); [0][1][2]
+var cars=new Array("1","2");
+var cars=["1","2"];
+
+
+8.object
+
+var person={firstname:"John", lastname:"Doe", id:5566};
+
+name=person.lastname;
+name=person["lastname"]
+
+9. var
+null new
+
+
+10.function
+
+function myFunction(var1,var2)
+{
+...
+}
+
+return; exit
+
+11. global var
+in html: window.carname
+in script: carname
+
+
+11. event
+
+<some-HTML-element some-event='some JavaScript'>
+for exampel:
+<button onclick='getElementById("demo").innerHTML=Date()'>现在的时间是??</button>
+
+12. typeof
+
+array is also object
+
+
+13.
 
 
 
