@@ -62,6 +62,49 @@ document.write("<p>p1</p>");
 </body>
 </html>
 
-3. 
+3. event->function
+
+<!DOCTYPE html>
+<html>
+<head>
+  //function in head
+<script>
+function myFunction()
+{
+document.getElementById("demo").innerHTML="我的第一个 JavaScript 函数";
+}
+</script>
+  //end of function
+</head>
+<body>
+<h1>我的 Web 页面</h1>
+<p id="demo">一个段落</p>
+  //here is okay
+<button type="button" onclick="myFunction()">尝试一下</button>
+
+  // here is okay (outside) <script src="myScript.js"></script>
+</body>
+</html>
+
+4. did not print anything, but it could do it through other ways
+使用 window.alert() 弹出警告框。
+<script>
+window.alert(5 + 6);
+</script>
+
+使用 document.write() 方法将内容写到 HTML 文档中。
+<script>
+document.getElementById("demo").innerHTML="段落已修改。";
+</script>
+
+使用 innerHTML 写入到 HTML 元素。
+
+
+
+使用 console.log() 写入到浏览器的控制台
+
+
+
+
 
 
