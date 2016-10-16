@@ -1,3 +1,5 @@
+var rgb='';
+
 function main(){
     console.log("yes");
     alert("Bazinga!");	
@@ -15,17 +17,19 @@ function main(){
 	}
 	
     $('.box').css('background-color',random_color());
-	$('.box').on('click', change_color);
+	$('.box').click(change_color);
 }
 
 function change_color(){
 	$(this).css('background-color',random_color());
+	$('.rgb').text(rgb);
 }
 
 function random_color(){
-	return "rgb(" + Math.floor(Math.random() * 255)
+	rgb = "rgb(" + Math.floor(Math.random() * 255)
       + "," + Math.floor(Math.random() * 255) + ","
       + Math.floor(Math.random() * 255) + ")";
+	return rgb;
 }
 
 console.log("in js");
