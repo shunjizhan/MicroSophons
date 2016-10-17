@@ -1,5 +1,4 @@
 check it out! some introduction to node.js:<br>
-http://www.nodebeginner.org/<br>
 http://hectorcorrea.com/blog/introduction-to-node-js/51<br>
 
 
