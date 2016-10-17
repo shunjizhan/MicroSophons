@@ -37,6 +37,57 @@ html：
 
 
 
+1.link
+ <a href="http://www.w3schools.com">This is a link</a>
+
+2.image
+<img src="w3schools.jpg" alt="W3Schools.com" width="104" height="142">
+
+3.line break <br>
+
+4.style attribut
+<tagname style="property:value;">
+  color
+  background
+  http://www.w3schools.com/html/html_styles.asp
+
+
+5.comment
+
+<!-- Write your comments here -->
+
+
+6.css
+
+<head>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+
+-----in css
+
+body {
+    background-color: powderblue;
+}
+h1 {
+    color: blue;
+}
+p {
+    color: red;
+}
+
+
+
+7. css id attribute
+<p id="p01"></p>
+
+#p01 {
+    color: blue;
+}
+
+
+
+
 
 
 javascript:
@@ -153,7 +204,13 @@ for exampel:
 array is also object
 
 
-13.
+13.regular expression
+
+/pattern/modifiers;
+
+14，outside
+
+<script src="myScript.js"></script>
 
 
 
