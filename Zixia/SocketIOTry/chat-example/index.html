@@ -19,6 +19,20 @@
 	<ul id="messages"></ul>
 	<form action="">
 	  <input id="m" autocomplete="off" /><button>Send</button>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+	<script>
+	  var socket = io();
+	  $('form').submit(function(){
+					   socket.emit('chat message', $('#m').val());
+					   $('#m').val('');
+					   return false;
+					   });
+					   socket.on('chat message', function(msg){
+								 $('#messages').append($('<li>').text(msg));
+								 });
+	  </script>
 	</form>
 	<div id="container" style="width:$(window).width();height:600px;border:12px solid grey"></div>
 	<script src="monaco-editor/min/vs/loader.js"></script>
@@ -34,20 +48,6 @@
             language: 'javascript'
 												});
 			  });
-	</script>
-	<script src="/socket.io/socket.io.js"></script>
-	<script src="/socket.io/socket.io.js"></script>
-	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-	<script>
-	  var socket = io();
-	  $('form').submit(function(){
-					   socket.emit('chat message', $('#m').val());
-					   $('#m').val('');
-					   return false;
-					   });
-					   socket.on('chat message', function(msg){
-								 $('#messages').append($('<li>').text(msg));
-								 });
 	  </script>
   </body>
 </html>
