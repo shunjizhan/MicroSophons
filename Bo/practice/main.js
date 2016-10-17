@@ -8,8 +8,12 @@ function main(){
 	
     $('.box').css('background-color',random_color());
 	$('.rgb').text(rgb);
+	
+	console.log($('.check').is(':checked'));
+
+	mouse();
 	$('.submit').click(rearrange);
-	$('.box').click(change_color);
+	$('.check').click(mouse);
 }
 
 function change_color(){
@@ -32,7 +36,20 @@ function rearrange(){
 	$('.box-array').empty();
 	box_array(dim1, dim2);
 	$('.box').css('background-color',rgb);
-	$('.box').click(change_color);
+	mouse();
+}
+
+
+function mouse(){
+	console.log($('.check').is(':checked'));
+	if($('.check').is(':checked')){
+		$('.box').off('click');
+		$('.box').mouseenter(change_color);
+	}
+	else{
+		$('.box').off('mouseenter');
+		$('.box').click(change_color);
+	}
 }
 
 function box_array(a, b){
