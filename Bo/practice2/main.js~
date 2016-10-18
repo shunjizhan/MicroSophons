@@ -1,0 +1,34 @@
+var pos_x=0, pos_y=40, mouse_x, mouse_y;
+var a=1, v_x=0, v_y=0;
+
+$(document).ready(main);
+
+function main(){
+	console.log('in main');
+    $('#window').mousemove(function(e){
+		mouse_x=e.pageX;
+		mouse_y=e.pageY;
+		$('#position').text('(' + mouse_x + ', ' + mouse_y + ')');
+		$('#position').css('top' ,mouse_y);
+		$('#position').css('left', mouse_x);
+		move(mouse_x, mouse_y, pos_x, pos_y);
+	});
+	
+	while(mouse_x!=pos_x&&mouse_y!=pos_y){
+		move(mouse_x, mouse_y, pos_x, pos_y);
+	}
+	
+	
+}
+
+function move(dest_x, dest_y, now_x, now_y){
+	var Y = dest_y - now_y, X = dest_x - now_x;
+	var angle = Math.atan2(Y,X);
+	var a_x = a * Math.cos(angle), a_y = a * Math.sin(angle);
+	v_x += a_x;
+	v_y += a_y;
+	pos_x += v_x;
+	pos_y += v_y;
+	$('#object').css('top', pos_y);
+	$('#object').css('left', pos_x);
+}

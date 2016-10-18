@@ -9,10 +9,17 @@ h1 {
 	text-align: center;
     height: 100px;
     width: 100px;
-    border-radius: 5px;
     display: inline-block;
-    margin-right: 5px;
-	margin-bottom: 5px;
+	
+	border-radius: 3px;
+    margin-right: 4px;
+	
+	margin-bottom: 0px;
+}
+
+.box-row{
+	margin-top: 0px;
+	margin-bottom: 0px;
 }
 
 .box-text{

@@ -67,11 +67,14 @@ function box_array(a, b){
 		$('.box').css('height','100px');
 		$('.box').css('width','100px');
 	}
-	else if(a>5||b>10){
+	else if((a>5||b>10)&&a<=10&&b<=20){
 		$('.box').css('height','50px');
 		$('.box').css('width','50px');
 	}
-	
+	else{
+		$('.box').css('height','20px');
+		$('.box').css('width','20px');
+	}
 }
 
 $(document).ready(main);
