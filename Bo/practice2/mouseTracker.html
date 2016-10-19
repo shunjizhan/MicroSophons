@@ -8,9 +8,17 @@
   </head>
   <body>
 	<div id='window'>
-		<h2>Second Order Mouse Tracker</h2>
-    	<div id='position'></div>
+		<div id='position'></div>
 		<div id='object'></div>
+		<div class='text'>
+			<h2>Second Order Mouse Tracker</h2>
+			<label>Acceleration coefficient:<br/>(default: 0.05)</label><br/>
+			<input class='input' id='acc' type='Text'></input><br/>
+	    	<label>Resistance coefficient:<br/>(default: 0.01)</label><br/>
+			<input class='input' id='res' type='Text'></input><br/>
+			<input class='submit' type='Submit'></input>
+			<input class='reset' type='Submit' value='Reset to Default'></input>
+		</div>
 	</div>	
   </body>
 

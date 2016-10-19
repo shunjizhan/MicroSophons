@@ -8,6 +8,7 @@
 }
 #position{
 	position: absolute;
+	z-index: 4;
 }
 
 #object{
@@ -16,6 +17,15 @@
 	width: 10px;
 	border-radius: 10px;
 	position: absolute;
-	left: 100px;
-	top: 100px;
+	left: 200px;
+	top: 200px;
+	z-index: 5;
+}
+.text{
+	margin-left: 10px;
+	z-index: 10;
+}
+.input{
+	width: 75px;
+	z-index: 10;
 }
