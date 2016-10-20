@@ -14,7 +14,7 @@
 	  </style>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-  </head>
+	  </head>
   <body>
 	<ul id="messages"></ul>
 	<form action="">
@@ -24,31 +24,13 @@
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-	<script>
-	  var socket = io();
-	  $('form').submit(function(){
-					   socket.emit('chat message', $('#m').val());
-					   $('#m').val('');
-					   return false;
-					   });
-					   socket.on('chat message', function(msg){
-								 $('#messages').append($('<li>').text(msg));
-								 });
-	  </script>
+	<script src="load_socket.js"></script>
 	<div id="container" style="width:600px;height:600px;border:12px solid blue"></div>
+  <div id="output" style="height:29%;font-family:'Courier New', monospace; border: 2px solid red;">Last 3 events:<br/></div>
+  <div style="background:#ccc;height:1%"></div>
+  <!-- <div id="container1" style="height:70%; border: 2px solid red";></div> -->
 	<script src="monaco-editor/min/vs/loader.js"></script>
-	<script>
-	  require.config({ paths: { 'vs': 'monaco-editor/min/vs' }});
-	  require(['vs/editor/editor.main'], function() {
-			  var editor = monaco.editor.create(document.getElementById('container'), {
-            value: [
-					'function x() {',
-					'\tconsole.log("Hello world!");',
-					'}'
-					].join('\n'),
-            language: 'javascript'
-												});
-			  });
-	  </script>
+  <script src="create_Monaco.js"></script>
+  <script src="mouse.js"></script>
   </body>
 </html>
