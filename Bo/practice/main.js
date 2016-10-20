@@ -8,8 +8,6 @@ function main(){
 	
     $('.box').css('background-color',random_color());
 	$('.rgb').text(rgb);
-	
-	console.log($('.check').is(':checked'));
 
 	mouse();
 	$('.submit').click(rearrange);
@@ -31,8 +29,6 @@ function random_color(){
 function rearrange(){
 	dim1 = $('#dim1').val();
 	dim2 = $('#dim2').val();
-	console.log(dim1 +','+dim2);
-	
 	$('.box-array').empty();
 	box_array(dim1, dim2);
 	$('.box').css('background-color',rgb);
@@ -41,7 +37,6 @@ function rearrange(){
 
 
 function mouse(){
-	console.log($('.check').is(':checked'));
 	if($('.check').is(':checked')){
 		$('.box').off('click');
 		$('.box').mouseenter(change_color);
