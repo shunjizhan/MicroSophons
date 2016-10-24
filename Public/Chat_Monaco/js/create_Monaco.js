@@ -102,13 +102,16 @@ require(['vs/editor/editor.main'], function() {
 
 
     editor.onMouseMove(function (e) {
-        showEvent('mousemove - ' + e.target.toString());
+        showEvent('mousemove - ' + e.target.position.lineNumber + ', ' + e.target.position.column);
     });
     editor.onMouseDown(function (e) {
-        showEvent('mousedown - ' + e.target.toString());
+		var y = e.target.position.lineNumber;
+		var x = e.target.position.column;
+        showEvent('mousedown - '  + y + ', ' + x);
+		socket.emit('chat message', y + ', ' + x); 
     });
     editor.onContextMenu(function (e) {
-        showEvent('contextmenu - ' + e.target.toString());
+        showEvent('contextmenu - ' +  + e.target.position.lineNumber + ', ' + e.target.position.column);
     });
     editor.onMouseLeave(function (e) {
         showEvent('mouseleave');
