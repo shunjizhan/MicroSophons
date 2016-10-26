@@ -8,6 +8,5 @@
     });
 
     socket.on('chat message', function(msg){
-      alert("1111111");
       $('#messages').append($('<li>').text(msg));
     });

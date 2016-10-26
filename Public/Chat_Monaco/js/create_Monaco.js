@@ -107,8 +107,9 @@ require(['vs/editor/editor.main'], function() {
     editor.onMouseDown(function (e) {
 		var y = e.target.position.lineNumber;
 		var x = e.target.position.column;
+        var id = socket.io.engine.id;
         showEvent('mousedown - '  + y + ', ' + x);
-		socket.emit('chat message', y + ', ' + x); 
+		socket.emit('chat message', id); 
     });
     editor.onContextMenu(function (e) {
         showEvent('contextmenu - ' +  + e.target.position.lineNumber + ', ' + e.target.position.column);
