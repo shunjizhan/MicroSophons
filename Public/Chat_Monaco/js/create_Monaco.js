@@ -10,16 +10,20 @@ var jsCode = [
     '};'
 ].join('\n');
 
+
 require.config({ paths: { 'vs': 'monaco-editor/min/vs' }});
-require(['vs/editor/editor.main'], function() {
-  var editor = monaco.editor.create(document.getElementById('container'), {
+require(['vs/editor/editor.main'], editor_function);
+
+function editor_function() {
+    var editor = monaco.editor.create(document.getElementById('container'), {
         value: jsCode,
         language: "javascript",
         glyphMargin: true,
         nativeContextMenu: false
-  });
+ 	 });
 
-    var decorations = editor.deltaDecorations([], [
+
+	    var decorations = editor.deltaDecorations([], [
         {
             range: new monaco.Range(3,1,3,1),
             options: {
@@ -99,23 +103,36 @@ require(['vs/editor/editor.main'], function() {
         output.appendChild(document.createElement('br'));
     }
 
-
-
-    editor.onMouseMove(function (e) {
-        showEvent('mousemove - ' + e.target.position.lineNumber + ', ' + e.target.position.column);
+	editor.onDidChangeCursorPosition(function(e){
+    	showEvent('cursor change - ' + e.position);
+		socket.emit('cursor', e.position.lineNumber + ' ' + e.position.column);
+	});
+	/*
+	editor.onMouseMove(function (e) {
+        showEvent('mousemove - ' + e.target.position);
     });
-    editor.onMouseDown(function (e) {
-		var y = e.target.position.lineNumber;
-		var x = e.target.position.column;
-        showEvent('mousedown - '  + y + ', ' + x);
-		socket.emit('chat message', y + ', ' + x); 
-    });
+	
+	editor.onKeyUp(function(e){
+        showEvent('keyup - '  + editor.getPosition());
+		socket.emit('cursor', editor.getPosition().lineNumber + ' ' + editor.getPosition().column); 
+	});
+	
+    editor.onMouseDown(function(e){
+        showEvent('mousedown - '  + e.target.position);
+		socket.emit('cursor', e.target.position.lineNumber + ' ' + e.target.position.column); 
+	});
     editor.onContextMenu(function (e) {
-        showEvent('contextmenu - ' +  + e.target.position.lineNumber + ', ' + e.target.position.column);
+        showEvent('contextmenu - ' + e.target.position);
     });
     editor.onMouseLeave(function (e) {
         showEvent('mouseleave');
     });
+	*/
+	socket.on('cursor', function(msg){
+		showEvent('remote cursor change - ' + msg);
+		var cor=msg.toString().split(' ');
+		editor.setPosition({lineNumber: parseInt(cor[0]), column: parseInt(cor[1])});
+    });
+	
+}
 
-
-});
