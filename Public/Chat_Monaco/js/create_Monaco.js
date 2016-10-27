@@ -103,14 +103,17 @@ function editor_function() {
         output.appendChild(document.createElement('br'));
     }
 
+
 	editor.onDidChangeCursorPosition(function(e){
     	showEvent('cursor change - ' + e.position);
 		socket.emit('cursor', e.position.lineNumber + ' ' + e.position.column);
 	});
 	/*
-	editor.onMouseMove(function (e) {
-        showEvent('mousemove - ' + e.target.position);
+
+    editor.onMouseMove(function (e) {
+        showEvent('mousemove - ' + e.target.position.lineNumber + ', ' + e.target.position.column);
     });
+
 	
 	editor.onKeyUp(function(e){
         showEvent('keyup - '  + editor.getPosition());
