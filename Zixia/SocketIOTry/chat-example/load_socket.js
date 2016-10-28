@@ -1,6 +1,9 @@
 var socket = io();
 $('form').submit(function(){
-         socket.emit('chat message', $('#m').val());
+         var id = socket.io.engine.id;
+         msg =  id + ": " + $('#m').val();
+         console.log(msg)
+         socket.emit('chat message', msg); 
          $('#m').val('');
          return false;
          });
