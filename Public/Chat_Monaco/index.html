@@ -5,13 +5,18 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font: 13px Helvetica, Arial; }
-    form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-    form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-    form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+
+    form#send { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+    form#send input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+    form#send button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+
     #messages { list-style-type: none; margin: 0; padding: 0; position: fixed; top: 100px; right: 0px; border: 2px dotted orange; z-index: 100;}
     #messages li { padding: 5px 10px; }
     #messages li:nth-child(odd) { background: #eee; }
-    #container { width:500px;height:600px;border:3px solid green;}
+
+    #container { width:500px;height:600px;border:3px solid green;}  /* for Monaco */
+    #user_id { position: fixed; top: 50px; right: 0px; border: 2px dotted blue; z-index: 100; font-size: 120%; padding:3px;} /* set username */
+    #output { height:29%;font-family:'Courier New', monospace; border: 2px solid black; } /* events monitor */
   </style>
 </head>
 
@@ -21,16 +26,26 @@
     <li>This is the first line of Socket.io</li>
   </ul>
 
-  <form action="">
+  <form id="send" action="">
     <input id="m" autocomplete="off" /><button>Send</button>
   </form>
 
   <!-- Monaco -->
-<!--   <div id="container"><h1>Monaco</h1></div>
- -->  <div id="container" style="width:600px;height:600px;border:12px solid blue"></div>
-  <div id="output" style="height:29%;font-family:'Courier New', monospace; border: 2px solid red;">Last 3 events:<br/></div>
-  <div style="background:#ccc;height:1%"></div>
-  <!--***** JS *****-->
+  
+  <div id="container"></div>
+  <div id="output">Last 3 events:<br/></div>
+
+  <!-- Functionaly -->
+  <div id="user_id">
+    <form id="user_form" action="">
+      <input id="user_name" autocomplete="ShaB" /><button>Set Name</button>
+    </form>
+    <p>My Name: <span id="name">ShaB</span> </p>
+  </div>
+
+
+  <!--********** JS **********-->
+
   <!-- Socket.io -->
   <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
   <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
