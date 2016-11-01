@@ -1,3 +1,6 @@
+// this is the Server, cannot do things to individual html! Must emit to clients
+// client call socket.emit => this server => this server calls io.emit => emit to all clients
+
 var express = require('express');
 var app = express();
 //var app = require('express')();	// execute express() immediately
@@ -27,10 +30,11 @@ io.on('connection', function(socket){
   socket.on('user',function(data){
      io.emit('user', data);
   });
-    
+
   socket.on('disconnect', function(){
     console.log('user disconnected');
   });
+
 
 
 });

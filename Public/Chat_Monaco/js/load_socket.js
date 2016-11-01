@@ -20,11 +20,13 @@ function socket_function(){
 
     // when there is user name change, emit user_change event to everyone
     $('form#user_form').submit(function(){  
+      var del = '#' + $('#prev').text()
       var name = $('#user_name').val();
       $('#user_name').val('');
 
       var del = '#' + $('#prev').text()
 
+      $('#name').html(name);    // set user name
       $('#prev').text(name); // save the user name locally   
       socket.emit('user', {name: name, del: del}); 
 
@@ -32,16 +34,31 @@ function socket_function(){
     });
 
     socket.on('user', function(data){  
-      $('#name').html(data.name);    // set user name
-
       $('#online_users').append($('<li>').attr('id', data.name).text(data.name)); // update the online users
-
-            // alert(data.del)
-            // alert(data.name)
-      $(data.del).remove(); // remove the previous name
-
-      
+      $(data.del).remove(); // remove the previous name 
     });
-	
+
+    /*
+    socket.on('user_leave', function(del){
+      $(del).remove();
+    });
+    */
+    // default name
+    name = "ShaB" + Math.floor(Math.random() * 20);
+    $('#name').html(name); 
+    $('#prev').text(name);
+	  socket.emit('user', {name: name, del: ""});
+    
+
 }
+
+
+
+
+
+
+
+
+
+
 
