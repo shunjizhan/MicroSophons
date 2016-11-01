@@ -10,13 +10,15 @@
     form#send input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
     form#send button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
 
-    #messages { list-style-type: none; margin: 0; padding: 0; position: fixed; top: 100px; right: 0px; border: 2px dotted orange; z-index: 100;}
+    #messages { list-style-type: none; margin: 0; padding: 0; position: fixed; top: 200px; right: 0px; border: 2px dotted orange; z-index: 100; overflow: scroll; height: 300px; }
     #messages li { padding: 5px 10px; }
     #messages li:nth-child(odd) { background: #eee; }
 
     #container { width:500px;height:600px;border:3px solid green;}  /* for Monaco */
     #user_id { position: fixed; top: 50px; right: 0px; border: 2px dotted blue; z-index: 100; font-size: 120%; padding:3px;} /* set username */
     #output { height:29%;font-family:'Courier New', monospace; border: 2px solid black; } /* events monitor */
+    #prev {position: fixed; top: 0px; right: 0px; border: 2px solid red; z-index: 100; font-size: 120%; padding:3px; }
+    #online_users {border: 2px solid pink; padding:1px; text-align: center;}
   </style>
 </head>
 
@@ -40,7 +42,11 @@
     <form id="user_form" action="">
       <input id="user_name" autocomplete="ShaB" /><button>Set Name</button>
     </form>
+
     <p>My Name: <span id="name">ShaB</span> </p>
+
+    <ul id="online_users"> </ul> 
+    <p id="prev">ShaB</p>
   </div>
 
 
