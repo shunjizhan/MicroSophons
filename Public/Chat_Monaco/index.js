@@ -20,13 +20,18 @@ io.on('connection', function(socket){
     io.emit('chat message', msg);
   });
 
-    socket.on('cursor',function(msg){
-	io.emit('cursor',msg);
-    });
+  socket.on('cursor',function(msg){
+	   io.emit('cursor',msg);
+  });
+
+  socket.on('user',function(data){
+     io.emit('user', data);
+  });
     
   socket.on('disconnect', function(){
     console.log('user disconnected');
   });
+
 
 });
 
