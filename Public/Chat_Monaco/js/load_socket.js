@@ -1,4 +1,3 @@
-
 var socket = io();
 
 $(document).ready(socket_function);
@@ -6,7 +5,7 @@ $(document).ready(socket_function);
 function socket_function(){
     // send message
     $('form#send').submit(function(){
-      var id = $('#name').text();
+     var id = $('#name').text();
       msg =  id + ": " + $('#m').val();
       console.log(msg)
       socket.emit('chat message', msg); 

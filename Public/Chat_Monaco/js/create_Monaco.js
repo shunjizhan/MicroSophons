@@ -131,6 +131,28 @@ function editor_function() {
         showEvent('mouseleave');
     });
 	*/
+
+
+
+
+
+editor.onMouseUp(function(e){
+	var str="Chunqing";
+	var cur= $('<div/>',{
+       'class': 'object',
+       'css':{'top':$(".cursor").position().top-15, 'left':$(".cursor").position().left}
+	     });
+        $(".cursors-layer").append(cur);
+
+	$(".object").text(str);
+	$(".object").fadeOut(2500); //need to change the value to adjust the blinking name
+	});
+
+
+
+
+
+
 	socket.on('cursor', function(msg){
 		showEvent('remote cursor change - ' + msg);
 		var cor=msg.toString().split(' ');
