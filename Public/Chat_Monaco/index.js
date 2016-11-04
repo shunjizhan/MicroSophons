@@ -13,21 +13,23 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
-  console.log('a user connected');
+    console.log('a user connected');
+    socket.on('new-user', function(msg){
+	io.emit('new-user', msg);
+    });
 
-  socket.on('chat message', function(msg){
-    // console.log('message: ' + msg);
-    io.emit('chat message', msg);
-  });
+    socket.on('chat message', function(msg){
+	io.emit('chat message', msg);
+    });
 
     socket.on('cursor',function(msg){
 	io.emit('cursor',msg);
     });
     
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });
-
+    socket.on('disconnect', function(){
+	console.log('user disconnected');
+    });
+    
 });
 
 http.listen(3000, function(){
