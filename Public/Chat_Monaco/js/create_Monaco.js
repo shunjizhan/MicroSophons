@@ -137,7 +137,7 @@ function editor_function() {
 
 
 editor.onMouseUp(function(e){
-	var str="Chunqing";
+	var str= $('#name').text();
 	var cur= $('<div/>',{
        'class': 'object',
        'css':{'top':$(".cursor").position().top-15, 'left':$(".cursor").position().left}
@@ -145,7 +145,7 @@ editor.onMouseUp(function(e){
         $(".cursors-layer").append(cur);
 
 	$(".object").text(str);
-	$(".object").fadeOut(2500); //need to change the value to adjust the blinking name
+	$(".object").fadeOut(1000); //need to change the value to adjust the blinking name
 	});
 
 
