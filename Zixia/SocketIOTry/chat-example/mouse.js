@@ -19,8 +19,8 @@ require(['vs/editor/editor.main'], function() {
         nativeContextMenu: false
   });
 
-    var jsCode_ = 'cooooooooooooool';
-    editor.setValue(jsCode_);
+    // var jsCode_ = 'cooooooooooooool';
+    // editor.setValue(jsCode_);
 	var decorations = editor.deltaDecorations([], [
 		{
 			range: new monaco.Range(3,1,3,1),
@@ -68,7 +68,7 @@ require(['vs/editor/editor.main'], function() {
 			};
 		}
 	};
-	editor.addContentWidget(contentWidget);
+	// editor.addContentWidget(contentWidget);
 
 	// Add an overlay widget
 	var overlayWidget = {
@@ -102,9 +102,15 @@ require(['vs/editor/editor.main'], function() {
 	}
 
 	editor.onDidChangeCursorPosition(function(e){
+		
     	showEvent('cursor change - ' + e.position);
+    	var s = editor.getModel().getWordAtPosition(e.position).word;
+    	// var sr = editor.getModel().getValueInRange(range: new monaco.Range(2,8,2,2));
+    	// var sr = editor.getModel().getValueInRange(monaco.Range(e.position.column, e.position.lineNumber, e.position.column, e.position.lineNumber));
 		socket.emit('cursor', e.position.lineNumber + ' ' + e.position.column);
+		socket.emit('content', s);
 	});
+
 
 	// editor.onMouseMove(function (e) {
 	// 	showEvent('mousemove - ' + e.target.toString());
@@ -124,5 +130,14 @@ require(['vs/editor/editor.main'], function() {
 		var cor=msg.toString().split(' ');
 		editor.setPosition({lineNumber: parseInt(cor[0]), column: parseInt(cor[1])});
     });
+
+	socket.on('content', function(msg){
+		showEvent('this word is ' + msg);
+		// var cor=msg.toString().split(' ');
+		// editor.setPosition({lineNumber: parseInt(cor[0]), column: parseInt(cor[1])});
+		// editor.setValue(jsCode + msg);
+    });
+
+
 
 });

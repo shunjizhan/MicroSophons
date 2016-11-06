@@ -27,6 +27,10 @@ io.on('connection', function(socket){
   socket.on('cursor',function(msg){
   io.emit('cursor',msg);
     });
+
+  socket.on('content', function(ctt){
+    io.emit('content', ctt);
+  });
 });
 
 http.listen(3000, function(){
