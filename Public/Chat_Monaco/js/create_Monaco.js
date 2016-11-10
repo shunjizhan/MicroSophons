@@ -137,7 +137,7 @@ function editor_function() {
 
     //cursor_nickname combined code below
     editor.onMouseUp(function(e){
-	var str= $('#name').text();
+	var str= 'nickname';
 	var cur= $('<div/>',{
 	    'class': 'object',
 	    'css':{'top':$(".cursor").position().top-15, 'left':$(".cursor").position().left}
