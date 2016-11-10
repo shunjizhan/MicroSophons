@@ -8,74 +8,69 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var path = require('path');
 
-//app.use(express.static('js'));
-app.use(express.static(path.join(__dirname, '.')));
+var fs = require("fs");
+var ini = false;
+var users = [];
 
-app.get('/', function(req, res){
-  res.sendfile('index.html');
-});
+app.use(express.static(path.join(__dirname, '.'))); //app.use(express.static('js'));
 
-io.on('connection', function(socket){
-  console.log('a user connected');
-
-  socket.on('chat message', function(msg){
-    // console.log('message: ' + msg);
-    io.emit('chat message', msg);
-  });
-
-  socket.on('cursor',function(msg){
-	   io.emit('cursor',msg);
-  });
-
-  socket.on('user',function(data){
-     io.emit('user', data);
-  });
-
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });
-
-
-
+app.get('/', function(req, res) {
+    res.sendfile('index.html');
 });
 
 http.listen(3000, function(){
-  console.log('listening on *:3000');
+    console.log('listening on *:3000');
 });
 
-/*
-app.get('/', function(req, res){
-  res.sendfile('index.html');
+io.on('connection', function(socket) {
+    console.log('a user connected');
+
+
+    var this_user_name = "ShaB" + Math.floor(Math.random() * 20);
+    users.push(this_user_name);
+    io.emit('update_user', users);
+    console.log(users);
+
+    socket.on('chat message', function(msg) {
+        io.emit('chat message', msg);
+    });
+
+    socket.on('cursor',function(msg) {
+        io.emit('cursor',msg);
+    });
+
+    socket.on('user',function(new_name) {
+        delete_user(this_user_name);
+        this_user_name = new_name;
+        users.push(this_user_name);
+        io.emit('update_user', users);
+    });
+
+    socket.on('disconnect', function() {
+        console.log('disconnected:' + this_user_name);
+        delete_user(this_user_name);
+        io.emit('update_user', users);
+    });
+
 });
-*/
+
+function delete_user(name) {
+    index = users.indexOf(name);
+    if (index > -1) { users.splice(index, 1); }
+}
 
 
-/* load the index.html */
-/*
-var fs = require("fs");
-var http = require("http");
-var url = require("url");
 
-http.createServer(function (request, response) {
 
-    var pathname = url.parse(request.url).pathname;
-    console.log("Request for " + pathname + " received.");
 
-    response.writeHead(200);
 
-    if(pathname == "/") {
-        html = fs.readFileSync("index.html", "utf8");
-        response.write(html);
-    } else if (pathname == "/script.js") {
-        script = fs.readFileSync("script.js", "utf8");
-        response.write(script);
-    }
-    
-    response.end();
-}).listen(3000);
 
-console.log("Listening to server on 8888...");
-*/
+
+
+
+
+
+
 
 
 
