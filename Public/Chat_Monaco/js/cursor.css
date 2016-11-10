@@ -1,0 +1,6 @@
+.other-cursor {
+    height: 18px;
+    width: 1px;
+    z-index: 100;
+    position: absolute;
+}

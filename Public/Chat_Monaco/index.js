@@ -12,22 +12,50 @@ app.get('/', function(req, res){
   res.sendfile('index.html');
 });
 
-io.on('connection', function(socket){
-  console.log('a user connected');
+//To do: user data structure
 
-  socket.on('chat message', function(msg){
-    // console.log('message: ' + msg);
-    io.emit('chat message', msg);
-  });
+io.on('connection', function(socket){
+    console.log('a user connected');
+    socket.on('new-user', function(msg){
+	// To-do: save new user info in data structure
+	
+	// sending to all clients except sender
+	socket.broadcast.emit('new-user',msg);
+	
+	// sending existing user info and text copy to new user 
+	//socket.broadcast.to(socketid).emit('reply-users', message);
+	//socket.broadcast.to(socketid).emit('reply-content', message);
+    });
+
+    socket.on('chat message', function(msg){
+	io.emit('chat message', msg);
+    });
 
     socket.on('cursor',function(msg){
-	io.emit('cursor',msg);
+	socket.broadcast.emit('cursor',msg);
+	
     });
     
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-  });
+    socket.on('nickname', function(msg){
+	// store nickname
 
+	socket.broadcast.emit('new-user',msg);
+    });
+    
+    socket.on('disconnect', function(){
+	//remove user info from data structure
+	
+	//io.emit('disconnect', msg);
+	console.log('user disconnected');
+    });
+    socket.on('content-change', function(){
+	// save change to server copy
+
+	// sync to other users
+	//socket.broadcast.emit('content-change',msg);
+    });
+
+    
 });
 
 http.listen(3000, function(){
