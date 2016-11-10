@@ -19,24 +19,21 @@ function socket_function(){
 
     // when there is user name change, emit user event to server
     $('form#user_form').submit(function(){  
-       // var del = '#' + $('#prev').text()
        var name = $('#user_name').val();
        $('#user_name').val('');
-
-       // var del = '#' + $('#prev').text()
-
        $('#name').html(name);    // set user name
-       // $('#prev').text(name); // save the user name locally   
+       $('#prev').text(name);
        socket.emit('user', name); 
 
        return false;
     });
 
-    socket.on('user', function(users){  // users is an array containing all user names
-       users.forEach( function(user, index) {
-          $('#online_users').append($('<li>').attr('id', user).text("user")); // update the online users
+    socket.on('update_user', function(users){  // users is an array containing all user names
+        console.log('update_user()!!')
+        $('#online_users').html("")
+        users.forEach( function(user, index) {
+            $('#online_users').append($('<li>').attr('id', user).text(user)); // update the online users
        });
-       $(data.del).remove(); // remove the previous name 
     });
 
 
