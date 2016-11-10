@@ -172,6 +172,10 @@ function editor_function() {
        // }
     });
 
+    socket.on('current user', function(current){
+        showEvent('current user: '+ current);
+    });
+
 	
 	socket.on('new-user', function(msg){
 		showEvent("new user: " + msg);
