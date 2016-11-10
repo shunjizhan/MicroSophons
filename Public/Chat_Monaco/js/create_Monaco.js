@@ -170,6 +170,10 @@ function editor_function() {
        // }
     });
 
+    socket.on('current user', function(current){
+        showEvent('current user: '+ current);
+    });
+
 	
 }
 

@@ -18,6 +18,11 @@ function socket_function(){
     });
 
 
+    socket.on('current user', function(current){
+        var currentstring=current.toString();
+        $('#currentcount').html(currentstring);
+    });
+
     // when there is user name change, emit user event to server
     $('form#user_form').submit(function(){  
        var name = $('#user_name').val();

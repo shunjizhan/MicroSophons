@@ -20,6 +20,7 @@
     #user_id { position: fixed; top: 50px; right: 0px; border: 2px dotted blue; z-index: 100; font-size: 120%; padding:3px;} /* set username */
     #output { height:29%;font-family:'Courier New', monospace; border: 2px solid black; } /* events monitor */
     #prev {position: fixed; top: 0px; right: 0px; border: 2px solid red; z-index: 100; font-size: 120%; padding:3px; }
+    #currentsquare {position: fixed; top: 0px; right: 150px; border: 2px solid red; z-index: 100; font-size: 120%; padding:3px; }
     #online_users {border: 2px solid pink; padding:1px; text-align: center;}
     
   </style>
@@ -49,6 +50,8 @@
     <p>My Name: <span id="name">Guess which ShaB is you</span> </p>
 
     <ul id="online_users"> </ul> 
+
+    <p id="currentsquare">Current: <span id="currentcount">0</span></p>
     <p id="prev">ShaB</p>
   </div>
 
@@ -59,6 +62,7 @@
   <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
   <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
   <script src="js/load_socket.js"></script>
+  <script src="index.js"></script>
   <!-- Monaco -->
   <script src="monaco-editor/min/vs/loader.js"></script>
 	<script src="js/create_Monaco.js"></script>
