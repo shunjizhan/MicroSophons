@@ -28,8 +28,8 @@ io.on('connection', function(socket){
   io.emit('cursor',msg);
     });
 
-  socket.on('content', function(ctt){
-    io.emit('content', ctt);
+  socket.on('content', function(msg, e){
+    io.emit('content', msg, e);
   });
 });
 
