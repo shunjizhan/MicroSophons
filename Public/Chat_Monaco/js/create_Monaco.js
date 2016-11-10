@@ -107,7 +107,8 @@ function editor_function() {
 
 	editor.onDidChangeCursorPosition(function(e){
     	showEvent('cursor change - ' + e.position);
-		socket.emit('cursor', socket.io.engine.id + ' ' + $('.cursor').position().top + ' ' + $('.cursor').position().left);
+
+        socket.emit('cursor', "kkk" + ' ' + $('.cursor').position().top + ' ' + $('.cursor').position().left);
 	});
 	/*
 
@@ -134,41 +135,43 @@ function editor_function() {
 	*/
 
 
+      editor.onMouseUp(function(e){
+           var str= $('#name').text();
+           var cur= $('<div/>',{
+               'class': 'object',
+               'css':{'top':$(".cursor").position().top-15, 'left':$(".cursor").position().left}
+           });
+           $(".cursors-layer").append(cur);
+         
+           $(".object").text(str);
+           $(".object").fadeOut(1000); //need to change the value to adjust the blinking name
+     });
+   //cursor_nickname combined above
 
-    //cursor_nickname combined code below
-    editor.onMouseUp(function(e){
-	var str= 'nickname';
-	var cur= $('<div/>',{
-	    'class': 'object',
-	    'css':{'top':$(".cursor").position().top-15, 'left':$(".cursor").position().left}
-	});
-	$(".cursors-layer").append(cur);
+   socket.on('new-user', function(msg){
+         showEvent("new user: " + msg);
+         $(".cursors-layer").append($('<div/>', {
+             'class': 'other-cursor',
+             'id': msg,
+             'css': {
+                 'background-color': 'Green',
+                 'top': 0,
+                 'left': 0
+             }
+         }));
+        });
 
-	$(".object").text(str);
-	$(".object").fadeOut(1000); //need to change the value to adjust the blinking name
+
+    socket.on('cursor', function(msg){
+         var data=msg.toString().split(' ');
+                        showEvent('remote cursor change - ' + msg);
+
+             // if(data[0]!=="kkk"){
+               $('#'+data[0]).css('top', parseInt(data[1]));
+               $('#'+data[0]).css('left', parseInt(data[2]));
+       // }
     });
-//cursor_nickname combined above
 
-
-    
-    var myCondition1 = editor.createContextKey('myCondition1', true);
-	editor.addCommand(monaco.KeyCode.KEY_Q, function(){
-    	editor.trigger('mouse','createCursor',{
-        	position: { lineNumber: 1, column: 1},
-        	viewPosition: editor.getPosition(),
-        	wholeLine: false
-		});
-	}, 'myCondition1');
-	
-	
-	socket.on('cursor', function(msg){
-		var data=msg.toString().split(' ');
-		if(data[0]!==socket.io.engine.id){
-			showEvent('remote cursor change - ' + msg);
-			$('#'+data[0]).css('top', parseInt(data[1]));
-			$('#'+data[0]).css('left', parseInt(data[2]));
-		}
-    });
 	
 	socket.on('new-user', function(msg){
 		showEvent("new user: " + msg);
