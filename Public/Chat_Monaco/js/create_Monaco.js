@@ -132,7 +132,26 @@ function editor_function() {
         showEvent('mouseleave');
     });
 	*/
-	var myCondition1 = editor.createContextKey('myCondition1', true);
+
+
+
+    //cursor_nickname combined code below
+    editor.onMouseUp(function(e){
+	var str= $('#name').text();
+	var cur= $('<div/>',{
+	    'class': 'object',
+	    'css':{'top':$(".cursor").position().top-15, 'left':$(".cursor").position().left}
+	});
+	$(".cursors-layer").append(cur);
+
+	$(".object").text(str);
+	$(".object").fadeOut(1000); //need to change the value to adjust the blinking name
+    });
+//cursor_nickname combined above
+
+
+    
+    var myCondition1 = editor.createContextKey('myCondition1', true);
 	editor.addCommand(monaco.KeyCode.KEY_Q, function(){
     	editor.trigger('mouse','createCursor',{
         	position: { lineNumber: 1, column: 1},
