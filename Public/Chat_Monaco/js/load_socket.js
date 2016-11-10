@@ -3,6 +3,7 @@ var socket = io();
 $(document).ready(socket_function);
 
 function socket_function(){
+   socket.emit('new-user', "kkk");
     // send message
     $('form#send').submit(function(){
        var id = $('#name').text();

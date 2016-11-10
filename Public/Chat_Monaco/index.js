@@ -24,20 +24,30 @@ http.listen(3000, function(){
 
 io.on('connection', function(socket) {
     console.log('a user connected');
-
-
     var this_user_name = "ShaB" + Math.floor(Math.random() * 20);
     users.push(this_user_name);
     io.emit('update_user', users);
     console.log(users);
+
+
+       socket.on('new-user', function(msg){
+         // To-do: save new user info in data structure
+         
+         // sending to all clients except sender
+         socket.broadcast.emit('new-user',msg);
+         
+         // sending existing user info and text copy to new user 
+         //socket.broadcast.to(socketid).emit('reply-users', message);
+         //socket.broadcast.to(socketid).emit('reply-content', message);
+      });
 
     socket.on('chat message', function(msg) {
         io.emit('chat message', msg);
     });
 
     socket.on('cursor',function(msg) {
-        io.emit('cursor',msg);
-    });
+        socket.broadcast.emit('cursor', msg);
+    });  
 
     socket.on('user',function(new_name) {
         delete_user(this_user_name);

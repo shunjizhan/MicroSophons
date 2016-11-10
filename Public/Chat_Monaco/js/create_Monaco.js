@@ -106,7 +106,7 @@ function editor_function() {
 
 	editor.onDidChangeCursorPosition(function(e){
     	showEvent('cursor change - ' + e.position);
-		socket.emit('cursor', e.position.lineNumber + ' ' + e.position.column);
+        socket.emit('cursor', "kkk" + ' ' + $('.cursor').position().top + ' ' + $('.cursor').position().left);
 	});
 	/*
 
@@ -131,11 +131,45 @@ function editor_function() {
         showEvent('mouseleave');
     });
 	*/
-	socket.on('cursor', function(msg){
-		showEvent('remote cursor change - ' + msg);
-		var cor=msg.toString().split(' ');
-		editor.setPosition({lineNumber: parseInt(cor[0]), column: parseInt(cor[1])});
+
+
+      editor.onMouseUp(function(e){
+           var str= $('#name').text();
+           var cur= $('<div/>',{
+               'class': 'object',
+               'css':{'top':$(".cursor").position().top-15, 'left':$(".cursor").position().left}
+           });
+           $(".cursors-layer").append(cur);
+         
+           $(".object").text(str);
+           $(".object").fadeOut(1000); //need to change the value to adjust the blinking name
+     });
+   //cursor_nickname combined above
+
+   socket.on('new-user', function(msg){
+         showEvent("new user: " + msg);
+         $(".cursors-layer").append($('<div/>', {
+             'class': 'other-cursor',
+             'id': msg,
+             'css': {
+                 'background-color': 'Green',
+                 'top': 0,
+                 'left': 0
+             }
+         }));
+        });
+
+
+    socket.on('cursor', function(msg){
+         var data=msg.toString().split(' ');
+                        showEvent('remote cursor change - ' + msg);
+
+             // if(data[0]!=="kkk"){
+               $('#'+data[0]).css('top', parseInt(data[1]));
+               $('#'+data[0]).css('left', parseInt(data[2]));
+       // }
     });
+
 	
 }
 
