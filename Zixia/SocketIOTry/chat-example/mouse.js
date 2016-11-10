@@ -102,11 +102,21 @@ require(['vs/editor/editor.main'], function() {
 		output.appendChild(document.createElement('br'));
 	}
 
-	var deleteChar = ' ';
-	var myBinding = editor.addCommand(monaco.KeyCode.Backspace, function(e) {
-		deleteChar = editor.getModel().getValueInRange({startLineNumber: e.position.lineNumber, startColumn: e.position.column-1, endLineNumber: e.position.lineNumber, endColumn: e.position.column});
-		showEvent('char delete ' + deleteChar );
-	});	
+	function simulateKeyPress(character) {
+ 	 jQuery.event.trigger({ type : 'keypress', which : character.charCodeAt(0) });
+	}
+
+
+	var boolMouseUp = false;
+	editor.onMouseUp(function (e) {
+		showEvent('mouseup - ' + e.target.toString());
+		boolMouseUp = true;
+	});
+	// var deleteChar = ' ';
+	// var myBinding = editor.addCommand(monaco.KeyCode.Backspace, function(e) {
+		// deleteChar = editor.getModel().getValueInRange({startLineNumber: e.position.lineNumber, startColumn: e.position.column-1, endLineNumber: e.position.lineNumber, endColumn: e.position.column});
+		// showEvent('char delete ' + deleteChar );
+	// });	
 
 	editor.onDidChangeCursorPosition(function(e){
 		
@@ -118,10 +128,15 @@ require(['vs/editor/editor.main'], function() {
     	// var sr = editor.getModel().getValueInRange(monaco.Range(e.position.column, e.position.lineNumber, e.position.column, e.position.lineNumber));
 		socket.emit('cursor', e.position.lineNumber + ' ' + e.position.column);
 		socket.emit('content', sr, e);
-
-		
 	});
 
+	// editor.onDidChangeContentPosition
+
+	// function k(e) {
+	// 	showEvent('key on ' + editor.getPosition);
+	// }
+
+	// editor.addEventListeneronKeyUp = k(e);
 
 	// editor.onKeyUp(function (e){
 	// 	showEvent('key on ' + editor.getPosition);
@@ -129,9 +144,7 @@ require(['vs/editor/editor.main'], function() {
 	// editor.onMouseMove(function (e) {
 	// 	showEvent('mousemove - ' + e.target.toString());
 	// });
-	// editor.onMouseDown(function (e) {
-	// 	showEvent('mousedown - ' + e.target.toString());
-	// });
+
 	// editor.onContextMenu(function (e) {
 	// 	showEvent('contextmenu - ' + e.target.toString());
 	// });
@@ -146,27 +159,31 @@ require(['vs/editor/editor.main'], function() {
     });
 
 	socket.on('content', function(msg, e){
+
+		// $(function() {
+  // 			$('body').keypress(function(e) {
+  //   			alert(e.which);
+  // 			});
+	 //  		simulateKeyPress("e");
+		// });
+
 		var jsCodePrime = jsCode.split('\n');
 
 		showEvent('this char is ' + msg + 'position is ' + e.position.lineNumber + ' ' + e.position.column + ' biu ' + jsCodePrime[e.position.lineNumber-1]);
 		var cor=msg.toString().split(' ');
 		// editor.Emitter.fire(e);
-		// editor.onDidChangeCursorPosition(function(e){
-		// 	showEvent('cursor change with event - ' + e.position);
-		// });
+
 		var insertCtt = jsCodePrime[e.position.lineNumber-1];
 		var txtAfterInsert = insertCtt.substr(0, e.position.column) + msg + insertCtt.substr(e.position.column);
 		jsCodePrime[e.position.lineNumber-1] = txtAfterInsert;
 		// showEvent('cool' + jsCodePrime[e.position.lineNumber-1]);
 		// var x = .substr(0, e.position.column) + "value" + str.substr(e.position.column); 
-		var y = jsCodePrime.join('\n'); 
+		jsCode = jsCodePrime.join('\n'); 
 
 		// showEvent('biebiue ' + y);
-		// var x = jsCode;
-		// jsCode[1] = x;
-		editor.setValue(y);
+		editor.setValue(jsCode);
 		// editor.setPosition(e.position.lineNumber, e.position.column+1);
-
+		// exit(1);
     });
 
 
