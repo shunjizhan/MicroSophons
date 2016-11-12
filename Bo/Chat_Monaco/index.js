@@ -100,7 +100,15 @@ io.on('connection', function(socket) {
 
     socket.on('cursor',function(msg) {
         socket.broadcast.emit('cursor', msg);
-    });  
+    });
+
+    socket.on('content', function(msg){
+        socket.broadcast.emit('content', msg);
+    });
+
+    socket.on('content-delete', function(msg){
+        socket.broadcast.emit('content-delete', msg);
+    });
 
     socket.on('user',function(new_name) {
         delete_user(this_user_name);

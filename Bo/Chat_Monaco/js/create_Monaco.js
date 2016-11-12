@@ -104,13 +104,29 @@ function editor_function() {
         output.appendChild(document.createElement('br'));
     }
 
-
+    var sendCursor=false;
 	editor.onDidChangeCursorPosition(function(e){
     	showEvent('cursor change - ' + e.position + e.reason);
 
-        if(e.reason!==0){
+        if(e.reason!==0||sendCursor){
             socket.emit('cursor', socket.io.engine.id + ' ' + e.position.lineNumber + ' ' + e.position.column);
+            sendCursor=false;
 	    }
+    });
+
+    var sendContent = true;
+    editor.onDidChangeModelContent(function(e){
+        if(sendContent){
+            showEvent('content change: '+ e.range + ' ' + e.rangeLength + ' ' + e.text);
+            sendCursor=true;
+            if(e.rangeLength===0){
+                socket.emit('content', e.range.startLineNumber + ' ' + e.range.startColumn + ' ' + e.text);
+            }
+            else{
+                socket.emit('content-delete', e.range.endLineNumber + ' ' + e.range.endColumn + ' ' + e.rangeLength);
+            }
+            //socket.emit('cursor', socket.io.engine.id + ' ' + e.range.endLineNumber + ' ' + e.range.endColumn);
+        }
     });
 	/*
 
@@ -181,6 +197,33 @@ function editor_function() {
 
     socket.on('current user', function(current){
         showEvent('current user: '+ current);
+    });
+
+    socket.on('content', function(msg){
+        showEvent('remote content change - ' + msg);
+        data=msg.split(' ');
+        old_pos=editor.getPosition();
+        sendContent=false;
+        editor.setPosition({lineNumber: parseInt(data[0]), column: parseInt(data[1])});
+        if(data[2]=='')
+            data[2]=' ';
+        editor.trigger('keyboard', 'type', {text: data[2]});
+        editor.setPosition(old_pos);
+        sendContent=true;
+
+    })
+
+    socket.on('content-delete', function(msg){
+        showEvent('remote content delete - ' + msg);
+        data=msg.split(' ');
+        old_pos=editor.getPosition();
+        sendContent=false;
+        editor.setPosition({lineNumber: parseInt(data[0]), column: parseInt(data[1])});
+        for(var i=0; i<parseInt(data[2]); i++){
+            editor.trigger('keyboard', 'deleteLeft', 0);
+        }
+        editor.setPosition(old_pos);
+        sendContent=true;
     });
 
 	
