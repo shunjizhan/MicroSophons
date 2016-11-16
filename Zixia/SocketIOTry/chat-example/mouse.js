@@ -107,17 +107,7 @@ require(['vs/editor/editor.main'], function() {
 	}
 
 
-	var boolMouseUp = false;
-	editor.onMouseUp(function (e) {
-		showEvent('mouseup - ' + e.target.toString());
-		boolMouseUp = true;
-	});
-	// var deleteChar = ' ';
-	// var myBinding = editor.addCommand(monaco.KeyCode.Backspace, function(e) {
-		// deleteChar = editor.getModel().getValueInRange({startLineNumber: e.position.lineNumber, startColumn: e.position.column-1, endLineNumber: e.position.lineNumber, endColumn: e.position.column});
-		// showEvent('char delete ' + deleteChar );
-	// });	
-
+	var sendCursor=false;
 	editor.onDidChangeCursorPosition(function(e){
 		
     	showEvent('cursor change - ' + e.position );
@@ -126,16 +116,29 @@ require(['vs/editor/editor.main'], function() {
     	// var r = range: new monaco.Range(3,1,3,1)
     	var sr = editor.getModel().getValueInRange({startLineNumber: e.position.lineNumber, startColumn: e.position.column-1, endLineNumber: e.position.lineNumber, endColumn: e.position.column});
     	// var sr = editor.getModel().getValueInRange(monaco.Range(e.position.column, e.position.lineNumber, e.position.column, e.position.lineNumber));
-		socket.emit('cursor', e.position.lineNumber + ' ' + e.position.column);
-		socket.emit('content', sr, e);
+		if(e.reason!==0||sendCursor){
+            socket.emit('cursor', socket.io.engine.id + ' ' + e.position.lineNumber + ' ' + e.position.column);
+            sendCursor=false;
+	    }
+		// socket.emit('cursor', e.position.lineNumber + ' ' + e.position.column);
+		// socket.emit('content', sr, e);
 	});
 
+	var sendContent = true;
+    editor.onDidChangeModelContent(function(e){
+        if(sendContent){
+            showEvent('content change: '+ e.range + ' ' + e.rangeLength + ' ' + e.text);
+            sendCursor=true;
+            if(e.rangeLength===0){
+                socket.emit('content', e.range.startLineNumber + ' ' + e.range.startColumn + ' ' + e.text);
+            }
+            else{
+                socket.emit('content-delete', e.range.endLineNumber + ' ' + e.range.endColumn + ' ' + e.rangeLength);
+            }
+            //socket.emit('cursor', socket.io.engine.id + ' ' + e.range.endLineNumber + ' ' + e.range.endColumn);
+        }
+    });
 	// editor.onDidChangeContentPosition
-
-	// function k(e) {
-	// 	showEvent('key on ' + editor.getPosition);
-	// }
-
 	// editor.addEventListeneronKeyUp = k(e);
 
 	// editor.onKeyUp(function (e){
@@ -153,37 +156,75 @@ require(['vs/editor/editor.main'], function() {
 	// });
 
 	socket.on('cursor', function(msg){
-		showEvent('remote cursor change - ' + msg);
-		var cor=msg.toString().split(' ');
-		editor.setPosition({lineNumber: parseInt(cor[0]), column: parseInt(cor[1])});
+		// showEvent('remote cursor change - ' + msg);
+		// var cor=msg.toString().split(' ');
+		// editor.setPosition({lineNumber: parseInt(cor[0]), column: parseInt(cor[1])});
+		var data=msg.toString().split(' ');
+        showEvent('remote cursor change - ' + msg);
+
+        var y = $("[lineNumber="+data[1]+"]").position().top;
+        var x = Math.round((parseInt(data[2]))*7.2175-7.5965);
+        $('#'+data[0]).css('top', y);
+        $('#'+data[0]).css('left', x);
     });
 
-	socket.on('content', function(msg, e){
+	editor.onMouseUp(function(e){
+           $('.object').remove();
+           var str= $('#name').text();
+           var cur= $('<div/>',{
+               'class': 'object',
+               'css':{'top':$(".cursor").position().top-15, 'left':$(".cursor").position().left}
+           });
+           $(".cursors-layer").append(cur);
+         
+           $(".object").text(str);
+           $(".object").fadeOut(1000); //need to change the value to adjust the blinking name
+     });
 
-		// $(function() {
-  // 			$('body').keypress(function(e) {
-  //   			alert(e.which);
-  // 			});
-	 //  		simulateKeyPress("e");
-		// });
+	// socket.on('content', function(msg, e){
 
-		var jsCodePrime = jsCode.split('\n');
+	// 	var jsCodePrime = jsCode.split('\n');
 
-		showEvent('this char is ' + msg + 'position is ' + e.position.lineNumber + ' ' + e.position.column + ' biu ' + jsCodePrime[e.position.lineNumber-1]);
-		var cor=msg.toString().split(' ');
-		// editor.Emitter.fire(e);
+	// 	showEvent('this char is ' + msg + 'position is ' + e.position.lineNumber + ' ' + e.position.column + ' biu ' + jsCodePrime[e.position.lineNumber-1]);
+	// 	var cor=msg.toString().split(' ');
+	// 	// editor.Emitter.fire(e);
 
-		var insertCtt = jsCodePrime[e.position.lineNumber-1];
-		var txtAfterInsert = insertCtt.substr(0, e.position.column) + msg + insertCtt.substr(e.position.column);
-		jsCodePrime[e.position.lineNumber-1] = txtAfterInsert;
-		// showEvent('cool' + jsCodePrime[e.position.lineNumber-1]);
-		// var x = .substr(0, e.position.column) + "value" + str.substr(e.position.column); 
-		jsCode = jsCodePrime.join('\n'); 
+	// 	var insertCtt = jsCodePrime[e.position.lineNumber-1];
+	// 	var txtAfterInsert = insertCtt.substr(0, e.position.column) + msg + insertCtt.substr(e.position.column);
+	// 	jsCodePrime[e.position.lineNumber-1] = txtAfterInsert;
+	// 	// showEvent('cool' + jsCodePrime[e.position.lineNumber-1]);
+	// 	// var x = .substr(0, e.position.column) + "value" + str.substr(e.position.column); 
+	// 	jsCode = jsCodePrime.join('\n'); 
 
-		// showEvent('biebiue ' + y);
-		editor.setValue(jsCode);
-		// editor.setPosition(e.position.lineNumber, e.position.column+1);
-		// exit(1);
+	// 	// showEvent('biebiue ' + y);
+	// 	editor.setValue(jsCode);
+	// 	// editor.setPosition(e.position.lineNumber, e.position.column+1);
+	// 	// exit(1);
+ //    });
+     socket.on('content', function(msg){
+        showEvent('remote content change - ' + msg);
+        data=msg.split(' ');
+        old_pos=editor.getPosition();
+        sendContent=false;
+        editor.setPosition({lineNumber: parseInt(data[0]), column: parseInt(data[1])});
+        if(data[2]=='')
+            data[2]=' ';
+        editor.trigger('keyboard', 'type', {text: data[2]});
+        editor.setPosition(old_pos);
+        sendContent=true;
+
+    })
+     socket.on('content-delete', function(msg){
+        showEvent('remote content delete - ' + msg);
+        data=msg.split(' ');
+        old_pos=editor.getPosition();
+        sendContent=false;
+        editor.setPosition({lineNumber: parseInt(data[0]), column: parseInt(data[1])});
+        for(var i=0; i<parseInt(data[2]); i++){
+            editor.trigger('keyboard', 'deleteLeft', 0);
+        }
+        editor.setPosition(old_pos);
+        sendContent=true;
     });
 
 
