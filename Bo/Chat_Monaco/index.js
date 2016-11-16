@@ -58,8 +58,6 @@ var users = [];
     //     connection.execSql(request);  
     // } 
 
-
-
 app.use(express.static(path.join(__dirname, '.'))); //app.use(express.static('js'));
 
 app.get('/', function(req, res) {
@@ -83,39 +81,13 @@ io.on('connection', function(socket) {
     io.emit('update_user', users);
     console.log(users);
 
-       //socket.on('new-user', function(msg){
-         // To-do: save new user info in data structure
-         
-         // sending to all clients except sender
-    socket.broadcast.emit('new-user', socket.id);
-         
-         // sending existing user info and text copy to new user
-/*
-    socket.on('editor-loaded', function(msg){
-        console.log('user ' + msg + ' editor loaded');
-        for(var i=0; i<userID.length; i++){
-        	if(userID[i]!==socket.id){
-    	       	console.log('user info ' + userID[i])
-    		    io.emit('reply-user', userID[i]);
-    	    }
-        }
+    socket.broadcast.emit('new-user', socket.id);      
 
-    });
-    */
     socket.broadcast.to(userID[0]).emit('request-content', socket.id);
-    /*
-    socket.on('request-content', function(msg){
-        socket.broadcast.to(userID[0]).emit('request-content', msg);
-    })
-    */
 
     socket.on('reply-content', function(msg){
-        console.log('reply-content: '+ msg);
         io.emit('reply-content', msg);
     });
-    
-
-      //});
 
     socket.on('chat message', function(msg) {
         io.emit('chat message', msg);
