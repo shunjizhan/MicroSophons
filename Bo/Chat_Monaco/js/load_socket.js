@@ -1,4 +1,5 @@
 var socket = io();
+//var content = '';
 
 $(document).ready(socket_function);
 
@@ -29,17 +30,21 @@ function socket_function(){
        $('#user_name').val('');
        $('#name').html(name);    // set user name
        $('#prev').text(name);
-       socket.emit('user', name); 
+       socket.emit('user-name', name); 
 
        return false;
     });
 
     socket.on('update_user', function(users){  // users is an array containing all user names
-        console.log('update_user()!!')
         $('#online_users').html("")
         users.forEach( function(user, index) {
             $('#online_users').append($('<li>').attr('id', user).text(user)); // update the online users
        });
+    });
+
+    socket.on('reply-content', function(msg){
+        console.log('update content' + msg);
+        content = msg;
     });
 
 

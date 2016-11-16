@@ -12,10 +12,18 @@ var jsCode = [
 
 var users={}; // dictionary: key: id, value: nickname
 
+//var load_content=true;
+var sendContent=true;
+
+
+
 require.config({ paths: { 'vs': 'monaco-editor/min/vs' }});
 require(['vs/editor/editor.main'], editor_function);
 
 function editor_function() {
+    if(content!==''){
+        jsCode=content;
+    }
     var editor = monaco.editor.create(document.getElementById('container'), {
         value: jsCode,
         language: "javascript",
@@ -104,6 +112,7 @@ function editor_function() {
         output.appendChild(document.createElement('br'));
     }
 
+
     var sendCursor=false;
 	editor.onDidChangeCursorPosition(function(e){
     	showEvent('cursor change - ' + e.position + e.reason);
@@ -114,7 +123,7 @@ function editor_function() {
 	    }
     });
 
-    var sendContent = true;
+    //var sendContent = true;
     editor.onDidChangeModelContent(function(e){
         if(sendContent){
             showEvent('content change: '+ e.range + ' ' + e.rangeLength + ' ' + e.text);
@@ -171,11 +180,28 @@ function editor_function() {
     socket.on('cursor', function(msg){
         var data=msg.toString().split(' ');
         showEvent('remote cursor change - ' + msg);
-
+        console.log($('#'+data[0]));
         var y = $("[lineNumber="+data[1]+"]").position().top;
         var x = Math.round((parseInt(data[2]))*7.2175-7.5965);
-        $('#'+data[0]).css('top', y);
-        $('#'+data[0]).css('left', x);
+        if($('#'+data[0]).length===0){
+            showEvent('creating cursor');
+            create_cursor(data[0], y, x);
+        }
+        else{
+            $('#'+data[0]).css('top', y);
+            $('#'+data[0]).css('left', x);
+        }
+        $('#'+data[0]+'label').remove();
+        var str= data[3];
+        var cur= $('<div/>',{
+               'class': 'object',
+               'id': data[0] + 'label',
+               'css':{'top': y-15, 'left': x},
+               'text':data[3]
+           });
+           $(".cursors-layer").append(cur);
+           //$(".object").text(data[3]);
+           $(".object").fadeOut(1000); 
 
         /*editor.trigger('mouse','createCursor',{
             position: { lineNumber: parseInt(data[1]), column: parseInt(data[2])},
@@ -229,15 +255,58 @@ function editor_function() {
 	
 	socket.on('new-user', function(msg){
 		showEvent("new user: " + msg);
-		$(".cursors-layer").append($('<div/>', {
-			'class': 'other-cursor',
-			'id': msg,
-			'css': {
-				'background-color': 'Green',
-				'top': 0,
-				'left': 0
-			}
-		}));
-        
+        create_cursor(msg, 0, 0);
 	});
-}			  
+
+    /*
+    socket.on('request-content', function(msg){
+        showEvent('content requested');
+        socket.emit('reply-content', editor.getValue());
+    });
+    
+    socket.on('reply-content', function(msg){
+        if(load_content=true){
+            showEvent('content loaded');
+            editor.setValue(msg);
+            load_content=false;
+        }
+    });
+    */
+    socket.on('user-exit', function(msg){
+        $('#'+msg).remove();
+    });
+
+    socket.on('request-content', function(msg){
+        //showEvent('content requested');
+        console.log('content requested');
+        socket.emit('reply-content', editor.getValue());
+    });
+
+/*
+    socket.on('reply-content', function(msg){
+        if(load_content){
+            showEvent('content loading');
+            //showEvent('content loaded');
+            sendContent=false;
+            editor.setValue(msg);
+            sendContent=true;
+            load_content=false;
+        }
+    });
+    */
+}		
+
+
+function create_cursor(user_id, y, x){
+    $(".cursors-layer").append($('<div/>', {
+        'class': 'other-cursor',
+        'id': user_id,
+        'css': {
+            'background-color': 'Green',
+            'top': y,
+            'left': x
+        }
+    }));
+}
+
+

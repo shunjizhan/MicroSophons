@@ -2,8 +2,6 @@
 <html>
 <head>
   <title>Socket.IO chat</title>
-  <link href='js/cursor_nickname.css' type='text/css' rel='stylesheet'/>
-
   <link href='./js/cursor.css' type='text/css' rel='stylesheet'/>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -59,9 +57,15 @@
 
   <!--********** JS **********-->
 
+  <script type='text/javascript' > 
+      var content=''; 
+  </script>
+
   <!-- Socket.io -->
   <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
   <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+
+  
   <script src="js/load_socket.js"></script>
   <script src="index.js"></script>
   <!-- Monaco -->

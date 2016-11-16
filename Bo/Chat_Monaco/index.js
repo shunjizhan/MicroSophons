@@ -11,6 +11,7 @@ var path = require('path');
 
 var fs = require("fs");
 var ini = false;
+var userID = [];
 var users = [];
 
 
@@ -78,28 +79,50 @@ io.on('connection', function(socket) {
 
     var this_user_name = "ShaB" + Math.floor(Math.random() * 20);
     users.push(this_user_name);
+    userID.push(socket.id);
     io.emit('update_user', users);
     console.log(users);
 
-    if(count>1){
        //socket.on('new-user', function(msg){
          // To-do: save new user info in data structure
          
          // sending to all clients except sender
-         socket.broadcast.emit('new-user', socket.id);
+    socket.broadcast.emit('new-user', socket.id);
          
-         // sending existing user info and text copy to new user 
-         //socket.broadcast.to(socketid).emit('reply-users', message);
-         //socket.broadcast.to(socketid).emit('reply-content', message);
+         // sending existing user info and text copy to new user
+/*
+    socket.on('editor-loaded', function(msg){
+        console.log('user ' + msg + ' editor loaded');
+        for(var i=0; i<userID.length; i++){
+        	if(userID[i]!==socket.id){
+    	       	console.log('user info ' + userID[i])
+    		    io.emit('reply-user', userID[i]);
+    	    }
+        }
+
+    });
+    */
+    socket.broadcast.to(userID[0]).emit('request-content', socket.id);
+    /*
+    socket.on('request-content', function(msg){
+        socket.broadcast.to(userID[0]).emit('request-content', msg);
+    })
+    */
+
+    socket.on('reply-content', function(msg){
+        console.log('reply-content: '+ msg);
+        io.emit('reply-content', msg);
+    });
+    
+
       //});
-    }
 
     socket.on('chat message', function(msg) {
         io.emit('chat message', msg);
     });
 
     socket.on('cursor',function(msg) {
-        socket.broadcast.emit('cursor', msg);
+        socket.broadcast.emit('cursor', msg + ' ' + this_user_name);
     });
 
     socket.on('content', function(msg){
@@ -110,42 +133,25 @@ io.on('connection', function(socket) {
         socket.broadcast.emit('content-delete', msg);
     });
 
-    socket.on('user',function(new_name) {
-        delete_user(this_user_name);
+    socket.on('user-name',function(new_name) {
+    	users.splice(users.indexOf(this_user_name), 1, new_name);
         this_user_name = new_name;
-        users.push(this_user_name);
         io.emit('update_user', users);
     });
 
     socket.on('disconnect', function() {
-        console.log('disconnected:' + this_user_name);
+        console.log('disconnected:' + socket.id + ' ' + this_user_name);
         count--;
         var current=count;
         io.emit('current user',current);
-
-        delete_user(this_user_name);
         io.emit('update_user', users);
+        socket.broadcast.emit('user-exit', socket.id);
+        users.splice(users.indexOf(this_user_name), 1);
+        userID.splice(users.indexOf(socket.id), 1);
     });
-
 });
 
 function delete_user(name) {
     index = users.indexOf(name);
     if (index > -1) { users.splice(index, 1); }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
