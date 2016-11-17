@@ -12,11 +12,12 @@ var jsCode = [
 
 require.config({ paths: { 'vs': 'monaco-editor/min/vs' }});
 require(['vs/editor/editor.main'], function() {
-  var editor = monaco.editor.create(document.getElementById('container'), {
+  var editor = monaco.editor.create(document.getElementById('container_m'), {
         value: jsCode,
         language: "javascript",
         glyphMargin: true,
-        nativeContextMenu: false
+        nativeContextMenu: false,
+        theme: "vs-dark",
   });
 
     // var jsCode_ = 'cooooooooooooool';
@@ -37,7 +38,7 @@ require(['vs/editor/editor.main'], function() {
 	var viewZoneId = null;
 	editor.changeViewZones(function(changeAccessor) {
 			var domNode = document.createElement('div');
-			domNode.style.background = 'lightgreen';
+			domNode.style.background = 'white';
 			viewZoneId = changeAccessor.addZone({
 						afterLineNumber: 3,
 						heightInLines: 3,
@@ -83,7 +84,7 @@ require(['vs/editor/editor.main'], function() {
 				this.domNode.innerHTML = 'My overlay widget';
 				this.domNode.style.background = 'grey';
 				this.domNode.style.right = '30px';
-				this.domNode.style.top = '50px';
+				this.domNode.style.top = '60px';
 			}
 			return this.domNode;
 		},
