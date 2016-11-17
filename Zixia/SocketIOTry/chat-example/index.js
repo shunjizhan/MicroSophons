@@ -29,7 +29,7 @@ io.on('connection', function(socket){
     });
 
   socket.on('content', function(msg, e){
-    io.emit('content', msg, e);
+    socket.broadcast.emit('content', msg, e);
   });
 });
 
