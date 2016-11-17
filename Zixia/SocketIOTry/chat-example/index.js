@@ -25,15 +25,19 @@ io.on('connection', function(socket){
   });
 
   socket.on('cursor',function(msg){
-  io.emit('cursor',msg);
+    socket.broadcast.emit('cursor',msg);
     });
 
   socket.on('content', function(msg, e){
     socket.broadcast.emit('content', msg, e);
   });
+
+  socket.on('content-delete', function(msg){
+   socket.broadcast.emit('content-delete', msg);
+ });
+
 });
 
 http.listen(3000, function(){
   console.log('listening on *:3000');
 });
-
