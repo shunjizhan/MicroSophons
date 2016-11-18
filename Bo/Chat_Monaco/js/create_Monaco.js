@@ -160,15 +160,17 @@ function editor_function() {
         }
         $('#'+data[0]+'label').remove();
         var str= data[3];
+
+	var color_store=data[4];
         var cur= $('<div/>',{
                'class': 'object',
                'id': data[0] + 'label',
-               'css':{'top': y-15, 'left': x},
+            'css':{'top': y-15, 'left': x,  'background-color': data[4]},
                'text':data[3]
            });
            $(".cursors-layer").append(cur);
            //$(".object").text(data[3]);
-           $(".object").fadeOut(1000); 
+           $("#'+data[0]+'label").fadeOut(1000); 
 
     });
 
