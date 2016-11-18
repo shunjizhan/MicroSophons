@@ -170,7 +170,7 @@ function editor_function() {
            });
            $(".cursors-layer").append(cur);
            //$(".object").text(data[3]);
-           $("#'+data[0]+'label").fadeOut(1000); 
+           $('#'+data[0]+'label').fadeOut(1000); 
 
     });
 
@@ -203,7 +203,8 @@ function editor_function() {
 	});
 
     socket.on('user-exit', function(msg){
-        $('#'+msg).remove();
+        $('#'+msg).remove();   //remove cursor
+	$('#'+msg+'label').remove();  //remove label
     });
 
     socket.on('request-content', function(msg){
