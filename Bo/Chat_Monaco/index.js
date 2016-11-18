@@ -82,7 +82,7 @@ io.on('connection', function(socket) {
     userID.push(socket.id);
 
     
-    color.push("rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")");
+    color.push("rgb("+Math.floor(Math.random()*191+64)+","+Math.floor(Math.random()*191+64)+","+Math.floor(Math.random()*191+64)+")");
 //random color generation
     
 
