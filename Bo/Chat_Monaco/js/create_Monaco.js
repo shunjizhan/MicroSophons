@@ -213,6 +213,14 @@ function editor_function() {
         socket.emit('reply-content', editor.getValue());
     });
 
+    $("#file-upload").on('change', function(e){
+        var file = e.target.files[0];
+        var reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = function(f){
+            editor.setValue(f.target.result);
+        };
+    });
 
 }		
 
