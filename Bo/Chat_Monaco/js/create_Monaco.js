@@ -217,9 +217,18 @@ function editor_function() {
         var file = e.target.files[0];
         var reader = new FileReader();
         reader.readAsText(file);
+        sendContent=false;
         reader.onload = function(f){
             editor.setValue(f.target.result);
+            socket.emit("new-file", f.target.result);
         };
+        sendContent=true;
+    });
+
+    socket.on('new-file', function(msg){
+        sendContent=false;
+        editor.setValue(msg);
+        sendContent=true;
     });
 
 }		

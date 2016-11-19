@@ -113,6 +113,10 @@ io.on('connection', function(socket) {
         socket.broadcast.emit('content-delete', msg);
     });
 
+    socket.on('new-file', function(msg){
+        socket.broadcast.emit('new-file', msg);
+    });
+
     socket.on('user-name',function(new_name) {
     	users.splice(users.indexOf(this_user_name), 1, new_name);
         this_user_name = new_name;
