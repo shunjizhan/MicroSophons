@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+  <title>Socket.IO chat</title>
+  <link href='js/cursor_nickname.css' type='text/css' rel='stylesheet'/>
+
+  <link href='./js/cursor.css' type='text/css' rel='stylesheet'/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font: 13px Helvetica, Arial; }
+
+    /*form#send { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }*/
+    form#send { background: #000; padding: 3px;  }
+    form#send input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+    form#send button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+
+    /*#messages { list-style-type: none; margin: 0; padding: 0; position: fixed; top: 200px; right: 0px; border: 2px dotted orange; z-index: 100; overflow: scroll; height: 300px; }*/
+    #messages { list-style-type: none; margin: 0; padding: 0; border-top: 2px solid orange; z-index: 100; overflow: scroll; height: 300px; }
+    #messages li { padding: 5px 10px; }
+    #messages li:nth-child(odd) { background: #eee; }
+    #message_bar { margin-top: 30%; }
+
+    #container { width:50%;height:600px;border:3px solid green; float: left;}  /* for Monaco */
+    /*#user_id { position: fixed; top: 50px; right: 0px; border: 2px dotted blue; z-index: 100; font-size: 120%; padding:3px;} /* set username */*/
+    #output { height:29%; font-family:'Courier New', monospace; border: 2px solid black; } /* events monitor */
+    #name {top: 0px; right: 0px; font-size: 120%; padding:3px; }
+
+    #online_users {padding:1px; border-top: 2px solid green; text-align: center; padding-top: 1px;}
+
+    #right_bar {border: 2px solid blue; position: relative; right: 0; top: 0; width: 30%; height: 100%; float: right;}
+    
+  </style>
+</head>
+
+<body>
+  <!-- Monaco -->
+  <div id="container"></div>
+  <div id="output">Last 3 events:<br/></div>
+
+<div id="right_bar">
+  <!-- Functionaly -->
+  <div id="user_id">
+  <p id="name"><span id="my_name">Guess which ShaB is you</span> | <span id="currentcount">0</span></p>
+    <form id="user_form" action="">
+      <input id="user_name" autocomplete="ShaB" /><button>Set Name</button>
+    </form>
+
+    <ul id="online_users"> </ul> 
+  </div>
+
+    <!-- Message -->
+  <div id="message_bar">
+  <ul id="messages">
+    <li>This is the first line of Socket.io</li>
+  </ul>
+
+  <form id="send" action="">
+    <input id="m" autocomplete="off" /><button>Send</button>
+  </form>
+  </div>
+</div>
+
+  <!--********** JS **********-->
+
+  <!-- Socket.io -->
+  <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script src="js/load_socket.js"></script>
+  <script src="index.js"></script>
+  <!-- Monaco -->
+  <script src="monaco-editor/min/vs/loader.js"></script>
+	<script src="js/create_Monaco.js"></script>
+
+
+</body>
+
+</html>
