@@ -36,66 +36,6 @@ function editor_function() {
         }
     ]);
 
-    // Add a zone to make hit testing more interesting
-    var viewZoneId = null;
-    editor.changeViewZones(function(changeAccessor) {
-            var domNode = document.createElement('div');
-            domNode.style.background = 'lightgreen';
-            viewZoneId = changeAccessor.addZone({
-                        afterLineNumber: 3,
-                        heightInLines: 3,
-                        domNode: domNode
-            });
-    });
-
-    // Add a content widget (scrolls inline with text)
-    var contentWidget = {
-        domNode: null,
-        getId: function() {
-            return 'my.content.widget';
-        },
-        getDomNode: function() {
-            if (!this.domNode) {
-                this.domNode = document.createElement('div');
-                this.domNode.innerHTML = 'My content widget';
-                this.domNode.style.background = 'grey';
-            }
-            return this.domNode;
-        },
-        getPosition: function() {
-            return {
-                position: {
-                    lineNumber: 7,
-                    column: 8
-                },
-                preference: [monaco.editor.ContentWidgetPositionPreference.ABOVE, monaco.editor.ContentWidgetPositionPreference.BELOW]
-            };
-        }
-    };
-    editor.addContentWidget(contentWidget);
-
-    // Add an overlay widget
-    var overlayWidget = {
-        domNode: null,
-        getId: function() {
-            return 'my.overlay.widget';
-        },
-        getDomNode: function() {
-            if (!this.domNode) {
-                this.domNode = document.createElement('div');
-                this.domNode.innerHTML = 'My overlay widget';
-                this.domNode.style.background = 'grey';
-                this.domNode.style.right = '30px';
-                this.domNode.style.top = '50px';
-            }
-            return this.domNode;
-        },
-        getPosition: function() {
-            return null;
-        }
-    };
-    editor.addOverlayWidget(overlayWidget);
-
     var output = document.getElementById('output');
     function showEvent(str) {
         while(output.childNodes.length > 10) {
@@ -111,7 +51,10 @@ function editor_function() {
     	showEvent('cursor change - ' + e.position + e.reason);
 
         if(e.reason!==0||sendCursor){
-            socket.emit('cursor', socket.io.engine.id + ' ' + e.position.lineNumber + ' ' + e.position.column);
+            socket.emit('cursor', { 
+                id: socket.io.engine.id,
+                lineNumber: e.position.lineNumber,
+                column: e.position.column});
             sendCursor=false;
 	    }
     });
@@ -122,55 +65,37 @@ function editor_function() {
             showEvent('content change: '+ e.range + ' ' + e.rangeLength + ' ' + e.text);
             sendCursor=true;
             //if(e.rangeLength!==0)
-            socket.emit('content', e.range.startLineNumber + ' ' + e.range.startColumn + ' ' + e.rangeLength + ' ' + e.text);
-            
+            socket.emit('content', {range: e.range, text: e.text});            
   
         }
     });
 
-/*
-    editor.onMouseUp(function(e){
-       $('.object').remove();
-       var str= $('#name').text();
-       var cur= $('<div/>',{
-           'class': 'object',
-           'css':{'top':$(".cursor").position().top-15, 'left':$(".cursor").position().left}
-       });
-       $(".cursors-layer").append(cur);
-     
-       $(".object").text(str);
-       $(".object").fadeOut(1000); //need to change the value to adjust the blinking name
-     });
-   //cursor_nickname combined above
-*/
 
     socket.on('cursor', function(msg){
-        var data=msg.toString().split(' ');
+        //var data=msg.toString().split(' ');
         showEvent('remote cursor change - ' + msg);
         //console.log($('#'+data[0]));
-        var y = $("[lineNumber="+data[1]+"]").position().top;
-        var x = Math.round((parseInt(data[2]))*7.2175-7.5965);
-        if($('#'+data[0]).length===0){
+        var y = $("[lineNumber="+msg.lineNumber+"]").position().top;
+        var x = Math.round((msg.column)*7.2175-7.5965);
+        if($('#'+msg.id).length===0){
             showEvent('creating cursor');
-            create_cursor(data[0], y, x);
+            create_cursor(msg.id, y, x);
         }
         else{
-            $('#'+data[0]).css('top', y);
-            $('#'+data[0]).css('left', x);
+            $('#'+msg.id).css('top', y);
+            $('#'+msg.id).css('left', x);
         }
-        $('#'+data[0]+'label').remove();
-        var str= data[3];
+        $('#'+msg.id+'label').remove();
 
-	var color_store=data[4];
         var cur= $('<div/>',{
                'class': 'object',
-               'id': data[0] + 'label',
-            'css':{'top': y-15, 'left': x,  'background-color': data[4]},
-               'text':data[3]
+               'id': msg.id + 'label',
+            'css':{'top': y-15, 'left': x,  'background-color': msg.color},
+               'text':msg.username
            });
            $(".cursors-layer").append(cur);
            //$(".object").text(data[3]);
-           $('#'+data[0]+'label').fadeOut(1000); 
+           $('#'+msg.id+'label').fadeOut(1000); 
 
     });
 
@@ -180,18 +105,16 @@ function editor_function() {
 
     socket.on('content', function(msg){
         showEvent('remote content change - ' + msg);
-        data=msg.split(' ');
-        old_pos=editor.getPosition();
+
         sendContent=false;
-        editor.setPosition({lineNumber: parseInt(data[0]), column: parseInt(data[1])});
-
-        for(var i=0; i<parseInt(data[2]); i++){
-            editor.trigger('keyboard', 'deleteRight', 0);
-        }
-
-        var addition = data.splice(3, data.length).join(' ');
-        editor.trigger('keyboard', 'type', {text: addition});
-        editor.setPosition(old_pos);
+        editor.executeEdits('keyboard', [{
+            identifier: {major: 0, minor: 0},
+            range: monaco.Range.lift(msg.range),
+            text: msg.text,
+            forceMoveMarkers: false,
+            isAutoWhitespaceEdit: false
+        }]);
+        
         sendContent=true;
 
     })
@@ -223,6 +146,32 @@ function editor_function() {
             socket.emit("new-file", f.target.result);
         };
         sendContent=true;
+    });
+
+    $("#save-as").on('click',function(){
+        var file_blob = new Blob([editor.getValue()], {type:'text/plaint'});
+        var file_name = 'default.js';
+        var downloadLink = document.createElement("a");
+        downloadLink.download = file_name;
+        downloadLink.innerHTML = "Download File";
+        downloadLink.setAttribute("target", "_blank");
+        if (window.webkitURL != null)
+        {
+            // Chrome allows the link to be clicked
+            // without actually adding it to the DOM.
+            downloadLink.href = window.webkitURL.createObjectURL(file_blob);
+        }
+        else
+        {
+            // Firefox requires the link to be added to the DOM
+            // before it can be clicked.
+            downloadLink.href = window.URL.createObjectURL(file_blob);
+            downloadLink.onclick = destroyClickedElement;
+            downloadLink.style.display = "none";
+            document.body.appendChild(downloadLink);
+        }
+
+        downloadLink.click();
     });
 
     socket.on('new-file', function(msg){

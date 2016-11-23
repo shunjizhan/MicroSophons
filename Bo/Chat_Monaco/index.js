@@ -102,7 +102,9 @@ io.on('connection', function(socket) {
     });
 
     socket.on('cursor',function(msg) {
-        socket.broadcast.emit('cursor', msg + ' ' + this_user_name +' '+ color[userID.indexOf(socket.id)]); //note userID array to store all IDs
+        msg.username = this_user_name;
+        msg.color = color[userID.indexOf(socket.id)]
+        socket.broadcast.emit('cursor', msg); //note userID array to store all IDs
     });
 
     socket.on('content', function(msg){
