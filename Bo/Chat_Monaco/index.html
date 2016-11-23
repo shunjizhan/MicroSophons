@@ -21,6 +21,10 @@
     #prev {position: fixed; top: 0px; right: 0px; border: 2px solid red; z-index: 100; font-size: 120%; padding:3px; }
     #currentsquare {position: fixed; top: 0px; right: 150px; border: 2px solid red; z-index: 100; font-size: 120%; padding:3px; }
     #online_users {border: 2px solid pink; padding:1px; text-align: center;}
+    ul.tab {list-style-type: none; margin: 0; padding: 0; overflow: hidden; width: 500px; border: 1px solid #000;}
+    ul.tab li {float: left;}
+    #new-tab {float: right;}
+
     
   </style>
 </head>
@@ -35,13 +39,19 @@
     <input id="m" autocomplete="off" /><button>Send</button>
   </form>
 
+  <ul class="tab">
+    <li><a href="javascript:void(0)" class="tablinks">default.js</a></li>
+    <li id="new-tab"><button type="button">+</button></li>
+  </ul>
+
+
   <!-- Monaco -->
-  
-  <div id="container"></div>
+  <div id="container" class="editor"></div>
 
   <form id="submit-file">
     <input type="file" id="file-upload" multiple size="10">
   </form>
+  <button id="save-as" type="button">Save As</button>
 
   <div id="output">Last 3 events:<br/></div>
 
