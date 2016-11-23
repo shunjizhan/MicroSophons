@@ -160,15 +160,17 @@ function editor_function() {
         }
         $('#'+data[0]+'label').remove();
         var str= data[3];
+
+	var color_store=data[4];
         var cur= $('<div/>',{
                'class': 'object',
                'id': data[0] + 'label',
-               'css':{'top': y-15, 'left': x},
+            'css':{'top': y-15, 'left': x,  'background-color': data[4]},
                'text':data[3]
            });
            $(".cursors-layer").append(cur);
            //$(".object").text(data[3]);
-           $(".object").fadeOut(1000); 
+           $('#'+data[0]+'label').fadeOut(1000); 
 
     });
 
@@ -201,7 +203,8 @@ function editor_function() {
 	});
 
     socket.on('user-exit', function(msg){
-        $('#'+msg).remove();
+        $('#'+msg).remove();   //remove cursor
+	$('#'+msg+'label').remove();  //remove label
     });
 
     socket.on('request-content', function(msg){
@@ -210,6 +213,23 @@ function editor_function() {
         socket.emit('reply-content', editor.getValue());
     });
 
+    $("#file-upload").on('change', function(e){
+        var file = e.target.files[0];
+        var reader = new FileReader();
+        reader.readAsText(file);
+        sendContent=false;
+        reader.onload = function(f){
+            editor.setValue(f.target.result);
+            socket.emit("new-file", f.target.result);
+        };
+        sendContent=true;
+    });
+
+    socket.on('new-file', function(msg){
+        sendContent=false;
+        editor.setValue(msg);
+        sendContent=true;
+    });
 
 }		
 

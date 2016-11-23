@@ -15,6 +15,8 @@ var userID = [];
 var users = [];
 
 
+var color = [];
+
 //database connection
     var Connection = require('tedious').Connection;  
     var config = {  
@@ -78,6 +80,12 @@ io.on('connection', function(socket) {
     var this_user_name = "ShaB" + Math.floor(Math.random() * 20);
     users.push(this_user_name);
     userID.push(socket.id);
+
+    
+    color.push("rgb("+Math.floor(Math.random()*191+64)+","+Math.floor(Math.random()*191+64)+","+Math.floor(Math.random()*191+64)+")");
+//random color generation
+    
+
     io.emit('update_user', users);
     console.log(users);
 
@@ -94,7 +102,7 @@ io.on('connection', function(socket) {
     });
 
     socket.on('cursor',function(msg) {
-        socket.broadcast.emit('cursor', msg + ' ' + this_user_name);
+        socket.broadcast.emit('cursor', msg + ' ' + this_user_name +' '+ color[userID.indexOf(socket.id)]); //note userID array to store all IDs
     });
 
     socket.on('content', function(msg){
@@ -103,6 +111,10 @@ io.on('connection', function(socket) {
 
     socket.on('content-delete', function(msg){
         socket.broadcast.emit('content-delete', msg);
+    });
+
+    socket.on('new-file', function(msg){
+        socket.broadcast.emit('new-file', msg);
     });
 
     socket.on('user-name',function(new_name) {
@@ -119,7 +131,10 @@ io.on('connection', function(socket) {
         io.emit('update_user', users);
         socket.broadcast.emit('user-exit', socket.id);
         users.splice(users.indexOf(this_user_name), 1);
-        userID.splice(users.indexOf(socket.id), 1);
+
+	color.splice(userID.indexOf(socket.id),1);
+	
+        userID.splice(userID.indexOf(socket.id), 1);
     });
 });
 
