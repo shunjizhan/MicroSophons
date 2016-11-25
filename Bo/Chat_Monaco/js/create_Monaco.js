@@ -1,4 +1,4 @@
-var jsCode = [
+var default_content = [
     '"use strict";',
     'function Person(age) {',
     '   if (age) {',
@@ -14,10 +14,15 @@ require.config({ paths: { 'vs': 'monaco-editor/min/vs' }});
 require(['vs/editor/editor.main'], editor_function);
 
 function editor_function() {
+    var jsCode;
     if(content!==''){
         jsCode=content;
     }
-    var editor = monaco.editor.create(document.getElementById('container'), {
+    else{
+        jsCode=default_content;
+    }
+    all_content[0]=jsCode;
+    var editor = monaco.editor.create(document.getElementById('container0'), {
         value: jsCode,
         language: "javascript",
         glyphMargin: true,
@@ -44,6 +49,8 @@ function editor_function() {
         output.appendChild(document.createTextNode(str));
         output.appendChild(document.createElement('br'));
     }
+
+    //setup_editor(editor);
 
 
     var sendCursor=false;
@@ -138,11 +145,17 @@ function editor_function() {
 
     $("#file-upload").on('change', function(e){
         var file = e.target.files[0];
+        var filename = file.name;
+        var split_name = filename.split('.');
+        var extension = split_name[split_name.length-1];
+        console.log(extension);
+        var type = get_type(extension);
+        console.log(type);
         var reader = new FileReader();
         reader.readAsText(file);
         sendContent=false;
         reader.onload = function(f){
-            editor.setValue(f.target.result);
+            editor.setModel(monaco.editor.createModel(f.target.result, type));
             socket.emit("new-file", f.target.result);
         };
         sendContent=true;
@@ -174,6 +187,62 @@ function editor_function() {
         downloadLink.click();
     });
 
+    $('#new-tab').on('click', function(){
+
+        all_content[content_index]=editor.getValue();
+        all_content.push(default_content);
+        content_index=all_content.length-1;
+        var new_li = $('<li/>',{
+            'id': 'tab-' + content_index,
+            'class': 'tab',
+            'text': 'default_' + content_index + '.js',
+            'css': {'background-color': 'Yellow'}
+        });
+        new_li.on('click', function(){
+            console.log('tab clicked!');
+            var id = parseInt($(this).attr('id').split('-')[1]);
+            console.log(id);
+            if(id!==content_index){
+                $('#tab-' + content_index).css('background-color', 'White');
+                all_content[content_index]=editor.getValue();
+                content_index = id;
+                $('#tab-' + content_index).css('background-color', 'Yellow');
+                console.log(content_index);
+                content = all_content[content_index];
+                editor.setValue(content);
+            }
+        });
+        $('.tab-bar').append(new_li);
+
+        /*
+        var new_a = $('<button/>', {
+            'id': 'tab-' + (all_content.length-1),
+            'class': 'tab',
+            'text': 'default_' + (all_content.length-1) + '.js'
+        });
+        new_li.append(new_a);
+        */
+
+
+        content = all_content[content_index];
+        editor.setValue(content);
+    })
+
+    $('.tab').on('click',function(){
+        console.log('tab clicked!');
+        var id = parseInt($(this).attr('id').split('-')[1]);
+        console.log(id);
+        if(id!==content_index){
+            $('#tab-' + content_index).css('background-color', 'White');
+            all_content[content_index]=editor.getValue();
+            content_index = id;
+            $('#tab-' + content_index).css('background-color', 'Yellow');
+            console.log(content_index);
+            content = all_content[content_index];
+            editor.setValue(content);
+        }
+    })
+
     socket.on('new-file', function(msg){
         sendContent=false;
         editor.setValue(msg);
@@ -181,6 +250,12 @@ function editor_function() {
     });
 
 }		
+
+
+function setup_editor(editor){
+
+    
+}
 
 function create_cursor(user_id, y, x){
     $(".cursors-layer").append($('<div/>', {
@@ -192,6 +267,44 @@ function create_cursor(user_id, y, x){
             'left': x
         }
     }));
+}
+
+function get_type(extension){
+    switch(extension){
+        case 'js':
+            return 'javascript';
+        case 'py':
+            return 'python';
+        case 'java':
+            return 'java';
+        case 'cpp':
+            return 'cpp';
+        case 'c':
+            return 'c';
+        case 'h':
+            return 'c';
+        case 'hpp':
+            return 'cpp';
+        case 'txt':
+            return 'plaintext';
+        case 'html':
+            return 'html';
+        case 'css':
+            return 'css';
+        case 'ts':
+            return 'typescript';
+        case 'cs':
+            return 'csharp';
+        case 'xml':
+            return 'xml';
+        case 'swift':
+            return 'swift';
+        case 'm':
+            return 'objective-c';
+        default:
+            return 'plaintext';
+
+    }
 }
 
 
