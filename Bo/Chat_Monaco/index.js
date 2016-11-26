@@ -116,7 +116,6 @@ io.on('connection', function(socket) {
     });
 
     socket.on('new-tab', function(msg){
-        console.log(msg);
         socket.broadcast.emit('new-tab', msg);
     })
 

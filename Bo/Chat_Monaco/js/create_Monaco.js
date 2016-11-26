@@ -19,27 +19,12 @@ require(['vs/editor/editor.main'], editor_function);
 
 function editor_function() {
     if(content.length===0){
-        console.log('create new editor');
-
-        var jsCode=default_content;
-	/*
-    if(content!==''){
-        jsCode=content;
-    }
-    else{
-        jsCode=default_content;
-    }*/
-    //all_content[0]=jsCode;
-
-        var editor = setup_editor('container-0', jsCode, 'javascript');
-
+        var editor = setup_editor('container-0', default_content, 'javascript');
         editors.push(editor);
         editorID.push(0);
         filenames.push('default.js');
     }
-
     else{
-        console.log('create used editor');
         var editor = setup_editor('container-0', content[0], lang[0]);
         editors.push(editor);
         sendTab = false;
@@ -49,17 +34,10 @@ function editor_function() {
         sendTab = true;
 
     }
-
-
 }
 
     $('#new-tab').on('click', function(){
-
-        //all_content[content_index]=editor.getValue();
-        //all_content.push(default_content);
-        //content_index=all_content.length-1;
         new_tab('', default_content, 'javascript', true, -1);
-
     });
 
     $('.tab').on('click',function(){
@@ -68,7 +46,6 @@ function editor_function() {
             switch_tab(id);
         }
     });
-
 
     socket.on('cursor', function(msg){
         showEvent('remote cursor change - ' + msg);
@@ -130,15 +107,8 @@ function editor_function() {
             language: lang,
             filenames: filenames,
             editorID: editorID
-        }); // stack overflow!
+        });
     });
-    /*
-    socket.on('new-file', function(msg){
-        sendContent=false;
-        new_tab(msg.filename, msg.content, msg.lang, false, -1);
-        sendContent=true;
-    });
-    */
 
     socket.on('new-tab', function(msg){
         console.log('new-tab '+ msg);
@@ -222,7 +192,6 @@ function setup_editor(div, content, language){
     ]);
 
     // register two events
-
     editor.onDidChangeCursorPosition(function(e){
         showEvent('cursor change - ' + e.position + e.reason);
 
@@ -235,13 +204,10 @@ function setup_editor(div, content, language){
             sendCursor=false;
         }
     });
-
-
     editor.onDidChangeModelContent(function(e){
         if(sendContent){
             showEvent('content change: '+ e.range + ' ' + e.rangeLength + ' ' + e.text);
             sendCursor=true;
-            //if(e.rangeLength!==0)
             socket.emit('content', {
                 editor_id: current_ID, 
                 range: e.range, 
@@ -271,7 +237,7 @@ function new_tab(tab_name, content, language, foreground, new_ID){
             tab_name: tab_name,
             content: content,
             language: language,
-            new_ID
+            new_ID: new_ID
         });
     }
 

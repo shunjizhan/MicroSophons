@@ -18,7 +18,6 @@ function socket_function(){
        $('#messages').append($('<li>').text(msg));
     });
 
-
     socket.on('current user', function(current){
         var currentstring=current.toString();
         $('#currentcount').html(currentstring);
@@ -43,21 +42,11 @@ function socket_function(){
     });
 
     socket.on('reply-content', function(msg){
-
           content=msg.content;
           lang=msg.language;
           editorID=msg.editorID;
           filenames=msg.filenames;
-
-
-        /*while(msg.editors.length!==0){
-          console.log(msg);
-          editors.push(msg.editors.shift());
-          editorID.push(msg.editorID.shift());
-          filenames.push(msg.filenams.shift());
-        }*/
     });
-
 
     // default name
     /*
@@ -66,10 +55,6 @@ function socket_function(){
     $('#prev').text(name);
 	socket.emit('user', {name: name, del: ""});
     */
-
-   
-    
-
 }
 
 

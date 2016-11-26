@@ -27,7 +27,6 @@
     #tab-0 {background-color: Yellow;}
     #submit-file {top:0px; left:510px; position: absolute;}
     #save-as {top:20px; left:510px; position: absolute;}
-
     
   </style>
 </head>
@@ -46,7 +45,6 @@
     <li id="tab-0" class="tab">default.js</li>
     <li id="new-tab"><button type="button">+</button></li>
   </ul>
-
 
   <!-- Monaco -->
   <div id="container-0" class="container"></div>
@@ -72,20 +70,15 @@
     <p id="prev">ShaB</p>
   </div>
 
-
   <!--********** JS **********-->
-
+  <!--Global Variables-->
   <script type='text/javascript' > 
-      //var content=''; 
-      //var all_content=[content];
-      //var content_index=0;
       var content = [];
       var lang = [];
       var editors = [];
       var editorID = [];
       var filenames = [];
       var current_ID = 0;
-
   </script>
 
   <!-- Socket.io -->
@@ -98,7 +91,6 @@
   <!-- Monaco -->
   <script src="monaco-editor/min/vs/loader.js"></script>
 	<script src="js/create_Monaco.js"></script>
-
 
 </body>
 
