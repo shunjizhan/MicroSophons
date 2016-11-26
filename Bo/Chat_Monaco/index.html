@@ -15,16 +15,19 @@
     #messages li { padding: 5px 10px; }
     #messages li:nth-child(odd) { background: #eee; }
 
-    .container { width:500px;height:600px;border:3px solid green;}  /* for Monaco */
+    .container { width:500px;height:600px;border:3px solid green; top:20px; left: 0px; position: absolute;}  /* for Monaco */
     #user_id { position: fixed; top: 50px; right: 0px; border: 2px dotted blue; z-index: 100; font-size: 120%; padding:3px;} /* set username */
-    #output { height:29%;font-family:'Courier New', monospace; border: 2px solid black; } /* events monitor */
+    #output { height:29%;font-family:'Courier New', monospace; border: 2px solid black; top:620px; position: absolute;} /* events monitor */
     #prev {position: fixed; top: 0px; right: 0px; border: 2px solid red; z-index: 100; font-size: 120%; padding:3px; }
     #currentsquare {position: fixed; top: 0px; right: 150px; border: 2px solid red; z-index: 100; font-size: 120%; padding:3px; }
     #online_users {border: 2px solid pink; padding:1px; text-align: center;}
     ul.tab-bar {list-style-type: none; margin: 0; padding: 0; overflow: hidden; width: 500px; border: 1px solid #000;}
     .tab {float: left; border: 1px solid #F00;}
     #new-tab {float: right;}
-    #tab-1 {z-index: 1000;}
+    #tab-0 {background-color: Yellow;}
+    #submit-file {top:0px; left:510px; position: absolute;}
+    #save-as {top:20px; left:510px; position: absolute;}
+
     
   </style>
 </head>
@@ -46,7 +49,7 @@
 
 
   <!-- Monaco -->
-  <div id="container0" class="container"></div>
+  <div id="container-0" class="container"></div>
 
   <form id="submit-file">
     <input type="file" id="file-upload" multiple size="10">
@@ -73,9 +76,16 @@
   <!--********** JS **********-->
 
   <script type='text/javascript' > 
-      var content=''; 
-      var all_content=[content];
-      var content_index=0;
+      //var content=''; 
+      //var all_content=[content];
+      //var content_index=0;
+      var content = [];
+      var lang = [];
+      var editors = [];
+      var editorID = [];
+      var filenames = [];
+      var current_ID = 0;
+
   </script>
 
   <!-- Socket.io -->
