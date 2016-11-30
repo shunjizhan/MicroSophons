@@ -1,4 +1,4 @@
-var jsCode = [
+var default_content = [
     '"use strict";',
     'function Person(age) {',
     '   if (age) {',
@@ -10,147 +10,136 @@ var jsCode = [
     '};'
 ].join('\n');
 
+var sendCursor=false;
+var sendContent = true;
+var sendTab=true;
+
 require.config({ paths: { 'vs': 'monaco-editor/min/vs' }});
 require(['vs/editor/editor.main'], editor_function);
 
 function editor_function() {
-    if(content!==''){
-        jsCode=content;
+    if(content.length===0){
+        var editor = setup_editor('container-0', default_content, 'javascript');
+        editors.push(editor);
+        editorID.push(0);
+        filenames.push('default.js');
     }
-    var editor = monaco.editor.create(document.getElementById('container'), {
-        value: jsCode,
-        language: "javascript",
-        glyphMargin: true,
-        nativeContextMenu: false
- 	 });
-
-
-	    var decorations = editor.deltaDecorations([], [
-        {
-            range: new monaco.Range(3,1,3,1),
-            options: {
-                isWholeLine: true,
-                className: 'myContentClass',
-                glyphMarginClassName: 'myGlyphMarginClass'
-            }
+    else{
+        var editor = setup_editor('container-0', content[0], lang[0]);
+        editors.push(editor);
+        sendTab = false;
+        for(var i=1;i<content.length;i++){
+            var editor_ = new_tab(filenames[i], content[i], lang[i], false, editorID[i]);
         }
-    ]);
+        sendTab = true;
 
-    var output = document.getElementById('output');
-    function showEvent(str) {
-        while(output.childNodes.length > 10) {
-            output.removeChild(output.firstChild.nextSibling.nextSibling);
-        }
-        output.appendChild(document.createTextNode(str));
-        output.appendChild(document.createElement('br'));
     }
+}
 
-
-    var sendCursor=false;
-	editor.onDidChangeCursorPosition(function(e){
-    	showEvent('cursor change - ' + e.position + e.reason);
-
-        if(e.reason!==0||sendCursor){
-            socket.emit('cursor', { 
-                id: socket.io.engine.id,
-                lineNumber: e.position.lineNumber,
-                column: e.position.column});
-            sendCursor=false;
-	    }
+    $('#new-tab').on('click', function(){
+        new_tab('', default_content, 'javascript', true, -1);
     });
 
-    var sendContent = true;
-    editor.onDidChangeModelContent(function(e){
-        if(sendContent){
-            showEvent('content change: '+ e.range + ' ' + e.rangeLength + ' ' + e.text);
-            sendCursor=true;
-            //if(e.rangeLength!==0)
-            socket.emit('content', {range: e.range, text: e.text});            
-  
+    $('.tab').on('click',function(){
+        var id = parseInt($(this).attr('id').split('-')[1]);
+        if(id!==current_ID){
+            switch_tab(id);
         }
     });
-
 
     socket.on('cursor', function(msg){
-        //var data=msg.toString().split(' ');
         showEvent('remote cursor change - ' + msg);
-        //console.log($('#'+data[0]));
-        var y = $("[lineNumber="+msg.lineNumber+"]").position().top;
-        var x = Math.round((msg.column)*7.2175-7.5965);
-        if($('#'+msg.id).length===0){
-            showEvent('creating cursor');
-            create_cursor(msg.id, y, x);
-        }
-        else{
-            $('#'+msg.id).css('top', y);
-            $('#'+msg.id).css('left', x);
-        }
         $('#'+msg.id+'label').remove();
 
-        var cur= $('<div/>',{
-               'class': 'object',
-               'id': msg.id + 'label',
-            'css':{'top': y-15, 'left': x,  'background-color': msg.color},
-               'text':msg.username
-           });
-           $(".cursors-layer").append(cur);
-           //$(".object").text(data[3]);
-           $('#'+msg.id+'label').fadeOut(1000); 
+        if(msg.editor_id===current_ID){
+            var y = $("[lineNumber="+msg.lineNumber+"]").position().top;
+            var x = Math.round((msg.column)*7.2175-7.5965); // need improvement
+            $('#'+msg.id).remove();
+            create_cursor(msg.id, y, x, msg.color);
+            $('#'+msg.id+'label').remove();
+            var cur= $('<div/>',{
+                   'class': 'object',
+                   'id': msg.id + 'label',
+                   'css':{'top': y-15, 'left': x,  'background-color': msg.color},
+                   'text': msg.username
+            });
+            $("#container-"+current_ID+" .cursors-layer").append(cur);
+            $('#'+msg.id+'label').fadeOut(1500); 
+       }
 
-    });
-
-    socket.on('current user', function(current){
-        showEvent('current user: '+ current);
     });
 
     socket.on('content', function(msg){
         showEvent('remote content change - ' + msg);
 
         sendContent=false;
-        editor.executeEdits('keyboard', [{
+        editors[msg.editor_id].executeEdits('keyboard', [{
             identifier: {major: 0, minor: 0},
             range: monaco.Range.lift(msg.range),
             text: msg.text,
             forceMoveMarkers: false,
             isAutoWhitespaceEdit: false
         }]);
-        
         sendContent=true;
-
     })
    
-	
-	socket.on('new-user', function(msg){
-		showEvent("new user: " + msg);
+    
+    socket.on('new-user', function(msg){
+        showEvent("new user: " + msg);
         create_cursor(msg, 0, 0);
-	});
+    });
 
     socket.on('user-exit', function(msg){
         $('#'+msg).remove();   //remove cursor
-	$('#'+msg+'label').remove();  //remove label
+        $('#'+msg+'label').remove();  //remove label
     });
 
     socket.on('request-content', function(msg){
-        //showEvent('content requested');
         console.log('content requested');
-        socket.emit('reply-content', editor.getValue());
+        var content=[];
+        var lang=[];
+        for(var i=0;i<editors.length;i++){
+            content.push(editors[i].getValue());
+            lang.push(editors[i].getModel().getModeId());
+        }
+        socket.emit('reply-content', {
+            content: content,
+            language: lang,
+            filenames: filenames,
+            editorID: editorID
+        });
+    });
+
+    socket.on('new-tab', function(msg){
+        console.log('new-tab '+ msg);
+        sendTab=false;
+        new_tab(msg.tab_name, msg.content, msg.language, false, msg.new_ID);
+        sendTab=true;
     });
 
     $("#file-upload").on('change', function(e){
         var file = e.target.files[0];
+        var filename = file.name;
+        var split_name = filename.split('.');
+        var extension = split_name[split_name.length-1];
+        var lang = get_type(extension);
         var reader = new FileReader();
         reader.readAsText(file);
         sendContent=false;
         reader.onload = function(f){
-            editor.setValue(f.target.result);
-            socket.emit("new-file", f.target.result);
+            new_tab(filename, f.target.result, lang, true, -1);
+            socket.emit("new-file", {
+                filename: filename,
+                content: f.target.result,
+                language: lang
+            });
         };
         sendContent=true;
     });
 
     $("#save-as").on('click',function(){
-        var file_blob = new Blob([editor.getValue()], {type:'text/plaint'});
-        var file_name = 'default.js';
+        var file_blob = new Blob([editors[current_ID].getValue()], {type:'text/plaint'});
+        var file_name = filenames[current_ID];
         var downloadLink = document.createElement("a");
         downloadLink.download = file_name;
         downloadLink.innerHTML = "Download File";
@@ -174,24 +163,182 @@ function editor_function() {
         downloadLink.click();
     });
 
-    socket.on('new-file', function(msg){
-        sendContent=false;
-        editor.setValue(msg);
-        sendContent=true;
+function showEvent(str) {
+    var output = document.getElementById('output');
+    while(output.childNodes.length > 10) {
+        output.removeChild(output.firstChild.nextSibling.nextSibling);
+    }
+    output.appendChild(document.createTextNode(str));
+    output.appendChild(document.createElement('br'));
+}
+
+function setup_editor(div, content, language){
+
+    var editor = monaco.editor.create(document.getElementById(div), {
+        value: content,
+        language: language,
+        glyphMargin: true,
+        nativeContextMenu: false
+     });
+        var decorations = editor.deltaDecorations([], [
+        {
+            range: new monaco.Range(3,1,3,1),
+            options: {
+                isWholeLine: true,
+                className: 'myContentClass',
+                glyphMarginClassName: 'myGlyphMarginClass'
+            }
+        }
+    ]);
+
+    // register two events
+    editor.onDidChangeCursorPosition(function(e){
+        showEvent('cursor change - ' + e.position + e.reason);
+
+        if(e.reason!==0||sendCursor){
+            socket.emit('cursor', { 
+                id: socket.io.engine.id,
+                editor_id: current_ID,
+                lineNumber: e.position.lineNumber,
+                column: e.position.column});
+            sendCursor=false;
+        }
     });
+    editor.onDidChangeModelContent(function(e){
+        if(sendContent){
+            showEvent('content change: '+ e.range + ' ' + e.rangeLength + ' ' + e.text);
+            sendCursor=true;
+            socket.emit('content', {
+                editor_id: current_ID, 
+                range: e.range, 
+                text: e.text});
+        }
+    });
+    
+    return editor;
+}
 
-}		
-
-function create_cursor(user_id, y, x){
-    $(".cursors-layer").append($('<div/>', {
+function create_cursor(user_id, y, x, color){
+    $("#container-"+ current_ID +" .cursors-layer").append($('<div/>', {
         'class': 'other-cursor',
         'id': user_id,
         'css': {
-            'background-color': 'Green',
+            'background-color': color,
             'top': y,
             'left': x
         }
     }));
+}
+
+function new_tab(tab_name, content, language, foreground, new_ID){
+
+    if(sendTab){
+        socket.emit('new-tab', {
+            tab_name: tab_name,
+            content: content,
+            language: language,
+            new_ID: new_ID
+        });
+    }
+
+    // create new tab
+    if(new_ID===-1){
+        new_ID = Math.max(...editorID)+1;
+    }   
+    if(tab_name===''){
+        tab_name = 'default_' + new_ID + '.js';
+    }
+
+    var new_li = $('<li/>',{
+        'id': 'tab-' + new_ID,
+        'class': 'tab',
+        'text': tab_name,
+        'css': {'background-color': foreground?'Yellow':'White'}
+    });
+
+    $('.tab-bar').append(new_li);
+
+    filenames.push(tab_name);
+
+    var new_editor_ID = 'container-' + new_ID;
+
+    // create div for new editor, and insert it
+    var new_div = $('<div/>',{
+        'id': new_editor_ID,
+        'class': 'container',
+        'css': { 'visibility': foreground?'visible':'hidden'}
+    });
+    new_div.insertAfter('#container-' + current_ID);
+
+    // setup up new editor
+    var editor = setup_editor(new_editor_ID, content, language);
+    editors.push(editor);
+    editorID.push(new_ID);
+
+    if(foreground){
+        // hide original editor
+        $('#tab-' + current_ID).css('background-color', 'White');
+        $('#container-' + current_ID).css('visibility', 'hidden');
+        current_ID = new_ID;
+    }
+
+    // register click event for the tab
+    new_li.on('click', function(){
+
+        var id = parseInt($(this).attr('id').split('-')[1]);
+        if(id!==current_ID){
+            switch_tab(id);
+        }
+    });
+
+    return editor;
+}
+
+function switch_tab(new_id){
+
+    $('#tab-' + current_ID).css('background-color', 'White');
+    $('#container-' + current_ID).css('visibility', 'hidden');
+    current_ID = new_id;
+    $('#tab-' + current_ID).css('background-color', 'Yellow');
+    $('#container-' + current_ID).css('visibility', 'visible');
+}
+
+function get_type(extension){
+    switch(extension){
+        case 'js':
+            return 'javascript';
+        case 'py':
+            return 'python';
+        case 'java':
+            return 'java';
+        case 'cpp':
+            return 'cpp';
+        case 'c':
+            return 'c';
+        case 'h':
+            return 'c';
+        case 'hpp':
+            return 'cpp';
+        case 'txt':
+            return 'plaintext';
+        case 'html':
+            return 'html';
+        case 'css':
+            return 'css';
+        case 'ts':
+            return 'typescript';
+        case 'cs':
+            return 'csharp';
+        case 'xml':
+            return 'xml';
+        case 'swift':
+            return 'swift';
+        case 'm':
+            return 'objective-c';
+        default:
+            return 'plaintext';
+
+    }
 }
 
 

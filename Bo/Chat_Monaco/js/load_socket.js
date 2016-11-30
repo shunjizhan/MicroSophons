@@ -18,7 +18,6 @@ function socket_function(){
        $('#messages').append($('<li>').text(msg));
     });
 
-
     socket.on('current user', function(current){
         var currentstring=current.toString();
         $('#currentcount').html(currentstring);
@@ -43,10 +42,11 @@ function socket_function(){
     });
 
     socket.on('reply-content', function(msg){
-        console.log('update content' + msg);
-        content = msg;
+          content=msg.content;
+          lang=msg.language;
+          editorID=msg.editorID;
+          filenames=msg.filenames;
     });
-
 
     // default name
     /*
@@ -55,10 +55,6 @@ function socket_function(){
     $('#prev').text(name);
 	socket.emit('user', {name: name, del: ""});
     */
-
-   
-    
-
 }
 
 

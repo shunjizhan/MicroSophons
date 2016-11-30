@@ -111,13 +111,13 @@ io.on('connection', function(socket) {
         socket.broadcast.emit('content', msg);
     });
 
-    socket.on('content-delete', function(msg){
-        socket.broadcast.emit('content-delete', msg);
-    });
-
     socket.on('new-file', function(msg){
         socket.broadcast.emit('new-file', msg);
     });
+
+    socket.on('new-tab', function(msg){
+        socket.broadcast.emit('new-tab', msg);
+    })
 
     socket.on('user-name',function(new_name) {
     	users.splice(users.indexOf(this_user_name), 1, new_name);
@@ -133,9 +133,7 @@ io.on('connection', function(socket) {
         io.emit('update_user', users);
         socket.broadcast.emit('user-exit', socket.id);
         users.splice(users.indexOf(this_user_name), 1);
-
-	color.splice(userID.indexOf(socket.id),1);
-	
+	    color.splice(userID.indexOf(socket.id),1);
         userID.splice(userID.indexOf(socket.id), 1);
     });
 });

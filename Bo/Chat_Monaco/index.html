@@ -15,16 +15,18 @@
     #messages li { padding: 5px 10px; }
     #messages li:nth-child(odd) { background: #eee; }
 
-    #container { width:500px;height:600px;border:3px solid green;}  /* for Monaco */
+    .container { width:500px;height:600px;border:3px solid green; top:20px; left: 0px; position: absolute;}  /* for Monaco */
     #user_id { position: fixed; top: 50px; right: 0px; border: 2px dotted blue; z-index: 100; font-size: 120%; padding:3px;} /* set username */
-    #output { height:29%;font-family:'Courier New', monospace; border: 2px solid black; } /* events monitor */
+    #output { height:29%;font-family:'Courier New', monospace; border: 2px solid black; top:620px; position: absolute;} /* events monitor */
     #prev {position: fixed; top: 0px; right: 0px; border: 2px solid red; z-index: 100; font-size: 120%; padding:3px; }
     #currentsquare {position: fixed; top: 0px; right: 150px; border: 2px solid red; z-index: 100; font-size: 120%; padding:3px; }
     #online_users {border: 2px solid pink; padding:1px; text-align: center;}
-    ul.tab {list-style-type: none; margin: 0; padding: 0; overflow: hidden; width: 500px; border: 1px solid #000;}
-    ul.tab li {float: left;}
+    ul.tab-bar {list-style-type: none; margin: 0; padding: 0; overflow: hidden; width: 500px; border: 1px solid #000;}
+    .tab {float: left; border: 1px solid #F00;}
     #new-tab {float: right;}
-
+    #tab-0 {background-color: Yellow;}
+    #submit-file {top:0px; left:510px; position: absolute;}
+    #save-as {top:20px; left:510px; position: absolute;}
     
   </style>
 </head>
@@ -39,14 +41,13 @@
     <input id="m" autocomplete="off" /><button>Send</button>
   </form>
 
-  <ul class="tab">
-    <li><a href="javascript:void(0)" class="tablinks">default.js</a></li>
+  <ul class="tab-bar">
+    <li id="tab-0" class="tab">default.js</li>
     <li id="new-tab"><button type="button">+</button></li>
   </ul>
 
-
   <!-- Monaco -->
-  <div id="container" class="editor"></div>
+  <div id="container-0" class="container"></div>
 
   <form id="submit-file">
     <input type="file" id="file-upload" multiple size="10">
@@ -69,11 +70,15 @@
     <p id="prev">ShaB</p>
   </div>
 
-
   <!--********** JS **********-->
-
+  <!--Global Variables-->
   <script type='text/javascript' > 
-      var content=''; 
+      var content = [];
+      var lang = [];
+      var editors = [];
+      var editorID = [];
+      var filenames = [];
+      var current_ID = 0;
   </script>
 
   <!-- Socket.io -->
@@ -86,7 +91,6 @@
   <!-- Monaco -->
   <script src="monaco-editor/min/vs/loader.js"></script>
 	<script src="js/create_Monaco.js"></script>
-
 
 </body>
 
