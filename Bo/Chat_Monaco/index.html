@@ -17,7 +17,7 @@
 
     .container { width:500px;height:600px;border:3px solid black; top:60px; left: 200px; position: absolute; }  /* for Monaco */
     #user_id { position: fixed; top: 50px; right: 0px; border: 2px dotted blue; z-index: 100; font-size: 120%; padding:3px; width: 170px; border-radius: 15%; padding: 1%; max-height: 550px; overflow: scroll;} /* set username */
-    #output { height:29%;font-family:'Courier New', monospace; border: 2px solid black; top:620px; position: absolute;} /* events monitor */
+    #output { height:29%;font-family:'Courier New', monospace; border: 2px solid black; top:620px; position: absolute; display: none;} /* events monitor */
     #prev {position: fixed; top: 0px; right: 0px; border: 2px solid red; z-index: 100; font-size: 120%; padding:3px; }
     #currentsquare {position: fixed; top: 0px; right: 80px; border: 2px solid red; z-index: 100; font-size: 120%; padding:3px; }
     #online_users {border: 2px solid pink; padding:1px; text-align: center; width: 150px;}
@@ -52,11 +52,11 @@
       <li>
         <button id="save-as" type="button">Save As</button>
       </li>
-<!-- 
+
   <div id="output">Last 3 events:<br/></div>
 
     </ul>
-  </div> -->
+  </div>
 
   <div id="container-0" class="container"></div>
 
