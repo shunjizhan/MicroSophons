@@ -77,7 +77,7 @@ io.on('connection', function(socket) {
     var current = count;
     io.emit('current user',current);
 
-    var this_user_name = "ShaB" + Math.floor(Math.random() * 20);
+    var this_user_name = "User" + Math.floor(Math.random() * 99);
     users.push(this_user_name);
     userID.push(socket.id);
 

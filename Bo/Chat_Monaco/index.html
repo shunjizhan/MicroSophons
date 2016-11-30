@@ -5,36 +5,65 @@
   <link href='./js/cursor.css' type='text/css' rel='stylesheet'/>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font: 13px Helvetica, Arial; }
+    body { font: 13px Helvetica, Arial; background: #DDDDEE}
 
-    form#send { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-    form#send input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-    form#send button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+    form#send { background: #000; padding: 3px; position: fixed;  right: 130px; width: 300px; top: 660px;}
+    form#send input { border: 0; padding: 10px; width: 210px; margin-right: .5%; }
+    form#send button { width: 82px; background: rgb(130, 224, 255); border: none; padding: 10px; }
 
-    #messages { list-style-type: none; margin: 0; padding: 0; position: fixed; top: 200px; right: 0px; border: 2px dotted orange; z-index: 100; overflow: scroll; height: 300px; }
+    #messages { list-style-type: none; margin: 0; padding: 0; position: fixed; top: 5px; right: 200px; border: 2px dotted orange; z-index: 100; overflow: scroll; height: 590px; width: 300px; background: #EFE}
     #messages li { padding: 5px 10px; }
-    #messages li:nth-child(odd) { background: #eee; }
+    #messages li:nth-child(odd) { background: white; }
 
-    .container { width:500px;height:600px;border:3px solid green; top:20px; left: 0px; position: absolute;}  /* for Monaco */
-    #user_id { position: fixed; top: 50px; right: 0px; border: 2px dotted blue; z-index: 100; font-size: 120%; padding:3px;} /* set username */
+    .container { width:500px;height:600px;border:3px solid black; top:60px; left: 200px; position: absolute; }  /* for Monaco */
+    #user_id { position: fixed; top: 50px; right: 0px; border: 2px dotted blue; z-index: 100; font-size: 120%; padding:3px; width: 170px; border-radius: 15%; padding: 1%; max-height: 550px; overflow: scroll;} /* set username */
     #output { height:29%;font-family:'Courier New', monospace; border: 2px solid black; top:620px; position: absolute;} /* events monitor */
     #prev {position: fixed; top: 0px; right: 0px; border: 2px solid red; z-index: 100; font-size: 120%; padding:3px; }
-    #currentsquare {position: fixed; top: 0px; right: 150px; border: 2px solid red; z-index: 100; font-size: 120%; padding:3px; }
-    #online_users {border: 2px solid pink; padding:1px; text-align: center;}
-    ul.tab-bar {list-style-type: none; margin: 0; padding: 0; overflow: hidden; width: 500px; border: 1px solid #000;}
+    #currentsquare {position: fixed; top: 0px; right: 80px; border: 2px solid red; z-index: 100; font-size: 120%; padding:3px; }
+    #online_users {border: 2px solid pink; padding:1px; text-align: center; width: 150px;}
+
+
+    #nav { position: fixed; left: 0; top: 0; width: 100; height: 600;}
+    .tab-bar {list-style-type: none; margin-left: 0; padding: 0; overflow: hidden; width: 500px; top:20px; left:260px; border: 1px solid #000; position: absolute;}
     .tab {float: left; border: 1px solid #F00;}
     #new-tab {float: right;}
     #tab-0 {background-color: Yellow;}
-    #submit-file {top:0px; left:510px; position: absolute;}
-    #save-as {top:20px; left:510px; position: absolute;}
+
+    
+    #file-upload {font-size: 200%; width: 100px;}
+    #save-as {font-size: 200%;}
+    
     
   </style>
 </head>
 
 <body>
+
+
+  <div id='nav'>
+
+    <h1>Microsophons</h1>
+    <ul id='list'>
+      <li>
+        <form id="submit-file">
+          <input type="file" id="file-upload" multiple size="10">
+        </form>
+      </li>
+      <li>
+        <button id="save-as" type="button">Save As</button>
+      </li>
+<!-- 
+  <div id="output">Last 3 events:<br/></div>
+
+    </ul>
+  </div> -->
+
+  <div id="container-0" class="container"></div>
+
+
   <!-- Socket.io -->
   <ul id="messages">
-    <li>This is the first line of Socket.io</li>
+    <li>Let's chat!</li>
   </ul>
 
   <form id="send" action="">
@@ -47,14 +76,11 @@
   </ul>
 
   <!-- Monaco -->
-  <div id="container-0" class="container"></div>
 
-  <form id="submit-file">
-    <input type="file" id="file-upload" multiple size="10">
-  </form>
-  <button id="save-as" type="button">Save As</button>
 
-  <div id="output">Last 3 events:<br/></div>
+
+
+
 
   <!-- Functionaly -->
   <div id="user_id">
@@ -62,12 +88,12 @@
       <input id="user_name" autocomplete="ShaB" /><button>Set Name</button>
     </form>
 
-    <p>My Name: <span id="name">Guess which ShaB is you</span> </p>
+    <p>My Name: <span id="name">User</span> </p>
 
     <ul id="online_users"> </ul> 
 
     <p id="currentsquare">Current: <span id="currentcount">0</span></p>
-    <p id="prev">ShaB</p>
+    <p id="prev">User</p>
   </div>
 
   <!--********** JS **********-->
