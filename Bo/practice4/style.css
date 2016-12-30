@@ -1,0 +1,58 @@
+body {
+	background-color: lightyellow;
+}
+
+#container {
+	border: 4px double green;
+	height: 420px;
+	width: 420px;
+	position: absolute;
+}
+
+.snake-node {
+	background-color: red;
+	height: 12px;
+	width: 12px;
+	position: absolute;
+	z-index: 10;
+}
+
+.connector-v {
+	background-color: orange;
+	height: 8px;
+	width: 12px;
+	position: absolute;
+	z-index: 10;
+}
+
+.connector-h {
+	background-color: orange;
+	height: 12px;
+	width: 8px;
+	position: absolute;
+	z-index: 10;
+}
+
+#start {
+	background-color: red;
+	color: yellow;
+	font-size: 20;
+	top: 190px;
+	left: 180px;
+	padding: 5px;
+	position: absolute;
+	border: 1px solid black;
+	z-index: 1000;
+}
+
+#food {
+	background-color: blue;
+	top: 404px;
+	left: 404px;
+	position: absolute;
+	border-radius: 6px;
+	width: 12px;
+	height: 12px;
+	z-index: 100;
+
+}
