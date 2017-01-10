@@ -119,6 +119,10 @@ io.on('connection', function(socket) {
         socket.broadcast.emit('new-tab', msg);
     })
 
+    socket.on('rename', function(msg){
+        socket.broadcast.emit('rename', msg);
+    });
+
     socket.on('user-name',function(new_name) {
     	users.splice(users.indexOf(this_user_name), 1, new_name);
         this_user_name = new_name;

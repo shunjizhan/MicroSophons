@@ -163,6 +163,48 @@ function editor_function() {
         downloadLink.click();
     });
 
+
+    $("#rename").click(function(){
+        $("#cancel").show();
+        $("#ins").show();
+        $("#cancel").click(function(){
+            $("#rename-form").hide();
+            $("#cancel").hide();
+            $("#ins").hide();
+
+        });
+        $(".tab").off("click");
+        $(".tab").click(function(){
+            var id = parseInt($(this).attr('id').split('-')[1]);
+            $("#rename-form").show();
+            $("#ins").text("You have selected file: "+filenames[id]);
+            $("#rename-input").val(filenames[id]);
+
+            $("#rename-form").submit(function(){
+                if($("#rename-input").val()!==''){
+                    filenames[id]=$("#rename-input").val();
+                    $('#tab-'+id).text($("#rename-input").val());
+                }
+                socket.emit("rename", {
+                    tabID: id,
+                    filename: $("#rename-input").val()
+                });
+                $("#rename-form").hide();
+                $("#cancel").hide();
+                $("#ins").hide();
+                $(".tab").off("click");
+                $(".tab").click(click_tab);
+                return false;
+            });
+        });
+    });
+
+    socket.on("rename", function(msg){
+        filenames[msg.tabID]=msg.filename;
+        $('#tab-'+msg.tabID).text(msg.filename);
+    });
+    
+
 function showEvent(str) {
     var output = document.getElementById('output');
     while(output.childNodes.length > 10) {
@@ -283,15 +325,16 @@ function new_tab(tab_name, content, language, foreground, new_ID){
     }
 
     // register click event for the tab
-    new_li.on('click', function(){
-
-        var id = parseInt($(this).attr('id').split('-')[1]);
-        if(id!==current_ID){
-            switch_tab(id);
-        }
-    });
+    new_li.on('click', click_tab);
 
     return editor;
+}
+
+function click_tab(){
+    var id = parseInt($(this).attr('id').split('-')[1]);
+    if(id!==current_ID){
+        switch_tab(id);
+    }
 }
 
 function switch_tab(new_id){
