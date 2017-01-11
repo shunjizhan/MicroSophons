@@ -17,7 +17,7 @@ require(['vs/editor/editor.main'], function() {
         language: "javascript",
         glyphMargin: true,
         nativeContextMenu: false,
-        theme: "vs-dark",
+        // theme: "vs-dark",
   });
 
     // var jsCode_ = 'cooooooooooooool';
@@ -136,19 +136,19 @@ require(['vs/editor/editor.main'], function() {
 	// 	var txtAfterInsert = insertCtt.substr(0, e.position.column) + msg + insertCtt.substr(e.position.column);
 	// 	jsCodePrime[e.position.lineNumber-1] = txtAfterInsert;
 	// 	// showEvent('cool' + jsCodePrime[e.position.lineNumber-1]);
-	// 	// var x = .substr(0, e.position.column) + "value" + str.substr(e.position.column); 
-	// 	jsCode = jsCodePrime.join('\n'); 
+	// 	// var x = .substr(0, e.position.column) + "value" + str.substr(e.position.column);
+	// 	jsCode = jsCodePrime.join('\n');
 
 	// 	// showEvent('biebiue ' + y);
 	// 	editor.setValue(jsCode);
 	// 	// editor.setPosition(e.position.lineNumber, e.position.column+1);
 	// 	// exit(1);
  //    });
-    
+
 	var sendCursor=false;
 
 	editor.onDidChangeCursorPosition(function(e){
-		
+
     	showEvent('cursor change - ' + e.position );
 
     	var s = editor.getModel().getWordAtPosition(e.position).word;
@@ -156,7 +156,7 @@ require(['vs/editor/editor.main'], function() {
     	var sr = editor.getModel().getValueInRange({startLineNumber: e.position.lineNumber, startColumn: e.position.column-1, endLineNumber: e.position.lineNumber, endColumn: e.position.column});
     	// var sr = editor.getModel().getValueInRange(monaco.Range(e.position.column, e.position.lineNumber, e.position.column, e.position.lineNumber));
 		if(e.reason!==0||sendCursor){
-            socket.emit('cursor', { 
+            socket.emit('cursor', {
                 id: socket.io.engine.id,
                 lineNumber: e.position.lineNumber,
                 column: e.position.column});
@@ -206,7 +206,7 @@ require(['vs/editor/editor.main'], function() {
            });
            $(".cursors-layer").append(cur);
            //$(".object").text(data[3]);
-           $('#'+msg.id+'label').fadeOut(1000); 
+           $('#'+msg.id+'label').fadeOut(1000);
     });
 
 	editor.onMouseUp(function(e){
@@ -217,7 +217,7 @@ require(['vs/editor/editor.main'], function() {
                'css':{'top':$(".cursor").position().top-15, 'left':$(".cursor").position().left}
            });
            $(".cursors-layer").append(cur);
-         
+
            $(".object").text(str);
            $(".object").fadeOut(1000); //need to change the value to adjust the blinking name
      });
@@ -249,7 +249,7 @@ require(['vs/editor/editor.main'], function() {
         sendContent=true;
     });
 
-    
+
     socket.on('request-content', function(msg){
         //showEvent('content requested');
         console.log('content requested');
@@ -304,12 +304,12 @@ require(['vs/editor/editor.main'], function() {
         showEvent('current user: '+ current);
     });
 
-	
+
 	socket.on('new-user', function(msg){
 		showEvent("new user: " + msg);
         create_cursor(msg, 0, 0);
 	});
-    
+
     socket.on('user-exit', function(msg){
         $('#'+msg).remove();   //remove cursor
 	$('#'+msg+'label').remove();  //remove label

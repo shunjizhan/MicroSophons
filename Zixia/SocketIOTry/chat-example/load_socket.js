@@ -3,7 +3,7 @@ $('form').submit(function(){
          var id = socket.io.engine.id;
          msg =  id + ": " + $('#m').val();
          console.log(msg)
-         socket.emit('chat message', msg); 
+         socket.emit('chat message', msg);
          $('#m').val('');
          return false;
          });
@@ -17,11 +17,11 @@ socket.on('chat message', function(msg){
     });
 
     // when there is user name change, emit user event to server
-    $('form#user_form').submit(function(){  
+    $('div#user_form').submit(function(){
        var name = $('#user_name').val();
        $('#user_name').val('');
        $('#my_name').html(name);    // set user name
-       socket.emit('user', name); 
+       socket.emit('user', name);
 
        return false;
     });

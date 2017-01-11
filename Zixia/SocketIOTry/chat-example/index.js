@@ -9,25 +9,25 @@ var userID = [];
 var users = [];
 var color = [];
 ////database connection copied from bo's branch
-//    var Connection = require('tedious').Connection;  
-//    var config = {  
-//        userName: 'ucsbadmin@microsophon',  
-//        password: 'Ucsb123456',  
-//        server:'microsophon.database.windows.net',  
-//        // If you are on Microsoft Azure, you need this:  
-//        options: {encrypt: true, database: 'microsophon'}  
-//    }; 
-//    var connection = new Connection(config);  
-//    connection.on('connect', function(err) {  
+//    var Connection = require('tedious').Connection;
+//    var config = {
+//        userName: 'ucsbadmin@microsophon',
+//        password: 'Ucsb123456',
+//        server:'microsophon.database.windows.net',
+//        // If you are on Microsoft Azure, you need this:
+//        options: {encrypt: true, database: 'microsophon'}
+//    };
+//    var connection = new Connection(config);
+//    connection.on('connect', function(err) {
 //        // If no error, then good to proceed.
 //        //if (err) return console.error(err);
-//        console.log("Connected"); 
-//        //executeStatement();  
+//        console.log("Connected");
+//        //executeStatement();
 //    });
 
 app.use(express.static('.'));
 app.get('/', function(req, res){
-  res.sendfile('index.html');
+  res.sendfile('index_.html');
 });
 
 io.on('connection', function(socket){
@@ -39,20 +39,20 @@ io.on('connection', function(socket){
     users.push(this_user_name);
     userID.push(socket.id);
 
-    
+
     color.push("rgb("+Math.floor(Math.random()*191+64)+","+Math.floor(Math.random()*191+64)+","+Math.floor(Math.random()*191+64)+")");
-    
+
     console.log((x).toString()+'th user connected');
 
     io.emit('update_user', users);
     console.log(users);
 
-    socket.broadcast.emit('new-user', socket.id);      
+    socket.broadcast.emit('new-user', socket.id);
 
     socket.broadcast.to(userID[0]).emit('request-content', socket.id);
 
     socket.on('disconnect', function(){
-    
+
     console.log('disconnected:' + socket.id + ' ' + this_user_name);
         x--;
         var current=x;
@@ -62,7 +62,7 @@ io.on('connection', function(socket){
         users.splice(users.indexOf(this_user_name), 1);
 
 	    color.splice(userID.indexOf(socket.id),1);
-	
+
         userID.splice(userID.indexOf(socket.id), 1);
   });
 
@@ -86,20 +86,20 @@ io.on('connection', function(socket){
   });
 
   socket.on('reply-content', function(msg){
-        io.emit('reply-content', msg); 
+        io.emit('reply-content', msg);
   });
-    
+
   socket.on('new-file', function(msg){
         socket.broadcast.emit('new-file', msg);
   });
-    
-                                     
+
+
   //user processing
   socket.on('user-name',function(new_name) {
     	users.splice(users.indexOf(this_user_name), 1, new_name);
         this_user_name = new_name;
         io.emit('update_user', users);
-    });                                     
+    });
 });
 
 http.listen(3000, function(){
