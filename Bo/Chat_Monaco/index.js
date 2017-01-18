@@ -66,7 +66,7 @@ app.get('/', function(req, res) {
     res.sendfile('index.html');
 });
 
-http.listen(8080, function(){
+http.listen(80, function(){
     console.log('listening on *:' + http.address().port);
 });
 
