@@ -15,7 +15,7 @@
     #messages li { padding: 5px 10px; }
     #messages li:nth-child(odd) { background: white; }
 
-    .container { width:500px;height:600px;border:3px solid #ACA; top:60px; position: absolute; }  /* for Monaco */
+    .container { width:100%; height:600px;border:3px solid #ACA; top:60px; position: absolute; }  /* for Monaco */
     #user_id { position: fixed; top: 0px; right: 0; border: 2px dotted blue; z-index: 100; padding:3px; width: 300px; border-radius: 2px; padding: 5px; } /* set username */
 
     #user_name { width: 80px; }
@@ -25,14 +25,11 @@
     /*#currentsquare {position: absolute; top: 0px; right: 80px; border: 2px solid red; z-index: 100; padding:3px; }*/
     #online_users {border: 2px solid pink; padding:1px; text-align: center; width: 150px; max-height: 550px; overflow: scroll; display: none;}
 
-    #center { left: 205px; position: absolute; width:500px; z-index: 1000;}
+    #center { position: absolute; left: 15%; min-width:60%; }
 
 
-    #chat-box { right: 0;  background-color: #0A0; width: 400px; position: fixed; z-index: 50;}
+    #chat-box { right: 0;  background-color: #0A0; width: 25%; position: absolute; border: 3px solid yellow; }
 
-
-
-    #nav { position: fixed; left: 0; top: 0; width: 100; height: 100%; background-color: #0A0; padding: 0px 15px;}
     #list { list-style: none; }
     .tab-bar {list-style-type: none; margin-left: 0; padding: 0; overflow: hidden; width: 500px; top:20px; border: 1px solid #BBB; position: absolute;}
     .tab {float: left; border: 1px solid #383; padding-left: 5px; padding-right: 5px; padding-top: 3px;}
@@ -43,28 +40,43 @@
     #file-upload {font-size: 18px; width: 95px;}
     #save-as {font-size: 18px;}
     
+
+    #left_container {
+      position: absolute;
+      height: 100%;
+      width: 15%;
+      border: 1px solid blue;
+      background-color: #392F2F;
+    }
+    #left_container a {
+      display: block;
+      height: 30px;
+      text-align: center;
+      font-size: 150%;
+      color: white;
+      padding: 2%;
+      text-decoration: none;
+    }
+    #left_container a:hover { background-color: #ECF0F1; color: #28B463; }
+    #left_container a:visited { background-color: #ECF0F1; color: white; }
+
+
+
+
     
   </style>
 </head>
 
 <body>
 
+    <div id="left_container">
+    <h1>Microsophons</h1>
 
-  <div id='nav'>
-
-    <h1 style="color: #FFF; padding: 15px 0px;">Microsophons</h1>
     <ul id='list'>
-      <li>
-        <form id="submit-file">
-          <input type="file" id="file-upload" multiple size="10">
-        </form>
-      </li>
-      <li>
-        <button id="save-as" type="button">Save As</button>
-      </li>
-
-      <li><button id="gDrive-save" title="Google Drive" style="font-size: 18px;"><img src="./images/driveicon.png" alt="Google Drive" title="Google Drive">Save</button></li>
-      <li><button id="gDrive-open" title="Google Drive" style="font-size: 18px;"><img src="./images/driveicon.png" alt="Google Drive" title="Google Drive">Open</button></li>
+      <li><form id="submit-file"><input type="file" name="file-upload"></form></li> 
+      <li><a id="save-as" href="#">Save As</a></li>
+      <li><a id="gDrive-save" href="#"><img src="./images/driveicon.png" alt="Google Drive">Save</a></li>
+      <li><a id="gDrive-open" href="#"><img src="./images/driveicon.png" alt="Google Drive">Open</a></li>
 
       <li><button id="rename" style="font-size: 18px;">Rename</button>
       <div id="ins" style="font-size: 10px; display: none;">Click the tab you want to rename</div>
@@ -74,11 +86,15 @@
       </form>
       <button id="cancel" style="font-size: 18px; display: none;">Cancel</button></li>
 
-      <div id="output">Last 3 events:<br/></div>
+      <li>aaaaa</li>
+      <li>bbbbb</li>
+      <li>ccccc</li>
+      <li>ddddd</li>
+      <li>eeeee</li>
 
     </ul>
-
-  </div>
+    <div id="output">Last 3 events:<br/></div>
+    </div>
 
 
   <div id="center">
