@@ -23,7 +23,7 @@
     #output { height:29%;font-family:'Courier New', monospace; border: 2px solid black; top:620px; position: absolute; display: none;} /* events monitor */
     #prev {position: fixed; top: 0px; right: 0px; border: 2px solid red; z-index: 100; padding:3px; display: none;}
     /*#currentsquare {position: absolute; top: 0px; right: 80px; border: 2px solid red; z-index: 100; padding:3px; }*/
-    #online_users {border: 2px solid pink; padding:1px; text-align: center; width: 150px; max-height: 550px; overflow: scroll; display: none;}
+    #online_users {border: 2px solid pink; padding:1px; text-align: center; width: 150px; max-height: 550px; overflow: scroll; top: 0px; left: 150px; background-color: #EFE; position: absolute; display: none;}
 
     #center { left: 205px; position: absolute; width:500px; z-index: 1000;}
 
@@ -38,6 +38,7 @@
     .tab {float: left; border: 1px solid #383; padding-left: 5px; padding-right: 5px; padding-top: 3px;}
     #new-tab {float: right;}
     #tab-0 {background-color: #BFA;}
+    #user-button {border: 1px solid darkgreen; width: 120px; border-radius: 3px;}
 
     
     #file-upload {font-size: 18px; width: 95px;}
@@ -109,14 +110,11 @@
       <form id="user_form" action="">
         <input id="user_name" autocomplete="User" /><button>Set Name</button>
       </form>
-      <div id="user-button">Expand User Info</div>
+      <div id="user-button">+ User Info</div>
       <ul id="online_users"> </ul> 
       <p id="prev">User</p>
 
     </div>
-
-
-
 
   </div>
 

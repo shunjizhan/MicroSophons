@@ -36,174 +36,180 @@ function editor_function() {
     }
 }
 
-    $('#new-tab').on('click', function(){
-        new_tab('', default_content, 'javascript', true, -1);
-    });
+$('#new-tab').on('click', function(){
+    new_tab('', default_content, 'javascript', true, -1);
+});
 
-    $('.tab').on('click',function(){
-        var id = parseInt($(this).attr('id').split('-')[1]);
-        if(id!==current_ID){
-            switch_tab(id);
-        }
-    });
+$('.tab').on('click',function(){
+    var id = parseInt($(this).attr('id').split('-')[1]);
+    if(id!==current_ID){
+        switch_tab(id);
+    }
+});
 
-    socket.on('cursor', function(msg){
-        showEvent('remote cursor change - ' + msg);
+socket.on('cursor', function(msg){
+    showEvent('remote cursor change - ' + msg);
+    $('#'+msg.id+'label').remove();
+
+    if(msg.editor_id===current_ID){
+        var y = $("[lineNumber="+msg.lineNumber+"]").position().top;
+        var x = Math.round((msg.column)*7.2175-7.5965); // need improvement
+        $('#'+msg.id).remove();
+        create_cursor(msg.id, y, x, msg.color);
         $('#'+msg.id+'label').remove();
-
-        if(msg.editor_id===current_ID){
-            var y = $("[lineNumber="+msg.lineNumber+"]").position().top;
-            var x = Math.round((msg.column)*7.2175-7.5965); // need improvement
-            $('#'+msg.id).remove();
-            create_cursor(msg.id, y, x, msg.color);
-            $('#'+msg.id+'label').remove();
-            var cur= $('<div/>',{
-                   'class': 'object',
-                   'id': msg.id + 'label',
-                   'css':{'top': y-15, 'left': x,  'background-color': msg.color},
-                   'text': msg.username
-            });
-            $("#container-"+current_ID+" .cursors-layer").append(cur);
-            $('#'+msg.id+'label').fadeOut(1500); 
-       }
-
-    });
-
-    socket.on('content', function(msg){
-        showEvent('remote content change - ' + msg);
-
-        sendContent=false;
-        editors[msg.editor_id].executeEdits('keyboard', [{
-            identifier: {major: 0, minor: 0},
-            range: monaco.Range.lift(msg.range),
-            text: msg.text,
-            forceMoveMarkers: false,
-            isAutoWhitespaceEdit: false
-        }]);
-        sendContent=true;
-    })
-   
-    
-    socket.on('new-user', function(msg){
-        showEvent("new user: " + msg);
-        create_cursor(msg, 0, 0);
-    });
-
-    socket.on('user-exit', function(msg){
-        $('#'+msg).remove();   //remove cursor
-        $('#'+msg+'label').remove();  //remove label
-    });
-
-    socket.on('request-content', function(msg){
-        console.log('content requested');
-        var content=[];
-        var lang=[];
-        for(var i=0;i<editors.length;i++){
-            content.push(editors[i].getValue());
-            lang.push(editors[i].getModel().getModeId());
-        }
-        socket.emit('reply-content', {
-            content: content,
-            language: lang,
-            filenames: filenames,
-            editorID: editorID
+        var cur= $('<div/>',{
+               'class': 'object',
+               'id': msg.id + 'label',
+               'css':{'top': y-15, 'left': x,  'background-color': msg.color},
+               'text': msg.username
         });
-    });
+        $("#container-"+current_ID+" .cursors-layer").append(cur);
+        $('#'+msg.id+'label').fadeOut(1500); 
+   }
 
-    socket.on('new-tab', function(msg){
-        console.log('new-tab '+ msg);
-        sendTab=false;
-        new_tab(msg.tab_name, msg.content, msg.language, false, msg.new_ID);
-        sendTab=true;
-    });
+});
 
-    $("#file-upload").on('change', function(e){
-        var file = e.target.files[0];
-        var filename = file.name;
-        var split_name = filename.split('.');
-        var extension = split_name[split_name.length-1];
-        var lang = get_type(extension);
-        var reader = new FileReader();
-        reader.readAsText(file);
-        sendContent=false;
-        reader.onload = function(f){
-            new_tab(filename, f.target.result, lang, true, -1);
-            socket.emit("new-file", {
-                filename: filename,
-                content: f.target.result,
-                language: lang
+socket.on('content', function(msg){
+    showEvent('remote content change - ' + msg);
+
+    sendContent=false;
+    editors[msg.editor_id].executeEdits('keyboard', [{
+        identifier: {major: 0, minor: 0},
+        range: monaco.Range.lift(msg.range),
+        text: msg.text,
+        forceMoveMarkers: false,
+        isAutoWhitespaceEdit: false
+    }]);
+    sendContent=true;
+})
+
+
+socket.on('new-user', function(msg){
+    showEvent("new user: " + msg);
+    create_cursor(msg, 0, 0);
+});
+
+socket.on('user-exit', function(msg){
+    $('#'+msg).remove();   //remove cursor
+    $('#'+msg+'label').remove();  //remove label
+});
+
+socket.on('request-content', function(msg){
+    console.log('content requested');
+    var content=[];
+    var lang=[];
+    for(var i=0;i<editors.length;i++){
+        content.push(editors[i].getValue());
+        lang.push(editors[i].getModel().getModeId());
+    }
+    socket.emit('reply-content', {
+        content: content,
+        language: lang,
+        filenames: filenames,
+        editorID: editorID
+    });
+});
+
+socket.on('new-tab', function(msg){
+    console.log('new-tab '+ msg);
+    sendTab=false;
+    new_tab(msg.tab_name, msg.content, msg.language, false, msg.new_ID);
+    sendTab=true;
+});
+
+$("#file-upload").on('change', function(e){
+    var file = e.target.files[0];
+    var filename = file.name;
+    var split_name = filename.split('.');
+    var extension = split_name[split_name.length-1];
+    var lang = get_type(extension);
+    var reader = new FileReader();
+    reader.readAsText(file);
+    sendContent=false;
+    reader.onload = function(f){
+        new_tab(filename, f.target.result, lang, true, -1);
+        socket.emit("new-file", {
+            filename: filename,
+            content: f.target.result,
+            language: lang
+        });
+    };
+    sendContent=true;
+});
+
+$("#save-as").on('click',function(){
+    var file_blob = new Blob([editors[current_ID].getValue()], {type:'text/plaint'});
+    var file_name = filenames[current_ID];
+    var downloadLink = document.createElement("a");
+    downloadLink.download = file_name;
+    downloadLink.innerHTML = "Download File";
+    downloadLink.setAttribute("target", "_blank");
+    if (window.webkitURL != null)
+    {
+        // Chrome allows the link to be clicked
+        // without actually adding it to the DOM.
+        downloadLink.href = window.webkitURL.createObjectURL(file_blob);
+    }
+    else
+    {
+        // Firefox requires the link to be added to the DOM
+        // before it can be clicked.
+        downloadLink.href = window.URL.createObjectURL(file_blob);
+        downloadLink.onclick = destroyClickedElement;
+        downloadLink.style.display = "none";
+        document.body.appendChild(downloadLink);
+    }
+
+    downloadLink.click();
+});
+
+
+$("#rename").click(function(){
+    $("#cancel").show();
+    $("#ins").show();
+    $("#cancel").click(function(){
+        $("#rename-form").hide();
+        $("#cancel").hide();
+        $("#ins").hide();
+
+    });
+    $(".tab").off("click");
+    $(".tab").click(function(){
+        var id = parseInt($(this).attr('id').split('-')[1]);
+        $("#rename-form").show();
+        $("#ins").text("You have selected file: "+filenames[id]);
+        $("#rename-input").val(filenames[id]);
+
+        $("#rename-form").submit(function(){
+            if($("#rename-input").val()!==''){
+                filenames[id]=$("#rename-input").val();
+                $('#tab-'+id).text($("#rename-input").val());
+            }
+            socket.emit("rename", {
+                tabID: id,
+                filename: $("#rename-input").val()
             });
-        };
-        sendContent=true;
-    });
-
-    $("#save-as").on('click',function(){
-        var file_blob = new Blob([editors[current_ID].getValue()], {type:'text/plaint'});
-        var file_name = filenames[current_ID];
-        var downloadLink = document.createElement("a");
-        downloadLink.download = file_name;
-        downloadLink.innerHTML = "Download File";
-        downloadLink.setAttribute("target", "_blank");
-        if (window.webkitURL != null)
-        {
-            // Chrome allows the link to be clicked
-            // without actually adding it to the DOM.
-            downloadLink.href = window.webkitURL.createObjectURL(file_blob);
-        }
-        else
-        {
-            // Firefox requires the link to be added to the DOM
-            // before it can be clicked.
-            downloadLink.href = window.URL.createObjectURL(file_blob);
-            downloadLink.onclick = destroyClickedElement;
-            downloadLink.style.display = "none";
-            document.body.appendChild(downloadLink);
-        }
-
-        downloadLink.click();
-    });
-
-
-    $("#rename").click(function(){
-        $("#cancel").show();
-        $("#ins").show();
-        $("#cancel").click(function(){
             $("#rename-form").hide();
             $("#cancel").hide();
             $("#ins").hide();
-
-        });
-        $(".tab").off("click");
-        $(".tab").click(function(){
-            var id = parseInt($(this).attr('id').split('-')[1]);
-            $("#rename-form").show();
-            $("#ins").text("You have selected file: "+filenames[id]);
-            $("#rename-input").val(filenames[id]);
-
-            $("#rename-form").submit(function(){
-                if($("#rename-input").val()!==''){
-                    filenames[id]=$("#rename-input").val();
-                    $('#tab-'+id).text($("#rename-input").val());
-                }
-                socket.emit("rename", {
-                    tabID: id,
-                    filename: $("#rename-input").val()
-                });
-                $("#rename-form").hide();
-                $("#cancel").hide();
-                $("#ins").hide();
-                $(".tab").off("click");
-                $(".tab").click(click_tab);
-                return false;
-            });
+            $(".tab").off("click");
+            $(".tab").click(click_tab);
+            return false;
         });
     });
+});
 
-    socket.on("rename", function(msg){
-        filenames[msg.tabID]=msg.filename;
-        $('#tab-'+msg.tabID).text(msg.filename);
-    });
-    
+socket.on("rename", function(msg){
+    filenames[msg.tabID]=msg.filename;
+    $('#tab-'+msg.tabID).text(msg.filename);
+});
+
+$('#user-button').hover(function(){
+    $("#online_users").slideDown(200);
+},function(){
+    $("#online_users").slideUp(200);
+});
+
 
 function showEvent(str) {
     var output = document.getElementById('output');
