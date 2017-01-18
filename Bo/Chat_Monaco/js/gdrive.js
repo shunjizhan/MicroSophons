@@ -8,11 +8,11 @@ var SCOPES = ['https://www.googleapis.com/auth/drive.file'];
 
 
 
-$('#gDrive-save').click(function() {
+$('#gDrive-save').click(function(e) {
 	handleAuthClick(event,'save');
 });
 
-$('#gDrive-open').click(function() {
+$('#gDrive-open').click(function(e) {
 	handleAuthClick(event,'open');
 });
 
