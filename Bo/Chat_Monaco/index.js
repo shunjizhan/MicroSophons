@@ -18,21 +18,21 @@ var users = [];
 var color = [];
 
 //database connection
-    var Connection = require('tedious').Connection;  
-    var config = {  
-        userName: 'ucsbadmin@microsophon',  
-        password: 'Ucsb123456',  
-        server:'microsophon.database.windows.net',  
-        // If you are on Microsoft Azure, you need this:  
-        options: {encrypt: true, database: 'microsophon'}  
-    }; 
-    var connection = new Connection(config);  
-    connection.on('connect', function(err) {  
-        // If no error, then good to proceed.
-        //if (err) return console.error(err);
-        console.log("Connected"); 
-        //executeStatement();  
-    });
+    // var Connection = require('tedious').Connection;  
+    // var config = {  
+    //     userName: 'ucsbadmin@microsophon',  
+    //     password: 'Ucsb123456',  
+    //     server:'microsophon.database.windows.net',  
+    //     // If you are on Microsoft Azure, you need this:  
+    //     options: {encrypt: true, database: 'microsophon'}  
+    // }; 
+    // var connection = new Connection(config);  
+    // connection.on('connect', function(err) {  
+    //     // If no error, then good to proceed.
+    //     //if (err) return console.error(err);
+    //     console.log("Connected"); 
+    //     //executeStatement();  
+    // });
     // var Request = require('tedious').Request;  
     // var TYPES = require('tedious').TYPES;  
   
@@ -66,7 +66,7 @@ app.get('/', function(req, res) {
     res.sendfile('index.html');
 });
 
-http.listen(80, function(){
+http.listen(8080, function(){
     console.log('listening on *:' + http.address().port);
 });
 
