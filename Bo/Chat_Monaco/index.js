@@ -67,8 +67,8 @@ app.get('/', function(req, res) {
 });
 
 
-http.listen(8080, function(){
-    console.log('listening on *:3000');
+http.listen(80, function(){
+    console.log('listening on *:' + http.address().port);
 });
 
 io.on('connection', function(socket) {
