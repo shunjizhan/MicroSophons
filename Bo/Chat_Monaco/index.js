@@ -66,10 +66,10 @@ app.get('/', function(req, res) {
     res.sendfile('index.html');
 });
 
-
-http.listen(80, function(){
+http.listen(8080, function(){
     console.log('listening on *:' + http.address().port);
 });
+
 
 io.on('connection', function(socket) {
     console.log('a user connected: ' + socket.id);
