@@ -7,16 +7,16 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font: 13px Helvetica, Arial; background: #DDEEDD}
 
-    form#send { background: #060; padding: 3px; position: fixed; right: 0; width: 300px; bottom: 0; z-index: 101}
-    form#send input { border: 0; padding: 10px; width: 210px; margin-right: .5%; }
-    form#send button { width: 82px; background: rgb(130, 255, 224); border: none; padding: 10px; }
+    form#send { background: #060; padding: 3px; position: fixed; right: 0; width: 25%; bottom: 0; z-index: 101}
+    form#send input { border: 0; padding: 10px; width: 69%; margin-right: .5%; }
+    form#send button { width: 30%; background: rgb(130, 255, 224); border: none; padding: 10px; }
 
-    #messages { list-style-type: none; margin: 0; padding: 0; position: fixed; top: 75px; right: 0; border: 2px dotted #5A5; z-index: 100; overflow: scroll; height: 590px; width: 300px; background: #EFE}
+    #messages { list-style-type: none; margin: 0; padding: 0; position: absolute; top: 75px; right: 0; border: 2px dotted #5A5; z-index: 100; overflow: scroll; height: 590px; width: 100%; background: #EFE}
     #messages li { padding: 5px 10px; }
     #messages li:nth-child(odd) { background: white; }
 
     .container { width:100%; height:600px;border:3px solid #ACA; top:60px; position: absolute; }  /* for Monaco */
-    #user_id { position: fixed; top: 0px; right: 0; border: 2px dotted blue; z-index: 100; padding:3px; width: 300px; border-radius: 2px; padding: 5px; } /* set username */
+    #user_id { position: absolute; top: 0px; right: 0; border: 2px dotted blue; z-index: 100; padding:3px; width: 100%; border-radius: 2px; padding: 5px; } /* set username */
 
     #user_name { width: 80px; }
 
@@ -25,13 +25,13 @@
     /*#currentsquare {position: absolute; top: 0px; right: 80px; border: 2px solid red; z-index: 100; padding:3px; }*/
     #online_users {border: 2px solid pink; padding:1px; text-align: center; width: 150px; max-height: 550px; overflow: scroll; top: 0px; left: 150px; background-color: #EFE; position: absolute; display: none;}
 
-    #center { position: absolute; left: 15%; min-width:60%; }
+    #center { position: absolute; left: 15%; min-width:60%; z-index: 1000 }
 
 
-    #chat-box { right: 0;  background-color: #0A0; width: 25%; position: absolute; border: 3px solid yellow; }
+    #chat-box { right: 0;  background-color: #0A0; width: 25%; position: fixed; border: 3px solid yellow; }
 
     #list { list-style: none; }
-    .tab-bar {list-style-type: none; margin-left: 0; padding: 0; overflow: hidden; width: 500px; top:20px; border: 1px solid #BBB; position: absolute;}
+    .tab-bar {list-style-type: none; margin-left: 0; padding: 0; overflow: hidden; width: 100%; top:20px; border: 1px solid #BBB; position: absolute;}
     .tab {float: left; border: 1px solid #383; padding-left: 5px; padding-right: 5px; padding-top: 3px;}
     #new-tab {float: right;}
     #tab-0 {background-color: #BFA;}
@@ -43,15 +43,15 @@
     
 
     #left_container {
-      position: absolute;
+      position: fixed;
       height: 100%;
       width: 15%;
       border: 1px solid blue;
-      background-color: #392F2F;
+      background-color: #0A6;
     }
-    #left_container a {
+    .item {
       display: block;
-      height: 30px;
+      height: 35px;
       text-align: center;
       font-size: 150%;
       color: white;
@@ -61,9 +61,6 @@
     #left_container a:hover { background-color: #ECF0F1; color: #28B463; }
     #left_container a:visited { background-color: #ECF0F1; color: white; }
 
-
-
-
     
   </style>
 </head>
@@ -71,27 +68,27 @@
 <body>
 
     <div id="left_container">
-    <h1>Microsophons</h1>
+    <h1 style="color:white; margin: 10px 0px;">Microsophons</h1>
 
     <ul id='list'>
-      <li><form id="submit-file"><input type="file" name="file-upload"></form></li> 
-      <li><a id="save-as" href="#">Save As</a></li>
-      <li><a id="gDrive-save" href="#"><img src="./images/driveicon.png" alt="Google Drive">Save</a></li>
-      <li><a id="gDrive-open" href="#"><img src="./images/driveicon.png" alt="Google Drive">Open</a></li>
+      <li><a id="load" class="item">Load<input type="file" id="file-upload" multiple size="10" style="display: none;"></a></li> 
+      <li><a id="save-as" class="item">Save As</a></li>
+      <li><a id="gDrive-save" class="item" href="#"><img src="./images/driveicon.png" alt="Google Drive">Save</a></li>
+      <li><a id="gDrive-open" class="item" href="#"><img src="./images/driveicon.png" alt="Google Drive">Open</a></li>
 
-      <li><button id="rename" style="font-size: 18px;">Rename</button>
+      <li><a id="rename" class="item" href="#">Rename</a>
       <div id="ins" style="font-size: 10px; display: none;">Click the tab you want to rename</div>
       <form id="rename-form" style="display: none;">
         <input id="rename-input" type="text">
         <input id="rename-submit" type="submit">
       </form>
-      <button id="cancel" style="font-size: 18px; display: none;">Cancel</button></li>
+      <button id="cancel" style="display: none;">Cancel</button></li>
 
-      <li>aaaaa</li>
-      <li>bbbbb</li>
-      <li>ccccc</li>
-      <li>ddddd</li>
-      <li>eeeee</li>
+      <li><a class="item">Theme</a></li>
+      <li><a class="item">Invite</a></li>
+      <li><a class="item">aaaaa</a></li>
+      <li><a class="item">bbbbb</a></li>
+      <li><a class="item">ccccc</a></li>
 
     </ul>
     <div id="output">Last 3 events:<br/></div>

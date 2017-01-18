@@ -118,6 +118,7 @@ socket.on('new-tab', function(msg){
 });
 
 $("#file-upload").on('change', function(e){
+    alert("file uploaded!");
     var file = e.target.files[0];
     var filename = file.name;
     var split_name = filename.split('.');
@@ -206,9 +207,16 @@ socket.on("rename", function(msg){
 
 $('#user-button').hover(function(){
     $("#online_users").slideDown(200);
+    
 },function(){
     $("#online_users").slideUp(200);
 });
+
+$('#load').hover(function(){
+    $("#file-upload").show();
+},function(){
+    $("#file-upload").hide();
+})
 
 
 function showEvent(str) {
