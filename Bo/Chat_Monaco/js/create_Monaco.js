@@ -118,7 +118,6 @@ socket.on('new-tab', function(msg){
 });
 
 $("#file-upload").on('change', function(e){
-    alert("file uploaded!");
     var file = e.target.files[0];
     var filename = file.name;
     var split_name = filename.split('.');
@@ -166,15 +165,20 @@ $("#save-as").on('click',function(){
 
 
 $("#rename").click(function(){
+    $('#rename').css({'line-height':'100%'});
     $("#cancel").show();
     $("#ins").show();
-    $("#cancel").click(function(){
+
+    $("#cancel").click(function(event){        
         $("#rename-form").hide();
         $("#cancel").hide();
         $("#ins").hide();
-
+        $('#rename').css({'line-height':'40px'});
+        event.stopPropagation();
     });
+
     $(".tab").off("click");
+
     $(".tab").click(function(){
         var id = parseInt($(this).attr('id').split('-')[1]);
         $("#rename-form").show();
@@ -191,14 +195,17 @@ $("#rename").click(function(){
                 filename: $("#rename-input").val()
             });
             $("#rename-form").hide();
+            $('#rename').css({'line-height':'40px'});
             $("#cancel").hide();
             $("#ins").hide();
             $(".tab").off("click");
             $(".tab").click(click_tab);
+
             return false;
         });
     });
 });
+
 
 socket.on("rename", function(msg){
     filenames[msg.tabID]=msg.filename;
@@ -212,11 +219,17 @@ $('#user-button').hover(function(){
     $("#online_users").slideUp(200);
 });
 
+
 $('#load').hover(function(){
     $("#file-upload").show();
+    if($('#load').height()>40){
+        $('#load').css({'line-height':'100%'});
+    }
 },function(){
     $("#file-upload").hide();
-})
+    $('#load').css({'line-height':'40px'});
+});
+
 
 
 function showEvent(str) {
@@ -234,7 +247,8 @@ function setup_editor(div, content, language){
         value: content,
         language: language,
         glyphMargin: true,
-        nativeContextMenu: false
+        nativeContextMenu: false,
+        theme: light?'vs':'vs-dark'
      });
         var decorations = editor.deltaDecorations([], [
         {
@@ -309,7 +323,7 @@ function new_tab(tab_name, content, language, foreground, new_ID){
         'id': 'tab-' + new_ID,
         'class': 'tab',
         'text': tab_name,
-        'css': {'background-color': foreground?'Yellow':'White'}
+        //'css': {'background-color': foreground?'Yellow':'White'}
     });
 
     $('.tab-bar').append(new_li);
@@ -321,21 +335,21 @@ function new_tab(tab_name, content, language, foreground, new_ID){
     // create div for new editor, and insert it
     var new_div = $('<div/>',{
         'id': new_editor_ID,
-        'class': 'container',
-        'css': { 'visibility': foreground?'visible':'hidden'}
+        'class': 'container'
+        //'css': { 'visibility': foreground?'visible':'hidden'}
     });
     new_div.insertAfter('#container-' + current_ID);
-
     // setup up new editor
     var editor = setup_editor(new_editor_ID, content, language);
     editors.push(editor);
     editorID.push(new_ID);
-
+    
     if(foreground){
         // hide original editor
-        $('#tab-' + current_ID).css('background-color', 'White');
-        $('#container-' + current_ID).css('visibility', 'hidden');
-        current_ID = new_ID;
+        switch_tab(new_ID);
+        //$('#tab-' + current_ID).css('background-color', 'White');
+        //$('#container-' + current_ID).css('visibility', 'hidden');
+        //current_ID = new_ID;
     }
 
     // register click event for the tab
@@ -352,12 +366,20 @@ function click_tab(){
 }
 
 function switch_tab(new_id){
-
-    $('#tab-' + current_ID).css('background-color', 'White');
+    //$('#tab-' + current_ID).removeClass('tab-selected');
+    //$('#tab-' + current_ID).css('background-color', 'White');
     $('#container-' + current_ID).css('visibility', 'hidden');
+
+    //$('#tab-' + current_ID).css('background-color', 'Yellow');
+    $('#tab-' + new_id).addClass('tab-selected');
+    $('#container-' + new_id).css('visibility', 'visible');
+    $('#tab-' + new_id).css({
+        'background-color':$('#tab-' + current_ID).css('background-color'),
+        'color':light?'black':'white'
+    });
+    $('#tab-' + current_ID).removeClass('tab-selected');
+    $('#tab-' + current_ID).css({'background-color':'#BBB','color':'#333'});
     current_ID = new_id;
-    $('#tab-' + current_ID).css('background-color', 'Yellow');
-    $('#container-' + current_ID).css('visibility', 'visible');
 }
 
 function get_type(extension){
