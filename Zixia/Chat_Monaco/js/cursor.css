@@ -1,0 +1,13 @@
+.other-cursor {
+
+     height: 18px;
+     width: 1px;
+     z-index: 100;
+     position: absolute;
+ }
+
+ .object{
+     position: absolute;
+     z-index:1000;
+     background-color:yellow;
+ } 
