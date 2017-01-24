@@ -52,7 +52,38 @@ $('#purple').click(function(){
 	$('.tab-selected').css({'background-color':'#C4C'});
 	$('#send-button').css({'background-color':'#FDF'});
 });
+$('#random').click(function(){
+	$('body').css('background-color', getRandomColor());
+	$('#left_container').css('background-color', getRandomColor());
+	$('#messages').css('background-color', getRandomColor());
+	$('#chat-box').css('background-color', getRandomColor());
+	$('.tab-selected').css('background-color', getRandomColor());
+	$('#send-button').css('background-color', getRandomColor());
+
+	var x = Math.floor(Math.random() * 10);
+	if(x < 6) {
+		l();
+	} else {
+		dark();
+	}
+});
 $('.light').click(function(){
+	l();
+});
+$('.dark').click(function(){
+	dark();
+});
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+function l() {	
 	light = true;
 	$('.tab-selected').css({'color':'black'});
 	$('#user_id').css({'color':'black'});
@@ -61,8 +92,9 @@ $('.light').click(function(){
 	for(var i=0; i<editors.length;i++){
 		editors[i].updateOptions({'theme':'vs'});
 	}
-});
-$('.dark').click(function(){
+}
+
+function dark() {
 	light = false;
 	$('.tab-selected').css({'color':'white'});
 	$('#user_id').css({'color':'white'});
@@ -70,7 +102,7 @@ $('.dark').click(function(){
 	$('#messages').css({'color':'white'});
 	for(var i=0; i<editors.length;i++){
 		editors[i].updateOptions({'theme':'vs-dark'});
-	}
-});
+	}	
+}
 
 
