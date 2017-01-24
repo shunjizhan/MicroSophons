@@ -248,7 +248,8 @@ function setup_editor(div, content, language){
         language: language,
         glyphMargin: true,
         nativeContextMenu: false,
-        theme: light?'vs':'vs-dark'
+        theme: light?'vs':'vs-dark',
+        automaticLayout: true
      });
         var decorations = editor.deltaDecorations([], [
         {
