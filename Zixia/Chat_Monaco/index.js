@@ -8,6 +8,7 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var path = require('path');
+var router = express.Router();
 
 var fs = require("fs");
 var ini = false;
@@ -78,16 +79,23 @@ app.get('/', function (req, res) {
     res.render('index.html');
 });
 app.get('/*', function (req, res) {
-    res.redirect('/indexx.html');
+//    var name = req.params.name;
+//    res.send(req.params.name);
+    res.sendFile('indexx.html');
 });
+
+//router.get('/secret/:key', function (req, res) {  
+//  var secret = req.params.key;
+//  var user = {};
+//  user.authorised = secret === secretKey ? true : false;
+//  res.render('secret', user);
+//});
 
 // app.get('/p/:name', function (req, res) {
 //     res.render('p/' + req.params.name);
 // });
 
-// app.get('*', function (req, res) {
-//     res.render('indexx.html');
-// });
+
 
 
 

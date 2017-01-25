@@ -1,10 +1,12 @@
-
+var address;
 
 $('#inputClick').click(function() {
-    address = $('#linkInput').val();    
+    address = $('#linkInput').val();  
+    
     alert(address);
     window.open(address);
 });
+
 
 //var Globals = {
 //    'domain': address;
