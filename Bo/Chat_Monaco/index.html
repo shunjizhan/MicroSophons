@@ -2,34 +2,36 @@
 <html>
 <head>
   <title>Socket.IO chat</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link href='./js/cursor.css' type='text/css' rel='stylesheet'/>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; /*border: none !important;*/}
     body { font: 13px Helvetica, Arial; background-color: #DDEEDD}
 
-    form#send { background: #555; padding: 3px; position: fixed; right: 0; width: 25%; bottom: 0; z-index: 101}
-    form#send input { border: 0; padding: 10px; width: 69%; margin-right: .5%; }
-    form#send button { width: 30%; background-color: #8FD; border: none; padding: 10px; }
+    form#send { background: #555; padding: 3px; position: absolute; width: 100%; top:92%; height: 8%; /*border: 2px solid yellow;*/}
+    form#send input { padding: 10px; width: 70%; height: 100%; margin-right: .5%; }
+    form#send button { position: absolute; left: 70%; width: 30%; background-color: #8FD;  padding: 1%; height: 95%;}
 
-    #messages { list-style-type: none; margin: 0; padding: 0; position: absolute; top: 75px; right: 0; border: 2px solid #555; z-index: 100; overflow: scroll; bottom: 38px; width: 100%; background-color: #DFE}
+    #messages { position: absolute; height: 92%; /*border: 2px solid black;*/ overflow: scroll; width: 100%; background-color: #DFE}
     #messages li { padding: 5px 10px; }
     #messages li:nth-child(odd) { background: rgba(255, 255, 255, 0.4); }
 
     .container { width:100%; height:600px;border:1px solid #AAA; top:50px; position: absolute; overflow: scroll;}  /* for Monaco */
 
-    #user_id { position: absolute; top: 0px; right: 0px; border: 2px solid #555; z-index: 100; padding:3px; width: 100%; border-radius: 2px; padding: 5px; } /* set username */
+    #user_id { position: absolute; top: 0px; right: 0px; /*border: 2px dotted red;*/ padding:3px; width: 100%; border-radius: 2px; padding: 5px; height: 10%;} /* upper container */
+    #lower-container { position: absolute; top: 10%; /*border: 2px dotted blue;*/ height: 90%; width: 100%;} /*lower container*/
 
     #user_name { width: 80px; }
 
     #output { height:29%;font-family:'Courier New', monospace; border: 2px solid black; top:620px; position: absolute; display: none;} /* events monitor */
     #prev {position: fixed; top: 0px; right: 0px; border: 2px solid red; z-index: 100; padding:3px; display: none;}
     /*#currentsquare {position: absolute; top: 0px; right: 80px; border: 2px solid red; z-index: 100; padding:3px; }*/
-    #online_users { padding:1px; text-align: center; width: 150px; max-height: 150px; overflow: scroll; top: 0px; left: 150px; background-color: rgba(255,255,255, 0.5); position: absolute; display: none;}
+    #online_users { padding:1px; text-align: center; width: 100%; max-height: 150px; overflow: show; background-color: rgba(255,255,255, 0.5); position: absolute; display: none; z-index: 1000; /*border: 1px solid black;*/}
 
     #center { position: absolute; left: 15%; min-width:60%; z-index: 1000; }
 
 
-    #chat-box { right: 0;  background-color: #BFA; width: 25%; position: absolute; height: 100%; overflow: scroll;}
+    #chat-box { right: 0;  background-color: #BFA; width: 25%; position: absolute; height: 100%; overflow: scroll; font-size: 120%;}
 
     #list { list-style: none; }
     .tab-bar {list-style-type: none; margin-left: 0; padding: 0; overflow: hidden; width: 100%; top:27px; position: absolute; height: 23px;}
@@ -37,8 +39,10 @@
     #new-tab {float: right;}
     .tab-selected {background-color: #BFA; box-shadow: 2px 2px 1px grey}
 
-    #user-button {border: 1px solid rgba(0,0,0,0.5); width: 100px; border-radius: 3px;}
+    /*#user-button {border: 1px solid rgba(0,0,0,0.5); width: 100px; border-radius: 3px;}*/
 
+    #send-button {font-size: 110%; padding: 0;}
+    #send-button:hover {cursor: pointer; cursor: hand;}
     
     #file-upload {font-size: 18px; width: 95px;}
     #save-as {font-size: 18px;}
@@ -59,14 +63,17 @@
       text-decoration: none;
       line-height: 40px;
       min-height: 40px;
-      border: 1px white solid;
+      /*border: 1px white solid;*/
     }
     #left_container a:hover { background-color: rgba(255,255,255,0.8); color: #1A6; cursor: pointer; cursor: hand;}
     #left_container a:visited { background-color: #ECF0F1; color: white; }
 
-    #color-panel { background-color: white; height: 20px; padding: 2px; margin: 0px auto; display: none; left: 30%; width:108px;}
+    #color-panel { background-color: inherit; height: 20px; padding: 2px; margin: 0px auto; display: none; left: 30%; width:108px;}
     .colors{ border-radius: 50%; height:15px; width: 15px; margin: 0px 1px;  position: relative; top: 0; float:left;}
 
+    #current-container {/*border: 1px solid red;*/ position: absolute; width: 50%; height: 100%; right: 0; top: 0; text-align: center; padding-top: 3%;}
+    #user-number {text-align: center; font-size: 160%;}
+    #chat-container {/*border: 1px solid blue;*/ left: 0; top: 0; margin: 0; width: 50%; height: 100%; padding: 2%;}
     
   </style>
 </head>
@@ -77,10 +84,10 @@
     <h1 style="color:white; margin: 10px 0px;">Microsophons</h1>
 
     <ul id='list'>
-      <li><a id="load" class="item">Load<input type="file" id="file-upload" multiple size="10" style="display: none;"></a></li> 
-      <li><a id="save-as" class="item">Save to File</a></li>
-      <li><a id="gDrive-save" class="item" href="#"><img src="./images/driveicon.png" alt="Google Drive">Save</a></li>
-      <li><a id="gDrive-open" class="item" href="#"><img src="./images/driveicon.png" alt="Google Drive">Open</a></li>
+      <li><a id="load" class="item">Upload <i class="fa fa-upload" aria-hidden="true"></i><input type="file" id="file-upload" multiple size="10" style="display: none; margin-left: 3%"></a></li> 
+      <li><a id="save-as" class="item" href="#">Save <i class="fa fa-download" aria-hidden="true"></i></a></li>
+      <li><a id="gDrive-save" class="item" href="#">Save<img src="./images/driveicon.png" alt="Google Drive"></a></li>
+      <li><a id="gDrive-open" class="item" href="#">Open<img src="./images/driveicon.png" alt="Google Drive"></a></li>
 
       <li><a id="rename" class="item" >Rename
       <div id="ins" style="font-size: 10px; display: none;">Click the tab you want to rename</div>
@@ -102,7 +109,7 @@
       </li>
 
       <li><a class="item">Invite</a></li>
-      <li><a class="item">Save to Database</a></li>
+      <li><a class="item">Save <i class="fa fa-cloud-upload" aria-hidden="true"></i></a></li>
       <li><a class="item">bbbbb</a></li>
       <li><a class="item">ccccc</a></li>
 
@@ -124,26 +131,40 @@
 
   <div id="chat-box">
 
-    <!-- User info -->
+    <!-- User info (upper container)-->
     <div id="user_id">
-      <p id="currentsquare">Current collaborators: <span id="currentcount">0</span></p>
-      <p>My Name: <span id="name">User</span> </p>
-      <form id="user_form" action="">
-        <input id="user_name" autocomplete="User" /><button>Set Name</button>
+
+      <div id="chat-container">   <!-- should be on the left -->
+        <p>My Name: <span id="name">User</span> </p>
+        <form id="user_form" action="">
+          <input id="user_name" autocomplete="User" /><button>Set Name</button>
+        </form>
+        <!-- <div id="user-button">+ User Info </div> -->
+        <p id="prev">User</p>
+      </div>
+
+      <div id="current-container">  <!-- should be on the right -->
+        <p id="currentsquare">Collaborators: 
+        <div id="user-number">
+          <i class="fa fa-user-circle-o" aria-hidden="true" id="user-button"></i>
+          <span id="currentcount">0</span>
+        </div>
+        <ul id="online_users"> </ul> 
+        </p>
+      </div>
+
+   </div>   <!-- end upper container -->
+
+    <!-- lower colume -->
+    <div id="lower-container">
+      <ul id="messages">
+        <li>Let's chat!</li>
+      </ul>
+
+      <form id="send" action="">
+        <input id="m" autocomplete="off" /><button id="send-button">Send <i class="fa fa-commenting-o" aria-hidden="true"></i></button>
       </form>
-      <div id="user-button">+ User Info</div>
-      <ul id="online_users"> </ul> 
-      <p id="prev">User</p>
     </div>
-
-    <!-- Socket.io -->
-    <ul id="messages">
-      <li>Let's chat!</li>
-    </ul>
-
-    <form id="send" action="">
-      <input id="m" autocomplete="off" /><button id="send-button">Send</button>
-    </form>
 
   </div>
 

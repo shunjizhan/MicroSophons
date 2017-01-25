@@ -223,7 +223,7 @@ $('#user-button').hover(function(){
 
 
 $('#load').hover(function(){
-    $("#file-upload").show();
+    $("#file-upload").fadeIn(500);
     if($('#load').height()>40){
         $('#load').css({'line-height':'100%'});
     }
