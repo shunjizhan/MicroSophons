@@ -66,17 +66,42 @@ var color = [];
 
 app.use(express.static(path.join(__dirname, '.'))); //app.use(express.static('js'));
 
-app.get('/', function(req, res) {
-    res.sendfile('index.html');
+// app.get('/', function(req, res) {
+//     res.sendfile('index.html');
+// });
+
+// app.get('*', function (req, res) {
+//     res.render('index.html');
+// });
+
+app.get('/', function (req, res) {
+    res.render('index.html');
+});
+app.get('/*', function (req, res) {
+    res.redirect('/indexx.html');
 });
 
-app.get('/'+address , function(req, res) {
-    res.sendfile('indexx.html');
-});
+// app.get('/p/:name', function (req, res) {
+//     res.render('p/' + req.params.name);
+// });
+
+// app.get('*', function (req, res) {
+//     res.render('indexx.html');
+// });
+
+
+
+
+
 
 http.listen(8080, function(){
     console.log('listening on *:' + http.address().port);
 });
+
+// while(typeof address === "undefined"){  console.log('a')  }
+//     app.get('/'+ address , function(req, res) {
+//         res.sendfile('indexx.html');
+//     });
 
 
 io.on('connection', function(socket) {
