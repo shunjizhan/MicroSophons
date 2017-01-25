@@ -3,13 +3,20 @@ var colors = ['green', 'red', 'blue', 'black', 'purple'];
 
 $('#theme').hover(function(){
 	//alert("hovered");
-	$('#color-panel').show();
+	$('#color-panel').fadeIn(500);
+
 	if($('#theme').height()>40){
         $('#theme').css({'line-height':'100%'});
     }
 },function(){
 	$('#color-panel').hide();
 	$('#theme').css({'line-height':'40px'});
+});
+
+$('.colors').hover(function() {
+	 $(this).css('border-radius', '0%');
+}, function() {
+	 $(this).css('border-radius', '50%');
 });
 
 $('#green').click(function(){

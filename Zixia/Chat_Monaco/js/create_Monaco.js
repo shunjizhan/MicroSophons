@@ -52,8 +52,10 @@ socket.on('cursor', function(msg){
     $('#'+msg.id+'label').remove();
 
     if(msg.editor_id===current_ID){
+        var width = editors[current_ID].getConfiguration().fontInfo.typicalHalfwidthCharacterWidth;
+        console.log(width);
         var y = $("[lineNumber="+msg.lineNumber+"]").position().top;
-        var x = Math.round((msg.column)*7.2175-7.5965); // need improvement
+        var x = Math.round((msg.column-1)*width); // need improvement
         $('#'+msg.id).remove();
         create_cursor(msg.id, y, x, msg.color);
         $('#'+msg.id+'label').remove();
@@ -70,7 +72,7 @@ socket.on('cursor', function(msg){
 });
 
 socket.on('content', function(msg){
-    showEvent('remote content change - ' + msg);
+    //showEvent('remote content change - ' + msg);
 
     sendContent=false;
     editors[msg.editor_id].executeEdits('keyboard', [{
@@ -85,7 +87,7 @@ socket.on('content', function(msg){
 
 
 socket.on('new-user', function(msg){
-    showEvent("new user: " + msg);
+    //showEvent("new user: " + msg);
     create_cursor(msg, 0, 0);
 });
 
@@ -221,7 +223,7 @@ $('#user-button').hover(function(){
 
 
 $('#load').hover(function(){
-    $("#file-upload").show();
+    $("#file-upload").fadeIn(500);
     if($('#load').height()>40){
         $('#load').css({'line-height':'100%'});
     }
@@ -248,7 +250,8 @@ function setup_editor(div, content, language){
         language: language,
         glyphMargin: true,
         nativeContextMenu: false,
-        theme: light?'vs':'vs-dark'
+        theme: light?'vs':'vs-dark',
+        automaticLayout: true
      });
         var decorations = editor.deltaDecorations([], [
         {
@@ -276,7 +279,7 @@ function setup_editor(div, content, language){
     });
     editor.onDidChangeModelContent(function(e){
         if(sendContent){
-            showEvent('content change: '+ e.range + ' ' + e.rangeLength + ' ' + e.text);
+            //showEvent('content change: '+ e.range + ' ' + e.rangeLength + ' ' + e.text);
             sendCursor=true;
             socket.emit('content', {
                 editor_id: current_ID, 
@@ -335,8 +338,8 @@ function new_tab(tab_name, content, language, foreground, new_ID){
     // create div for new editor, and insert it
     var new_div = $('<div/>',{
         'id': new_editor_ID,
-        'class': 'container'
-        //'css': { 'visibility': foreground?'visible':'hidden'}
+        'class': 'container',
+        'css': { 'visibility': foreground?'visible':'hidden'}
     });
     new_div.insertAfter('#container-' + current_ID);
     // setup up new editor
