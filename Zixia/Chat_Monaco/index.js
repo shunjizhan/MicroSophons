@@ -81,7 +81,7 @@ app.get('/', function (req, res) {
 app.get('/*', function (req, res) {
 //    var name = req.params.name;
 //    res.send(req.params.name);
-    res.sendFile('indexx.html');
+    res.sendfile('indexx.html');
 });
 
 //router.get('/secret/:key', function (req, res) {  
