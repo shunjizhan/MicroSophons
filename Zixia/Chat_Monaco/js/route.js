@@ -1,8 +1,8 @@
-var address;
+
 
 $('#inputClick').click(function() {
     address = $('#linkInput').val();    
-//    alert(address);
+    alert(address);
     window.open(address);
 });
 

@@ -13,7 +13,7 @@ var fs = require("fs");
 var ini = false;
 var userID = [];
 var users = [];
-
+//var address;
 
 var color = [];
 
