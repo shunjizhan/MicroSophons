@@ -3,12 +3,19 @@
 <TITLE>Microsophons</TITLE>
 </HEAD>
 <style>
-form#send { background: #555; padding: 3px; margin: auto; width: 50%; z-index: 101; }
+form#send { background: #555; position: relative; padding: 3px; margin: 0 auto;
+   top:40%;
+   width: 50%; z-index: 101; }
 form#send input { border: 0; padding: 10px; width: 69%; margin-right: .5%; }
-form#send button { width: 30%; background-color: #8FD; border: none; padding: 10px; }
+form#send button { color: aliceblue; width: 30%; background-color: #707070; border: none; padding: 10px; }
 
+.center {
+    display: block;
+    margin: auto;
+    width: 40%;
+}
 </style>
-<BODY BGCOLOR="FFFFFF">
+<BODY BGCOLOR="000000">
 
 <!--
 <HR>
@@ -25,9 +32,10 @@ support@yourcompany.com</a>.
 <BR> <B><I>This is a new sentence without a paragraph break, in bold italics.</I></B>
 <HR>
 -->
-
+<div style="position: relative; top: 30%; "> <img src="images/microsophons.png" class="center"/> </div>
+    
 <form id="send" action="">
-  <input type="text" id="linkInput" autocomplete="off" /><button id ="inputClick" onclick="myFunction()">Search</button>
+  <input type="text" id="linkInput" autocomplete="off" placeholder="Enter your project name here"/><button id ="inputClick" onclick="myFunction()">Create</button>
 </form>
     
 <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
