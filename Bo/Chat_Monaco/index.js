@@ -1,5 +1,10 @@
 // this is the Server, cannot do things to individual html! Must emit to clients
 // client call socket.emit => this server => this server calls io.emit => emit to all clients
+
+/* Evironment Variables!
+run env_var.sh before using Azure Table
+*/
+
 var count = 0;
 
 var express = require('express');
@@ -10,6 +15,10 @@ var io = require('socket.io')(http);
 var path = require('path');
 
 var fs = require("fs");
+
+var azure = require("azure-storage");
+
+
 var ini = false;
 var userID = [];
 var users = [];
@@ -19,13 +28,13 @@ var color = [];
 
 //database connection
     // var Connection = require('tedious').Connection;  
-    // var config = {  
-    //     userName: 'ucsbadmin@microsophon',  
-    //     password: 'Ucsb123456',  
-    //     server:'microsophon.database.windows.net',  
-    //     // If you are on Microsoft Azure, you need this:  
-    //     options: {encrypt: true, database: 'microsophon'}  
-    // }; 
+    var config = {  
+        userName: 'ucsbadmin@microsophon',  
+        password: 'Ucsb123456',  
+        server:'microsophon.database.windows.net',  
+        // If you are on Microsoft Azure, you need this:  
+        options: {encrypt: true, database: 'microsophon'}  
+    }; 
     // var connection = new Connection(config);  
     // connection.on('connect', function(err) {  
     //     // If no error, then good to proceed.
@@ -142,7 +151,69 @@ io.on('connection', function(socket) {
     });
 });
 
+
 function delete_user(name) {
     index = users.indexOf(name);
     if (index > -1) { users.splice(index, 1); }
 }
+
+/*
+
+//Azure Table Operations
+
+var tableSvc = azure.createTableService();
+var entityGen = azure.TableUtilities.entityGenerator;
+
+
+// Create Table
+tableSvc.createTableIfNotExists('mytable', function(error, result, response){
+  if(!error){
+    console.log('table created!');
+    // Table exists or created
+  }
+});
+
+var default_content = [
+    '"use strict";',
+    'function Person(age) {',
+    '   if (age) {',
+    '       this.age = age;',
+    '   }',
+    '}',
+    'Person.prototype.getAge = function () {',
+    '   return this.age;',
+    '};'
+].join('\n');
+
+// createEntity
+var myEntity = createEntity('myproject','1','default.js', default_content);
+
+
+// insert entity in the table
+tableSvc.insertEntity('mytable',myEntity, function(error, result, reponse){
+    if(!error){
+        console.log('inserted');
+    }
+});
+
+function createEntity(project_id, file_id, filename, file_content){
+    var entity = {
+        PartitionKey: entityGen.String(project_id),
+        RowKey: entityGen.String(file_id),
+        filename: entityGen.String(filename),
+        fileContent: entityGen.String(file_content)
+    };
+    return entity;
+}
+
+// Retrieve Entity
+tableSvc.retrieveEntity('mytable', 'myproject', '1', function(error, result, response){
+  if(!error){
+    // result contains the entity
+    console.log(result);
+  }
+});
+
+*/
+
+
