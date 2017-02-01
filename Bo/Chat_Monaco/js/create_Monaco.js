@@ -318,15 +318,17 @@ function new_tab(tab_name, content, language, foreground, new_ID){
     if(new_ID===-1){
         new_ID = Math.max(...editorID)+1;
 
-        if(new_ID === 5) {
-            alert("!!!!");
-            // $('.tab-bar').css({ width: 92%; height: 5%; /*border: 2px solid blue;*/ min-height: 20px;  position: absolute; list-style-type: none; overflow-x: scroll; white-space: nowrap;});
-            $('.container').css({
-                'height': '10%',
-                'top': '90%',
-                'visibility': 'hidden'
-            });
-        }
+        // if(new_ID === 5) {
+        //     alert("!!!!");
+        //     $('.tab-bar').css({ 
+        //         'height': '50%' 
+        //     });
+        //     $('.container').css({
+        //         'height': '10%',
+        //         'top': '90%',
+        //         'visibility': 'hidden'
+        //     });
+        // }
     }   
     if(tab_name===''){
         tab_name = 'default_' + new_ID + '.js';
