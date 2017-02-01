@@ -329,6 +329,18 @@ function new_tab(tab_name, content, language, foreground, new_ID){
     // create new tab
     if(new_ID===-1){
         new_ID = Math.max(...editorID)+1;
+
+        // if(new_ID === 5) {
+        //     alert("!!!!");
+        //     $('.tab-bar').css({ 
+        //         'height': '50%' 
+        //     });
+        //     $('.container').css({
+        //         'height': '10%',
+        //         'top': '90%',
+        //         'visibility': 'hidden'
+        //     });
+        // }
     }   
     if(tab_name===''){
         tab_name = 'default_' + new_ID + '.js';

@@ -57,6 +57,10 @@ $('#purple').click(function(){
 	$('#messages').css({'background-color':'#A7A'});
 	$('#chat-box').css({'background-color':'#D5D'});
 	$('.tab-selected').css({'background-color':'#C4C'});
+	// $('.tab').hover(function() {
+	// 	alert('1111');
+	// 	$(this).css({'background-color':'#C4C'});
+	// });
 	$('#send-button').css({'background-color':'#FDF'});
 });
 $('#random').click(function(){
