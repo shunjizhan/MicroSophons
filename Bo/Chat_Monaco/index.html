@@ -16,7 +16,7 @@
     #messages li { padding: 5px 10px; }
     #messages li:nth-child(odd) { background: rgba(255, 255, 255, 0.4); }
 
-    .container { width:100%; height: 95%; top:5%; border:1px solid red; position: absolute; overflow: hidden;}  /* for Monaco */
+    .container { width:100%; height: 96%; top:4%; /*border:1px solid red; */position: absolute; overflow: hidden;}  /* for Monaco */
 
     #user_id { position: absolute; top: 0px; right: 0px; /*border: 2px dotted red;*/ padding:3px; width: 100%; border-radius: 2px; padding: 5px; height: 10%;} /* upper container */
     #lower-container { position: absolute; top: 10%; /*border: 2px dotted blue;*/ height: 90%; width: 100%;} /*lower container*/
@@ -24,21 +24,22 @@
     #user_name { width: 80px; }
 
    /* #output { height:29%;font-family:'Courier New', monospace; border: 2px solid black; top:620px; position: absolute; display: none;}*/ /* events monitor */
-    #prev {position: fixed; top: 0px; right: 0px; border: 2px solid red; z-index: 100; padding:3px; display: none;}
+    #prev {position: fixed; top: 0px; right: 0px; /*border: 2px solid red;*/ z-index: 100; padding:3px; display: none;}
     /*#currentsquare {position: absolute; top: 0px; right: 80px; border: 2px solid red; z-index: 100; padding:3px; }*/
     #online_users { padding:1px; text-align: center; width: 100%; max-height: 150px; overflow: show; background-color: rgba(255,255,255, 0.5); position: absolute; display: none; z-index: 1000; /*border: 1px solid black;*/}
 
-    #center { position: absolute; left: 15%; min-width:60%; height: 100%; border:2px solid blue;}
+    #center { position: absolute; left: 15%; min-width:60%; height: 100%; /*border:2px solid blue;*/}
 
 
     #chat-box { right: 0;  background-color: #BFA; width: 25%; position: absolute; height: 100%; overflow: auto; font-size: 120%;}
 
     #list { list-style: none; }
-    .tab-bar { list-style-type: none; margin-left: 0; padding: 0; overflow: auto; width: 100%; position: absolute; height: 5%; border: 2px solid yellow}
-    .tab {float: left; background-color: #BBB; height: 50%; width: 15%; top: 50%; text-align: center; margin: 0 1px; padding: 1px; position: relative;}
-    #new-tab {float: right; min-height: 20px; min-width: 20px; height: 50%; width: 3%; border: 2px solid red; top:50%; position: relative;}
-    #new-tab button {height: 100%; width: 100%;}
-    .tab-selected {background-color: #BFA; box-shadow: 2px 2px 1px grey;}
+
+    .tab-bar { width: 92%; height: 4%; border: 2px solid blue; min-height: 20px;  position: absolute; list-style-type: none; overflow-x: auto; white-space: nowrap;}
+    .tab { background-color: #BBB; height: 70%; width: 19.5%; top: 30%; text-align: center; margin-right: 1px; padding: 1px; display: inline-block; }
+    #new-tab {float: right; height: 4%; width: 8%; border: 2px solid black; position: relative; }
+    #new-tab button {height: 100%; width: 100%; position: absolute;}
+    .tab-selected {background-color: #BFA; box-shadow: 2px 2px 1px grey; padding: 1% 0; height: 100% !important; top:0 !important;}
     /*#new {height: 100%; width: 100%;}*/
 
     /*#user-button {border: 1px solid rgba(0,0,0,0.5); width: 100px; border-radius: 3px;}*/
@@ -121,8 +122,10 @@
   <div id="center">
     <ul class="tab-bar">
       <li id="tab-0" class="tab tab-selected">default.js</li>
-      <li id="new-tab"><button type="button">+</button></li>
+
     </ul>
+
+    <div id="new-tab"><button type="button">+</button></div>
 
     <div id="container-0" class="container"></div>
   </div>    <!-- end center -->
