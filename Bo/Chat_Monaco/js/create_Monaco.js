@@ -124,16 +124,16 @@ $("#file-upload").on('change', function(e){
     var filename = file.name;
     var split_name = filename.split('.');
     var extension = split_name[split_name.length-1];
-    var lang = get_type(extension);
+    var new_lang = get_type(extension);
     var reader = new FileReader();
     reader.readAsText(file);
     sendContent=false;
     reader.onload = function(f){
-        new_tab(filename, f.target.result, lang, true, -1);
+        new_tab(filename, f.target.result, new_lang, true, -1);
         socket.emit("new-file", {
             filename: filename,
             content: f.target.result,
-            language: lang
+            language: new_lang
         });
     };
     sendContent=true;
@@ -170,16 +170,18 @@ $("#rename").click(function(){
     $('#rename').css({'line-height':'100%'});
     $("#cancel").show();
     $("#ins").show();
+    $(".tab").off("click");
 
     $("#cancel").click(function(event){        
         $("#rename-form").hide();
         $("#cancel").hide();
         $("#ins").hide();
         $('#rename').css({'line-height':'40px'});
+        $(".tab").off("click");
+        $('.tab').click(click_tab);
         event.stopPropagation();
+        return false;
     });
-
-    $(".tab").off("click");
 
     $(".tab").click(function(){
         var id = parseInt($(this).attr('id').split('-')[1]);
@@ -187,22 +189,32 @@ $("#rename").click(function(){
         $("#ins").text("You have selected file: "+filenames[id]);
         $("#rename-input").val(filenames[id]);
 
-        $("#rename-form").submit(function(){
+        $("#rename-form").submit(function(event){
             if($("#rename-input").val()!==''){
                 filenames[id]=$("#rename-input").val();
                 $('#tab-'+id).text($("#rename-input").val());
+                var split_name = filenames[id].split('.');
+                var extension = split_name[split_name.length-1];
+                var new_lang = get_type(extension);
+                if(new_lang!==editors[id].getModel().getModeId()){
+                    var model = editors[id].getModel();
+                    monaco.editor.setModelLanguage(model, new_lang);
+                    editors[id].setModel(model);
+                }
+                socket.emit("rename", {
+                    tabID: id,
+                    filename: $("#rename-input").val()
+                });
+
             }
-            socket.emit("rename", {
-                tabID: id,
-                filename: $("#rename-input").val()
-            });
             $("#rename-form").hide();
             $('#rename').css({'line-height':'40px'});
             $("#cancel").hide();
             $("#ins").hide();
             $(".tab").off("click");
+            $("#rename-form").off('submit');
             $(".tab").click(click_tab);
-
+            event.stopPropagation();
             return false;
         });
     });
