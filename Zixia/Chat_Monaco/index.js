@@ -95,13 +95,6 @@ app.get('/*', function (req, res) {
 //     res.render('p/' + req.params.name);
 // });
 
-
-
-
-
-
-
-
 http.listen(8080, function(){
     console.log('listening on *:' + http.address().port);
 });

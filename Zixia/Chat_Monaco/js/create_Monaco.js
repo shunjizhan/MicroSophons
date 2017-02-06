@@ -165,6 +165,11 @@ $("#save-as").on('click',function(){
     downloadLink.click();
 });
 
+$("#preview").on('click',function(){
+    var w = window.open();
+    $(w.document.body).html(editors[current_ID].getValue());
+//    $('#div1').html(editors[current_ID].getValue());
+});
 
 $("#rename").click(function(){
     $('#rename').css({'line-height':'100%'});
