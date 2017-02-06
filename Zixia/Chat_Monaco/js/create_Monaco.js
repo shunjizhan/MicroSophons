@@ -105,6 +105,7 @@ socket.on('request-content', function(msg){
         lang.push(editors[i].getModel().getModeId());
     }
     socket.emit('reply-content', {
+        room: projectID,
         content: content,
         language: lang,
         filenames: filenames,
@@ -131,6 +132,7 @@ $("#file-upload").on('change', function(e){
     reader.onload = function(f){
         new_tab(filename, f.target.result, lang, true, -1);
         socket.emit("new-file", {
+            room: projectID,
             filename: filename,
             content: f.target.result,
             language: lang
@@ -206,6 +208,7 @@ $("#rename").click(function(){
                 $('#tab-'+id).text($("#rename-input").val());
             }
             socket.emit("rename", {
+                room: projectID,
                 tabID: id,
                 filename: $("#rename-input").val()
             });
@@ -283,6 +286,7 @@ function setup_editor(div, content, language){
 
         if(e.reason!==0||sendCursor){
             socket.emit('cursor', { 
+                room: projectID,
                 id: socket.io.engine.id,
                 editor_id: current_ID,
                 lineNumber: e.position.lineNumber,
@@ -295,6 +299,7 @@ function setup_editor(div, content, language){
             //showEvent('content change: '+ e.range + ' ' + e.rangeLength + ' ' + e.text);
             sendCursor=true;
             socket.emit('content', {
+                room: projectID,
                 editor_id: current_ID, 
                 range: e.range, 
                 text: e.text});
@@ -320,6 +325,7 @@ function new_tab(tab_name, content, language, foreground, new_ID){
 
     if(sendTab){
         socket.emit('new-tab', {
+            room: projectID,
             tab_name: tab_name,
             content: content,
             language: language,
