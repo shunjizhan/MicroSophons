@@ -12,11 +12,15 @@ var router = express.Router();
 
 var fs = require("fs");
 var ini = false;
+
+/*
 var userID = [];
 var users = [];
 //var address;
 
 var color = [];
+*/
+var rooms = {};
 
 
 //var globals = require('globals'); 
@@ -116,74 +120,97 @@ io.on('connection', function(socket) {
     console.log('a user connected: ' + socket.id);
     count++;
     var current = count;
-    io.emit('current user',current);
+    var room = "";
 
-    var this_user_name = "User" + Math.floor(Math.random() * 99);
-    users.push(this_user_name);
-    userID.push(socket.id);
+    //set up user data structure
+    var user_object = {
+        id: socket.id,
+        name: "User" + Math.floor(Math.random() * 99),
+        color: "rgb("+Math.floor(Math.random()*191+64)+","+Math.floor(Math.random()*191+64)+","+Math.floor(Math.random()*191+64)+")"
+    };
 
+    //add user to the room
+    socket.on('add-user',function(msg){
+        socket.join(msg);
+        room = msg;
+        if(rooms[msg]===undefined){
+            rooms[msg] = [user_object];
+        }
+        else{
+            rooms[msg].push(user_object);
+        }
+
+        console.log(rooms);
+        io.in(room).emit('update_user', rooms[msg]);
+        socket.broadcast.to(room).emit('new-user', socket.id); // create cursor
+
+        socket.broadcast.to((rooms[room])[0].id).emit('request-content', socket.id);
+    });
+
+    //io.emit('current user',current);
+
+    //users.push(this_user_name);
+    //userID.push(socket.id);
     
-    color.push("rgb("+Math.floor(Math.random()*191+64)+","+Math.floor(Math.random()*191+64)+","+Math.floor(Math.random()*191+64)+")");
-//random color generation
     
-
-    io.emit('update_user', users);
-    console.log(users);
-
-    socket.broadcast.emit('new-user', socket.id);      
-
-    socket.broadcast.to(userID[0]).emit('request-content', socket.id);
-
     socket.on('reply-content', function(msg){
-        io.emit('reply-content', msg);
+        io.in(msg.room).emit('reply-content', msg);
     });
 
     socket.on('chat message', function(msg) {
-        io.emit('chat message', msg);
+        io.in(msg.room).emit('chat message', msg.msg);
+        //io.emit('chat message', msg);
     });
 
     socket.on('cursor',function(msg) {
-        msg.username = this_user_name;
-        msg.color = color[userID.indexOf(socket.id)]
-        socket.broadcast.emit('cursor', msg); //note userID array to store all IDs
+        msg.username = user_object.name;
+        msg.color = user_object.color;
+        socket.broadcast.to(msg.room).emit('cursor', msg); //note userID array to store all IDs
     });
 
     socket.on('content', function(msg){
-        socket.broadcast.emit('content', msg);
+        socket.broadcast.to(msg.room).emit('content', msg);
     });
 
     socket.on('new-file', function(msg){
-        socket.broadcast.emit('new-file', msg);
+        socket.broadcast.to(msg.room).emit('new-file', msg);
     });
 
     socket.on('new-tab', function(msg){
-        socket.broadcast.emit('new-tab', msg);
+        socket.broadcast.to(msg.room).emit('new-tab', msg);
     })
 
     socket.on('rename', function(msg){
-        socket.broadcast.emit('rename', msg);
+        socket.broadcast.to(msg.room).emit('rename', msg);
     });
 
-    socket.on('user-name',function(new_name) {
-    	users.splice(users.indexOf(this_user_name), 1, new_name);
-        this_user_name = new_name;
-        io.emit('update_user', users);
+    socket.on('user-name',function(msg) {
+        user_object.name = msg.name;
+    	//rooms.(msg.room).splice(rooms.(msg.room).indexOf(), 1, msg.name);
+        //this_user_name = msg.name;
+        io.in(room).emit('user-name', msg.name);
     });
 
     socket.on('disconnect', function() {
-        console.log('disconnected:' + socket.id + ' ' + this_user_name);
+        console.log('disconnected:' + socket.id + ' ' + user_object.id);
         count--;
-        var current=count;
-        io.emit('current user',current);
-        io.emit('update_user', users);
-        socket.broadcast.emit('user-exit', socket.id);
+        //var current=count;
+        //io.emit('current user',current);
+        rooms[room].splice(rooms[room].indexOf(user_object), 1);
+        io.emit('update_user', rooms[room]);
+        socket.broadcast.to(room).emit('user-exit', socket.id);
+        /*
         users.splice(users.indexOf(this_user_name), 1);
 	    color.splice(userID.indexOf(socket.id),1);
         userID.splice(userID.indexOf(socket.id), 1);
+        */
+        socket.leave(room);
     });
 });
 
+/*
 function delete_user(name) {
     index = users.indexOf(name);
     if (index > -1) { users.splice(index, 1); }
 }
+*/
