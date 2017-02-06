@@ -47,18 +47,15 @@ function socket_function(){
 
     socket.on('update_user', function(users){  // users is an array containing all user names
         $('#online_users').html("");
-        
-        console.log(users);
         users.forEach( function(user, index) {
             $('#online_users').append($('<li>').attr('id', user.name).text(user.name)); // update the online users
         });
-        console.log(users.length);
         $('#currentcount').text(users.length);
 
     });
 
     socket.on('user-name', function(msg){
-        $('#' +msg).attr('id', msg).text(msg);
+        $('#' +msg.old_name).attr('id', msg.new_name).text(msg.new_name);
     });
 
     socket.on('reply-content', function(msg){

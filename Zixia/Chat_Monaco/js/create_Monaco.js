@@ -99,15 +99,15 @@ socket.on('user-exit', function(msg){
 socket.on('request-content', function(msg){
     console.log('content requested');
     var content=[];
-    var lang=[];
+    var new_lang=[];
     for(var i=0;i<editors.length;i++){
         content.push(editors[i].getValue());
-        lang.push(editors[i].getModel().getModeId());
+        new_lang.push(editors[i].getModel().getModeId());
     }
     socket.emit('reply-content', {
         room: projectID,
         content: content,
-        language: lang,
+        language: new_lang,
         filenames: filenames,
         editorID: editorID
     });
@@ -185,16 +185,18 @@ $("#rename").click(function(){
     $('#rename').css({'line-height':'100%'});
     $("#cancel").show();
     $("#ins").show();
+    $(".tab").off("click");
 
     $("#cancel").click(function(event){        
         $("#rename-form").hide();
         $("#cancel").hide();
         $("#ins").hide();
         $('#rename').css({'line-height':'40px'});
+        $(".tab").off("click");
+        $('.tab').click(click_tab);
         event.stopPropagation();
+        return false;
     });
-
-    $(".tab").off("click");
 
     $(".tab").click(function(){
         var id = parseInt($(this).attr('id').split('-')[1]);
@@ -202,28 +204,37 @@ $("#rename").click(function(){
         $("#ins").text("You have selected file: "+filenames[id]);
         $("#rename-input").val(filenames[id]);
 
-        $("#rename-form").submit(function(){
+        $("#rename-form").submit(function(event){
             if($("#rename-input").val()!==''){
                 filenames[id]=$("#rename-input").val();
                 $('#tab-'+id).text($("#rename-input").val());
+                var split_name = filenames[id].split('.');
+                var extension = split_name[split_name.length-1];
+                var new_lang = get_type(extension);
+                if(new_lang!==editors[id].getModel().getModeId()){
+                    var model = editors[id].getModel();
+                    monaco.editor.setModelLanguage(model, new_lang);
+                    editors[id].setModel(model);
+                }
+                socket.emit("rename", {
+                    room: projectID,
+                    tabID: id,
+                    filename: $("#rename-input").val()
+                });
+
             }
-            socket.emit("rename", {
-                room: projectID,
-                tabID: id,
-                filename: $("#rename-input").val()
-            });
             $("#rename-form").hide();
             $('#rename').css({'line-height':'40px'});
             $("#cancel").hide();
             $("#ins").hide();
             $(".tab").off("click");
+            $("#rename-form").off('submit');
             $(".tab").click(click_tab);
-
+            event.stopPropagation();
             return false;
         });
     });
 });
-
 
 socket.on("rename", function(msg){
     filenames[msg.tabID]=msg.filename;

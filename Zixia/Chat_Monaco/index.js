@@ -178,14 +178,15 @@ io.on('connection', function(socket) {
     });
 
     socket.on('user-name',function(msg) {
+        message = {old_name: user_object.name, new_name: msg.name}
         user_object.name = msg.name;
     	//rooms.(msg.room).splice(rooms.(msg.room).indexOf(), 1, msg.name);
         //this_user_name = msg.name;
-        io.in(room).emit('user-name', msg.name);
+        io.in(room).emit('user-name', message);
     });
 
     socket.on('disconnect', function() {
-        console.log('disconnected:' + socket.id + ' ' + user_object.id);
+        console.log('disconnected:' + socket.id + ' ' + user_object.name);
         count--;
         //var current=count;
         //io.emit('current user',current);
