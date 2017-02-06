@@ -112,4 +112,16 @@ function dark() {
 	}	
 }
 
+$('#change-name').hover(() => {
+	$('#user_form').stop().fadeIn(300);
+}, () => {
+	$('#user_form').stop().fadeOut(1000);
+});
+
+$('#user_form').hover(() => {
+	$('#user_form').stop().fadeIn(300);
+}, () => {
+	$('#user_form').stop().fadeOut(1000);
+});
+
 
