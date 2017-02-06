@@ -6,6 +6,7 @@ $('#inputClick').click(function() {
     alert(address);
     window.open(address);
 });
+socket.join(address);
 
 
 //var Globals = {
