@@ -11,6 +11,7 @@ $('#inputClick').click(function() {
         window.open(address);  
     }
 });
+socket.join(address);
 
 $('#searchClick').click(function() {
     alert("We cannot find your project!");
