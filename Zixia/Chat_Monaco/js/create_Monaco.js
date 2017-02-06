@@ -167,6 +167,19 @@ $("#save-as").on('click',function(){
     downloadLink.click();
 });
 
+$("#preview").on('click',function(){
+//    var file = e.target.files[0];
+//    var filename = file.name;
+//    var split_name = filename.split('.');
+//    var extension = split_name[split_name.length-1];
+//    var lang = get_type(extension);
+//    if (lang == 'html' || lang == 'javascript'){
+//        
+//    }
+    var w = window.open();
+    $(w.document.body).html(editors[current_ID].getValue());
+//    $('#div1').html(editors[current_ID].getValue());
+});
 
 $("#rename").click(function(){
     $('#rename').css({'line-height':'100%'});
