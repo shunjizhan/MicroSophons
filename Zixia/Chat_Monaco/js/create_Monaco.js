@@ -48,14 +48,13 @@ $('.tab').on('click',function(){
 });
 
 socket.on('cursor', function(msg){
-    showEvent('remote cursor change - ' + msg);
+    //showEvent('remote cursor change - ' + msg);
     $('#'+msg.id+'label').remove();
 
     if(msg.editor_id===current_ID){
         var width = editors[current_ID].getConfiguration().fontInfo.typicalHalfwidthCharacterWidth;
-        console.log(width);
         var y = $("[lineNumber="+msg.lineNumber+"]").position().top;
-        var x = Math.round((msg.column-1)*width); // need improvement
+        var x = Math.round((msg.column-1)*width); 
         $('#'+msg.id).remove();
         create_cursor(msg.id, y, x, msg.color);
         $('#'+msg.id+'label').remove();
@@ -97,7 +96,6 @@ socket.on('user-exit', function(msg){
 });
 
 socket.on('request-content', function(msg){
-    console.log('content requested');
     var content=[];
     var new_lang=[];
     for(var i=0;i<editors.length;i++){
@@ -211,6 +209,7 @@ $("#rename").click(function(){
                 var split_name = filenames[id].split('.');
                 var extension = split_name[split_name.length-1];
                 var new_lang = get_type(extension);
+
                 if(new_lang!==editors[id].getModel().getModeId()){
                     var model = editors[id].getModel();
                     monaco.editor.setModelLanguage(model, new_lang);
@@ -237,8 +236,20 @@ $("#rename").click(function(){
 });
 
 socket.on("rename", function(msg){
-    filenames[msg.tabID]=msg.filename;
-    $('#tab-'+msg.tabID).text(msg.filename);
+    id = msg.tabID;
+
+    filenames[id]=msg.filename;
+    $('#tab-'+ id).text(msg.filename);
+
+    var split_name = filenames[id].split('.');
+    var extension = split_name[split_name.length-1];
+    var new_lang = get_type(extension);
+
+    if(new_lang!==editors[id].getModel().getModeId()){
+        var model = editors[id].getModel();
+        monaco.editor.setModelLanguage(model, new_lang);
+        editors[id].setModel(model);
+    }
 });
 
 $('#user-button').hover(function(){
@@ -293,7 +304,8 @@ function setup_editor(div, content, language){
 
     // register two events
     editor.onDidChangeCursorPosition(function(e){
-        showEvent('cursor change - ' + e.position + e.reason);
+        //showEvent('cursor change - ' + e.position + e.reason);
+
 
         if(e.reason!==0||sendCursor){
             socket.emit('cursor', { 

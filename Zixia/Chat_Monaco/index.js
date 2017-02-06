@@ -124,19 +124,19 @@ io.on('connection', function(socket) {
 
     //add user to the room
     socket.on('add-user',function(msg){
-        socket.join(msg);
-        room = msg;
-        if(rooms[msg]===undefined){
-            rooms[msg] = [user_object];
+        room = msg.room;
+        socket.join(room);
+        user_object.name = 'User'+msg.number;
+        if(rooms[room]===undefined){
+            rooms[room] = [user_object];
         }
         else{
-            rooms[msg].push(user_object);
+            rooms[room].push(user_object);
         }
 
         console.log(rooms);
-        io.in(room).emit('update_user', rooms[msg]);
+        io.in(room).emit('update_user', rooms[room]);
         socket.broadcast.to(room).emit('new-user', socket.id); // create cursor
-
         socket.broadcast.to((rooms[room])[0].id).emit('request-content', socket.id);
     });
 
@@ -158,7 +158,7 @@ io.on('connection', function(socket) {
     socket.on('cursor',function(msg) {
         msg.username = user_object.name;
         msg.color = user_object.color;
-        socket.broadcast.to(msg.room).emit('cursor', msg); //note userID array to store all IDs
+        socket.broadcast.to(msg.room).emit('cursor', msg); 
     });
 
     socket.on('content', function(msg){
@@ -190,8 +190,10 @@ io.on('connection', function(socket) {
         count--;
         //var current=count;
         //io.emit('current user',current);
+        console.log(rooms);
+        console.log(room);
         rooms[room].splice(rooms[room].indexOf(user_object), 1);
-        io.emit('update_user', rooms[room]);
+        io.in(room).emit('update_user', rooms[room]);
         socket.broadcast.to(room).emit('user-exit', socket.id);
         /*
         users.splice(users.indexOf(this_user_name), 1);

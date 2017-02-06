@@ -9,7 +9,9 @@ $(document).ready(socket_function);
 
 function socket_function(){
     alert(projectID);
-    socket.emit('add-user', projectID);
+    var num = Math.floor(Math.random()*99);
+    $('#name').text('User'+num);
+    socket.emit('add-user', {room: projectID, number: num });
 
     // send message
     $('form#send').submit(function(){
@@ -37,8 +39,8 @@ function socket_function(){
     $('form#user_form').submit(function(){  
         var name = $('#user_name').val();
         $('#user_name').val('');
-        $('#name').html(name);    // set user name
-        $('#prev').text(name);
+        $('#name').text(name);    // set user name
+        //$('#prev').text(name);
         var msg = {room: projectID, name: name}
         socket.emit('user-name', msg); 
 
@@ -46,6 +48,7 @@ function socket_function(){
     });
 
     socket.on('update_user', function(users){  // users is an array containing all user names
+        console.log(users);
         $('#online_users').html("");
         users.forEach( function(user, index) {
             $('#online_users').append($('<li>').attr('id', user.name).text(user.name)); // update the online users
@@ -64,6 +67,7 @@ function socket_function(){
         editorID=msg.editorID;
         filenames=msg.filenames;
     });
+
 
     // default name
     /*

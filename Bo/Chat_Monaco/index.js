@@ -25,16 +25,17 @@ var users = [];
 
 
 var color = [];
+var room = '';
 
 //database connection
     // var Connection = require('tedious').Connection;  
-    var config = {  
-        userName: 'ucsbadmin@microsophon',  
-        password: 'Ucsb123456',  
-        server:'microsophon.database.windows.net',  
-        // If you are on Microsoft Azure, you need this:  
-        options: {encrypt: true, database: 'microsophon'}  
-    }; 
+    // var config = {  
+    //     userName: 'ucsbadmin@microsophon',  
+    //     password: 'Ucsb123456',  
+    //     server:'microsophon.database.windows.net',  
+    //     // If you are on Microsoft Azure, you need this:  
+    //     options: {encrypt: true, database: 'microsophon'}  
+    // }; 
     // var connection = new Connection(config);  
     // connection.on('connect', function(err) {  
     //     // If no error, then good to proceed.
