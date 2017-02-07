@@ -8,7 +8,7 @@ var projectID = splitURL[splitURL.length-1];
 $(document).ready(socket_function);
 
 function socket_function(){
-    alert(projectID);
+    //alert(projectID);
     var num = Math.floor(Math.random()*99);
     $('#name').text('User'+num);
     socket.emit('add-user', {room: projectID, number: num });

@@ -8,7 +8,7 @@ $('#inputClick').click(function() {
         event.preventDefault();
     }
     else{
-        alert(address);
+        //alert(address);
         window.open(address);  
     }
 

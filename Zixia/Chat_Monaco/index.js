@@ -192,7 +192,10 @@ io.on('connection', function(socket) {
         //io.emit('current user',current);
         console.log(rooms);
         console.log(room);
-        rooms[room].splice(rooms[room].indexOf(user_object), 1);
+
+        if(rooms[room]!==undefined){
+            rooms[room].splice(rooms[room].indexOf(user_object), 1);
+        }
         io.in(room).emit('update_user', rooms[room]);
         socket.broadcast.to(room).emit('user-exit', socket.id);
         /*
