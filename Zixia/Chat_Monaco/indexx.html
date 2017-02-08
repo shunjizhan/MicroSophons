@@ -6,13 +6,13 @@
   <link href='./js/cursor.css' type='text/css' rel='stylesheet'/>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; /*border: none !important;*/}
-    body { font: 13px Helvetica, Arial; background-color: #DDEEDD}
+    body { font: 13px Helvetica, Arial; background-color: #E8F6F3;}
 
     form#send { background: #555; padding: 3px; position: absolute; width: 100%; top:94%; height: 6%; /*border: 2px solid yellow;*/}
     form#send input { padding: 5px 10px; width: 75%; height: 100%; /*margin-right: .5%; */}
     form#send button { position: absolute; left: 75%; width: 25%; background-color: #8FD;  padding: 1%; height: 88%;}
 
-    #messages { position: absolute; height: 94%; /*border: 2px solid black;*/ overflow: auto; width: 100%; background-color: #DFE}
+    #messages { position: absolute; height: 94%; /*border: 2px solid black;*/ overflow: auto; width: 100%; background-color: #D1F2EB}
     #messages li { padding: 5px 10px; }
     #messages li:nth-child(odd) { background: rgba(255, 255, 255, 0.4); }
 
@@ -28,19 +28,22 @@
     /*#currentsquare {position: absolute; top: 0px; right: 80px; border: 2px solid red; z-index: 100; padding:3px; }*/
     #online_users { padding:1px; text-align: center; width: 100%; max-height: 150px; overflow: show; background-color: rgba(255,255,255, 0.5); position: absolute; display: none; z-index: 1000; /*border: 1px solid black;*/ list-style-type: none;}
 
-    #center { position: absolute; left: 15%; min-width:63%; height: 100%; border:2px solid blue; overflow: show;}
+    #center { position: absolute; left: 15%; min-width:63%; height: 100%; /*border:2px solid blue;*/ overflow: show;}
 
 
-    #chat-box { right: 0;  background-color: #BFA; width: 22%; position: absolute; height: 100%; overflow: auto; font-size: 120%;}
+    #chat-box { right: 0;  background-color: #A3E4D7; width: 22%; position: absolute; height: 100%; overflow: auto; font-size: 120%;}
 
     #list { list-style: none; }
 
     .tab-bar { width: 95%; height: 3.5%; /*border: 2px solid blue;*/ min-height: 20px;  position: absolute; list-style-type: none; overflow-x: scroll; white-space: nowrap;}
-    .tab { background-color: #BBB; height: 100%; width: 12%; text-align: center; padding-top: 0.8%; display: inline-block; border-right: 1px solid black; margin-right: 1px; box-shadow: 1px grey;}
-    .tab:hover { cursor: pointer; cursor: hand; background-color: #BFA !important; }
+
+    .tab { background-color: #A2D9CE !important; height: 100%; width: 12%; text-align: center; padding-top: 0.8%; display: inline-block; border-right: 1px solid black; margin-right: 1px; box-shadow: 1px grey; color: #566573 !important;}
+    .tab-selected { background-color: #A2D9CE !important; color: #2E86C1 !important; box-shadow: 2px 2px 1px grey; font-weight: bold;}
+
+    .tab:hover { cursor: pointer; cursor: hand; color: #2E86C1 !important; }
+
     #new-tab {float: right; height: 3.5%; width: 5%; /*border: 2px solid black; */position: relative; }
     #new-tab button {height: 100%; width: 100%; position: absolute;}
-    .tab-selected {background-color: #BFA; box-shadow: 2px 2px 1px grey; }
     /*#new {height: 100%; width: 100%;}*/
 
     /*#user-button {border: 1px solid rgba(0,0,0,0.5); width: 100px; border-radius: 3px;}*/
@@ -56,21 +59,25 @@
       position: fixed;
       height: 100%;
       width: 15%;
-      background-color: #1A6;
+      /*background-color: #ABEBC6;*/
+      /*background-color: #D5F5E3;*/
+      background-color: #D1F2EB;
     }
-    .item {
+    .item, #settings {
       display: block;
       height: auto;
-      text-align: center;
+      /*text-align: center;*/
+      /*margin-left: 25%;*/
+      padding-left: 22%;
       font-size: 150%;
-      color: white;
+      /*color: white;*/
       text-decoration: none;
       line-height: 40px;
       min-height: 40px;
       /*border: 1px white solid;*/
     }
-    #left_container a:hover { background-color: rgba(255,255,255,0.8); color: #1A6; cursor: pointer; cursor: hand;}
-    #left_container a:visited { background-color: #ECF0F1; color: white; }
+    #left_container a:hover { background-color: rgba(255,255,255,0.8); color: #1E8449; cursor: pointer; cursor: hand;}
+    /*#left_container a:visited { background-color: #ABEBC6; color: black; }*/
 
     #color-panel { background-color: inherit; height: 20px; padding: 2px; margin: 0px auto; display: none; left: 30%; width:108px;}
     .colors{ border-radius: 50%; height:15px; width: 15px; margin: 0px 1px;  position: relative; top: 0; float:left;}
@@ -82,9 +89,18 @@
     #user_form {text-align: center;}
 
     #settings {
-    	font: 150% black bold;
-    	text-align: center;
-    	list-style-type: none;
+    	font: 150% bold;
+    	/*border: 2px solid red;*/
+    	/*height: 10%;*/
+    }
+
+    i {
+    	color: #3498DB;
+    }
+
+    #settings i {
+    	font-size: 150%;
+    	color: #2E86C1;
     }
 
     /*#change-name { top: 10%; position: absolute;}*/
@@ -94,16 +110,22 @@
 <body>
 
     <div id="left_container">
-
-    <li id="settings"><a><i class="fa fa-cog fa-spin"></i> FUNCTIONS</a></li>
+       <div ><a id="settings"><i class="fa fa-cog fa-spin"></i> MENU</a></div>
 
     <ul id='list'>  	
-      <li><a id="load" class="item">Upload <i class="fa fa-upload" aria-hidden="true"></i><input type="file" id="file-upload" multiple size="10" style="display: none; margin-left: 3%"></a></li> 
-      <li><a id="save-as" class="item">Save <i class="fa fa-download" aria-hidden="true"></i></a></li>
-      <li><a id="gDrive-save" class="item">Save<img src="./images/driveicon.png" alt="Google Drive"></a></li>
-      <li><a id="gDrive-open" class="item">Open<img src="./images/driveicon.png" alt="Google Drive"></a></li>
+      <li><a class="item"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</a></li>
 
-      <li><a id="rename" class="item" >Rename
+      <li><a id="load" class="item">
+      <i class="fa fa-upload" aria-hidden="true"></i> Upload
+      <input type="file" id="file-upload" multiple size="10" style="display: none; margin-left: 3%">
+      </a></li> 
+
+      <li><a id="save-as" class="item"><i class="fa fa-download" aria-hidden="true"></i> Download</a></li>
+
+      <li><a id="gDrive-save" class="item"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Export</a></li>
+      <li><a id="gDrive-open" class="item"><i class="fa fa-cloud-download" aria-hidden="true"></i> Import</a></li>
+
+      <li><a id="rename" class="item" ><i class="fa fa-files-o" aria-hidden="true"></i> Rename
       <div id="ins" style="font-size: 10px; display: none;">Click the tab you want to rename</div>
       <form id="rename-form" style="display: none;">
         <input id="rename-input" type="text">
@@ -111,7 +133,7 @@
       </form>
       <button id="cancel" style="display: none;">Cancel</button></a></li>
 
-      <li><a id="theme" class="item">Theme
+      <li><a id="theme" class="item"><i class="fa fa-picture-o" aria-hidden="true"></i> Theme 
         <div id="color-panel">
           <span id="green" class="colors light" style="background-color: #1A6;"></span>
           <span id="red" class="colors light" style="background-color: #A53;"></span>
@@ -122,9 +144,8 @@
         </div></a>
       </li>
 
-      <li><a class="item">Save <i class="fa fa-cloud-upload" aria-hidden="true"></i></a></li>
-      <li><a id="preview" class="item">Preview <i class=" " aria-hidden="true"></i></a></li>
-      <li><a class="item">Invite</a></li>
+      <li><a id="preview" class="item"><i class="fa fa-television" aria-hidden="true"></i> Preview</a></li>
+      <li><a class="item"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Invite</a></li>
 
     </ul>
     <!-- <div id="output">Last 3 events:<br/></div> -->
@@ -166,7 +187,7 @@
       <div id="current-container">  <!-- should be on the right -->
         <p id="currentsquare">Collaborators: 
         <div id="user-number">
-          <i class="fa fa-user-circle-o" aria-hidden="true" id="user-button"></i>
+        <i class="fa fa-users" aria-hidden="true" id="user-button"></i>
           <span id="currentcount">0</span>
         </div>
         <ul id="online_users"> </ul> 
@@ -244,10 +265,12 @@
 
     let collapse = () => {
     	$('#settings').html('<a><i class="fa fa-cog fa-spin"></i></a>');
-    	$('#left_container').html('');
+    	$('#list').html('<li><a class="item"><i class="fa fa-floppy-o" aria-hidden="true"></i></a></li><li><a id="load" class="item"><i class="fa fa-upload" aria-hidden="true"></i><input type="file" id="file-upload" multiple size="10" style="display: none; margin-left: 3%"></a></li><li><a id="save-as" class="item"><i class="fa fa-download" aria-hidden="true"></i></a></li><li><a id="gDrive-save" class="item"><i class="fa fa-cloud-upload" aria-hidden="true"></i></a></li><li><a id="gDrive-open" class="item"><i class="fa fa-cloud-download" aria-hidden="true"></i></a></li><li><a id="rename" class="item" ><i class="fa fa-files-o" aria-hidden="true"></i><div id="ins" style="font-size: 10px; display: none;">Click the tab you want to rename</div><form id="rename-form" style="display: none;"><input id="rename-input" type="text"><input id="rename-submit" type="submit"></form><button id="cancel" style="display: none;"></button></a></li><li><a id="theme" class="item"><i class="fa fa-picture-o" aria-hidden="true"></i> <div id="color-panel"><span id="green" class="colors light" style="background-color: #1A6;"></span><span id="red" class="colors light" style="background-color: #A53;"></span><span id="blue" class="colors light" style="background-color: #56D;"></span><span id="black" class="colors dark" style="background-color: #556;"></span><span id="purple" class="colors dark" style="background-color: #92A;"></span><span id="random" class="colors" style="background-color: black;"></span></div></a></li><li><a id="preview" class="item"><i class="fa fa-television" aria-hidden="true"></i></a></li><li><a class="item"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></a></li>');
+    	// $('#list').children().text('');
+
     	$('#left_container').animate({
       		'width': '5%',
-      		'font-size': '80%'
+      		'font-size': '130%'
       	}, 500);
 
       	$('#center').animate({
@@ -257,7 +280,11 @@
     }
 
     let expand = () => {
-    	$('#settings').html('<a><i class="fa fa-cog fa-spin"></i> FUNCTIONS</a>');
+    	setTimeout(() => {
+    		$('#settings').html('<a><i class="fa fa-cog fa-spin"></i> MENU</a>');
+    		$('#list').html('<li><a class="item"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</a></li><li><a id="load" class="item"><i class="fa fa-upload" aria-hidden="true"></i> Upload<input type="file" id="file-upload" multiple size="10" style="display: none; margin-left: 3%"></a></li><li><a id="save-as" class="item"><i class="fa fa-download" aria-hidden="true"></i> Download</a></li><li><a id="gDrive-save" class="item"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Export</a></li><li><a id="gDrive-open" class="item"><i class="fa fa-cloud-download" aria-hidden="true"></i> Import</a></li><li><a id="rename" class="item" ><i class="fa fa-files-o" aria-hidden="true"></i> Rename<div id="ins" style="font-size: 10px; display: none;">Click the tab you want to rename</div><form id="rename-form" style="display: none;"><input id="rename-input" type="text"><input id="rename-submit" type="submit"></form><button id="cancel" style="display: none;">Cancel</button></a></li><li><a id="theme" class="item"><i class="fa fa-picture-o" aria-hidden="true"></i> Theme<div id="color-panel"><span id="green" class="colors light" style="background-color: #1A6;"></span><span id="red" class="colors light" style="background-color: #A53;"></span><span id="blue" class="colors light" style="background-color: #56D;"></span><span id="black" class="colors dark" style="background-color: #556;"></span><span id="purple" class="colors dark" style="background-color: #92A;"></span><span id="random" class="colors" style="background-color: black;"></span></div></a></li><li><a id="preview" class="item"><i class="fa fa-television" aria-hidden="true"></i> Preview</a></li><li><a class="item"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Invite</a></li>');
+    	}, 500);	
+
     	$('#left_container').animate({
       		'width': '15%',
       		'font-size': '100%'
