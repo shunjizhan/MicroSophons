@@ -228,10 +228,21 @@
 	  }
 	}
 
-    $('#settings').click(() => {
-      	console.log("setting");
+	let collapsed = false;
 
-      	$('#left_container').animate({
+    $('#settings').click(() => {
+    	if(collapsed) {
+    		expand();
+    		collapsed = !collapsed;
+    	} else {
+    		collapse();
+    		collapsed = !collapsed;
+    	}
+
+    });
+
+    let collapse = () => {
+    	$('#left_container').animate({
       		'width': '5%'
       	});
 
@@ -239,7 +250,17 @@
 	    	'width': '73%',
 	    	'left': '5%'
 	    }, 500);
-    });
+    }
+    let expand = () => {
+    	$('#left_container').animate({
+      		'width': '15%'
+      	});
+
+      	$('#center').animate({
+	    	'width': '63%',
+	    	'left': '15%'
+	    }, 500);
+    }
 
   </script>
 
