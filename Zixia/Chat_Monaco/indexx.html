@@ -81,6 +81,12 @@
     
     #user_form {text-align: center;}
 
+    #settings {
+    	font: 150% black bold;
+    	text-align: center;
+    	list-style-type: none;
+    }
+
     /*#change-name { top: 10%; position: absolute;}*/
   </style>
 </head>
@@ -88,13 +94,14 @@
 <body>
 
     <div id="left_container">
-    <h1 id="settings" style="color: black; margin: 3px; text-align: center;">Microsophons</h1>
 
-    <ul id='list'>
+    <li id="settings"><a><i class="fa fa-cog fa-spin"></i> FUNCTIONS</a></li>
+
+    <ul id='list'>  	
       <li><a id="load" class="item">Upload <i class="fa fa-upload" aria-hidden="true"></i><input type="file" id="file-upload" multiple size="10" style="display: none; margin-left: 3%"></a></li> 
-      <li><a id="save-as" class="item" href="#">Save <i class="fa fa-download" aria-hidden="true"></i></a></li>
-      <li><a id="gDrive-save" class="item" href="#">Save<img src="./images/driveicon.png" alt="Google Drive"></a></li>
-      <li><a id="gDrive-open" class="item" href="#">Open<img src="./images/driveicon.png" alt="Google Drive"></a></li>
+      <li><a id="save-as" class="item">Save <i class="fa fa-download" aria-hidden="true"></i></a></li>
+      <li><a id="gDrive-save" class="item">Save<img src="./images/driveicon.png" alt="Google Drive"></a></li>
+      <li><a id="gDrive-open" class="item">Open<img src="./images/driveicon.png" alt="Google Drive"></a></li>
 
       <li><a id="rename" class="item" >Rename
       <div id="ins" style="font-size: 10px; display: none;">Click the tab you want to rename</div>
@@ -116,7 +123,7 @@
       </li>
 
       <li><a class="item">Save <i class="fa fa-cloud-upload" aria-hidden="true"></i></a></li>
-      <li><a id="preview" class="item" href="#">Preview <i class=" " aria-hidden="true"></i></a></li>
+      <li><a id="preview" class="item">Preview <i class=" " aria-hidden="true"></i></a></li>
       <li><a class="item">Invite</a></li>
 
     </ul>
@@ -220,13 +227,6 @@
     $('#left_container').resizable();
   </script> -->
   <script type="text/javascript">
-  	function wait(ms){
-	   var start = new Date().getTime();
-	   var end = start;
-	   while(end < start + ms) {
-	     end = new Date().getTime();
-	  }
-	}
 
 	let collapsed = false;
 
@@ -235,6 +235,7 @@
     		expand();
     		collapsed = !collapsed;
     	} else {
+
     		collapse();
     		collapsed = !collapsed;
     	}
@@ -242,19 +243,25 @@
     });
 
     let collapse = () => {
+    	$('#settings').html('<a><i class="fa fa-cog fa-spin"></i></a>');
+    	$('#left_container').html('');
     	$('#left_container').animate({
-      		'width': '5%'
-      	});
+      		'width': '5%',
+      		'font-size': '80%'
+      	}, 500);
 
       	$('#center').animate({
 	    	'width': '73%',
 	    	'left': '5%'
 	    }, 500);
     }
+
     let expand = () => {
+    	$('#settings').html('<a><i class="fa fa-cog fa-spin"></i> FUNCTIONS</a>');
     	$('#left_container').animate({
-      		'width': '15%'
-      	});
+      		'width': '15%',
+      		'font-size': '100%'
+      	}, 500);
 
       	$('#center').animate({
 	    	'width': '63%',
