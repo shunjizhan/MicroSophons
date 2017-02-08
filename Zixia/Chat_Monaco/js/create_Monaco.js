@@ -175,7 +175,7 @@ $("#preview").on('click',function(){
 //        
 //    }
     var w = window.open();
-    $(w.document.body).html(editors[current_ID].getValue());
+    w.document.write(editors[current_ID].getValue());
 //    $('#div1').html(editors[current_ID].getValue());
 });
 
