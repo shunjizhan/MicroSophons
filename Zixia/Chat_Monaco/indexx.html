@@ -28,10 +28,10 @@
     /*#currentsquare {position: absolute; top: 0px; right: 80px; border: 2px solid red; z-index: 100; padding:3px; }*/
     #online_users { padding:1px; text-align: center; width: 100%; max-height: 150px; overflow: show; background-color: rgba(255,255,255, 0.5); position: absolute; display: none; z-index: 1000; /*border: 1px solid black;*/ list-style-type: none;}
 
-    #center { position: absolute; left: 15%; min-width:60%; height: 100%; /*border:2px solid blue;*/}
+    #center { position: absolute; left: 15%; min-width:63%; height: 100%; border:2px solid blue; overflow: show;}
 
 
-    #chat-box { right: 0;  background-color: #BFA; width: 25%; position: absolute; height: 100%; overflow: auto; font-size: 120%;}
+    #chat-box { right: 0;  background-color: #BFA; width: 22%; position: absolute; height: 100%; overflow: auto; font-size: 120%;}
 
     #list { list-style: none; }
 
@@ -88,7 +88,7 @@
 <body>
 
     <div id="left_container">
-    <h1 style="color:white; margin: 10px 0px;">Microsophons</h1>
+    <h1 id="settings" style="color: black; margin: 3px; text-align: center;">Microsophons</h1>
 
     <ul id='list'>
       <li><a id="load" class="item">Upload <i class="fa fa-upload" aria-hidden="true"></i><input type="file" id="file-upload" multiple size="10" style="display: none; margin-left: 3%"></a></li> 
@@ -196,8 +196,10 @@
       var light = true;
   </script>
 
-  <!-- Socket.io -->
   <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+  <!-- <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
+
+  <!-- Socket.io -->
   <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 
   <!-- Google Drive -->
@@ -213,6 +215,33 @@
 
   <script type="text/javascript" src="js/gdrive.js"></script>
   <script type="text/javascript" src="js/themes.js"></script>
+
+<!--   <script type="text/javascript">
+    $('#left_container').resizable();
+  </script> -->
+  <script type="text/javascript">
+  	function wait(ms){
+	   var start = new Date().getTime();
+	   var end = start;
+	   while(end < start + ms) {
+	     end = new Date().getTime();
+	  }
+	}
+
+    $('#settings').click(() => {
+      	console.log("setting");
+
+      	$('#left_container').animate({
+      		'width': '5%'
+      	});
+
+      	$('#center').animate({
+	    	'width': '73%',
+	    	'left': '5%'
+	    }, 500);
+    });
+
+  </script>
 
 </body>
 
