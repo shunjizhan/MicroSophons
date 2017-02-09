@@ -35,7 +35,7 @@
 
     #list { list-style: none; }
 
-    .tab-bar { width: 95%; height: 3.5%; /*border: 2px solid blue;*/ min-height: 50px;  position: absolute; list-style-type: none; overflow-x: scroll; white-space: nowrap;}
+    .tab-bar { width: 95%; height: 3.5%; /*border: 2px solid blue;*/ min-height: 20px;  position: absolute; list-style-type: none; overflow-x: scroll; white-space: nowrap;}
 
     .tab { background-color: #A2D9CE !important; height: 100%; width: 12%; text-align: center; padding-top: 0.8%; display: inline-block; border-right: 1px solid black; margin-right: 1px; box-shadow: 1px grey; color: #566573 !important;}
     .tab-selected { background-color: #A2D9CE !important; color: #2E86C1 !important; box-shadow: 2px 2px 1px grey; }
@@ -158,7 +158,7 @@
 
   <div id="center">
     <ul class="tab-bar">
-      <li id="tab-0" class="tab">de</li>
+      <li id="tab-0" class="tab">default.js</li>
     </ul>
 
     <div id="new-tab"><button type="button">new</button></div>
@@ -245,71 +245,7 @@
 <!--   <script type="text/javascript">
     $('#left_container').resizable();
   </script> -->
-  <script type="text/javascript">
-
-	let collapsed = false;
-
-    $('#settings').click(() => {
-    	if(collapsed) {
-    		expand();
-    		collapsed = !collapsed;
-    	} else {
-    		collapse();
-    		collapsed = !collapsed;
-    	}
-    });
-
-    let collapse = () => {
-    	$('.menu-word').css({
-    		'display': 'none'
-    	});
-
-    	$('#left_container').animate({
-      		'width': '5%'
-      	}, 500);
-
-      	// $('#left_container > li').animate({
-      	// 	'text-align': 'center',
-      	// 	'padding-left': '0'
-      	// }, 500);
-
-      	$('#left_container i').animate({
-      		'font-size': '130%'
-      	}, 500);
-
-      	$('#center').animate({
-	    	'width': '73%',
-	    	'left': '5%'
-	    }, 500);
-    }
-
-    let expand = () => {
-    	setTimeout(() => {
-    		$('.menu-word').css({
-	    		'display': 'inline'
-	    	});
-    	}, 500);	
-
-    	$('#left_container').animate({
-      		'width': '15%',
-      	}, 500);
-
-      	// $('#left_container > li').animate({
-      	// 	'text-align': 'center',
-      	// 	'padding-left': '0'
-      	// }, 500);
-
-      	$('#left_container i').animate({
-      		'font-size': '100%'
-      	}, 500);
-
-      	$('#center').animate({
-	    	'width': '63%',
-	    	'left': '15%'
-	    }, 500);
-    }
-
-  </script>
+  <script type="text/javascript" src='js/left-bar.js'></script>
 
 </body>
 
