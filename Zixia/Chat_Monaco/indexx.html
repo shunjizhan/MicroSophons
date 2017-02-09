@@ -35,7 +35,7 @@
 
     #list { list-style: none; }
 
-    .tab-bar { width: 95%; height: 3.5%; /*border: 2px solid blue;*/ min-height: 20px;  position: absolute; list-style-type: none; overflow-x: scroll; white-space: nowrap;}
+    .tab-bar { width: 95%; height: 3.5%; /*border: 2px solid blue;*/ min-height: 50px;  position: absolute; list-style-type: none; overflow-x: scroll; white-space: nowrap;}
 
     .tab { background-color: #A2D9CE !important; height: 100%; width: 12%; text-align: center; padding-top: 0.8%; display: inline-block; border-right: 1px solid black; margin-right: 1px; box-shadow: 1px grey; color: #566573 !important;}
     .tab-selected { background-color: #A2D9CE !important; color: #2E86C1 !important; box-shadow: 2px 2px 1px grey; }
@@ -63,7 +63,7 @@
       /*background-color: #D5F5E3;*/
       background-color: #D1F2EB;
     }
-    .item, #settings {
+    .item{
       display: block;
       height: auto;
       /*text-align: center;*/
@@ -76,7 +76,7 @@
       min-height: 40px;
       /*border: 1px white solid;*/
     }
-    #left_container a:hover { background-color: rgba(255,255,255,0.8); color: #1E8449; cursor: pointer; cursor: hand;}
+    #left_container li:hover, #settings:hover { background-color: rgba(255,255,255,0.8); color: #3498DB; cursor: pointer; cursor: hand;}
     /*#left_container a:visited { background-color: #ABEBC6; color: black; }*/
 
     #color-panel { background-color: inherit; height: 20px; padding: 2px; margin: 0px auto; display: none; left: 30%; width:108px;}
@@ -89,85 +89,81 @@
     #user_form {text-align: center;}
 
     #settings {
-    	font: 150% bold;
-    	/*border: 2px solid red;*/
-    	/*height: 10%;*/
+    	font-size: 150%;
+/*    	border: 2px solid red;
+    	height: 10%;*/
     }
+/*    #settings i {
+    	font-size: 120%;
+    	color: #2E86C1;
+    }*/
 
     i {
     	color: #3498DB;
     }
 
-    #settings i {
-    	font-size: 150%;
-    	color: #2E86C1;
-    }
+
 
     /*#change-name { top: 10%; position: absolute;}*/
   </style>
 </head>
 
 <body>
-<i class="fa fa-cog" aria-hidden="true"></i>
-    
-    	<div ><a id="settings"><div id="left_container"> MENU</a></div>
-       <!-- <div ><a id="settings"><i class="fa fa-cog fa-spin"></i> MENU</a></div> -->
 
-    <ul id='list'>  	
-      <li><a class="item"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</a></li>
+    <div id="left_container">
+	    <ul id='list'>  	
+	      <li id="settings" class="item"><i class="fa fa-cog" aria-hidden="true"></i><span class="menu-word"> MENU</span></li>
 
-      <li><a id="load" class="item">
-      <i class="fa fa-upload" aria-hidden="true"></i> Upload
-      <input type="file" id="file-upload" multiple size="10" style="display: none; margin-left: 3%">
-      </a></li> 
+	      <li id="save" class="item"><i class="fa fa-floppy-o" aria-hidden="true"></i><span class="menu-word"> Save</span></li>
 
-      <li><a id="save-as" class="item"><i class="fa fa-download" aria-hidden="true"></i> Download</a></li>
+	      <li id="load" class="item">
+	      	<i class="fa fa-upload" aria-hidden="true"></i><span class="menu-word"> Upload</span>
+	      	<input type="file" id="file-upload" multiple size="10" style="display: none; margin-left: 3%">
+	      </li> 
 
-      <li><a id="gDrive-save" class="item"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Export</a></li>
-      <li><a id="gDrive-open" class="item"><i class="fa fa-cloud-download" aria-hidden="true"></i> Import</a></li>
+	      <li id="save-as" class="item"><i class="fa fa-download" aria-hidden="true"></i><span class="menu-word"> Download</span></li>
 
-      <li><a id="rename" class="item" ><i class="fa fa-files-o" aria-hidden="true"></i> Rename
-      <div id="ins" style="font-size: 10px; display: none;">Click the tab you want to rename</div>
-      <form id="rename-form" style="display: none;">
-        <input id="rename-input" type="text">
-        <input id="rename-submit" type="submit">
-      </form>
-      <button id="cancel" style="display: none;">Cancel</button></a></li>
+	      <li id="gDrive-save" class="item"><i class="fa fa-cloud-upload" aria-hidden="true"></i><span class="menu-word"> Export</span></li>
+	      <li id="gDrive-open" class="item"><i class="fa fa-cloud-download" aria-hidden="true"></i><span class="menu-word"> Import</span></li>
 
-      <li><a id="theme" class="item"><i class="fa fa-picture-o" aria-hidden="true"></i> Theme 
-        <div id="color-panel">
-          <span id="green" class="colors light" style="background-color: #1A6;"></span>
-          <span id="red" class="colors light" style="background-color: #A53;"></span>
-          <span id="blue" class="colors light" style="background-color: #56D;"></span>
-          <span id="black" class="colors dark" style="background-color: #556;"></span>
-          <span id="purple" class="colors dark" style="background-color: #92A;"></span>
-          <span id="random" class="colors" style="background-color: black;"></span>
-        </div></a>
-      </li>
+	      <li id="rename" class="item">
+		      <i class="fa fa-files-o" aria-hidden="true"></i><span class="menu-word"> Rename</span>
+		      <div id="ins" style="font-size: 10px; display: none;">Click the tab you want to rename</div>
+		      <form id="rename-form" style="display: none;">
+		        <input id="rename-input" type="text">
+		        <input id="rename-submit" type="submit">
+		      </form>
+		      <button id="cancel" style="display: none;">Cancel</button>
+	      </li>
 
-      <li><a id="preview" class="item"><i class="fa fa-television" aria-hidden="true"></i> Preview</a></li>
-      <li><a id="invite" class="item"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Invite</a></li>
+	      <li id="theme" class="item">
+	      	<i class="fa fa-picture-o" aria-hidden="true"></i><span class="menu-word"> Theme</span> 
+	        <div id="color-panel">
+	          <span id="green" class="colors light" style="background-color: #1A6;"></span>
+	          <span id="red" class="colors light" style="background-color: #A53;"></span>
+	          <span id="blue" class="colors light" style="background-color: #56D;"></span>
+	          <span id="black" class="colors dark" style="background-color: #556;"></span>
+	          <span id="purple" class="colors dark" style="background-color: #92A;"></span>
+	          <span id="random" class="colors" style="background-color: black;"></span>
+	        </div>
+	      </li>
 
-    </ul>
+	      <li id="preview" class="item"><i class="fa fa-television" aria-hidden="true"></i><span class="menu-word"> Preview</span></li>
+	      <li id="invite" class="item"><i class="fa fa-paper-plane-o" aria-hidden="true"></i><span class="menu-word"> Invite</span></li>
+
+	    </ul>
     <!-- <div id="output">Last 3 events:<br/></div> -->
     </div>    <!-- end left container -->
 
 
   <div id="center">
     <ul class="tab-bar">
-      <li id="tab-0" class="tab tab-selected">default.js</li>
-
+      <li id="tab-0" class="tab">de</li>
     </ul>
 
     <div id="new-tab"><button type="button">new</button></div>
 
     <div id="container-0" class="container"></div>
-      
-<!--
-    <div id="div1" name="div1"
- style="position:relative;width:350px;height:200px;border:1px solid
- red;overflow:auto"></div>
--->
   </div>    <!-- end center -->
 
 
@@ -191,7 +187,8 @@
         <i class="fa fa-users" aria-hidden="true" id="user-button"></i>
           <span id="currentcount">0</span>
         </div>
-        <ul id="online_users"> </ul> 
+
+        <ul id="online_users"></ul> 
         </p>
       </div>
 
@@ -263,12 +260,20 @@
     });
 
     let collapse = () => {
-    	$('#settings').html('<a><i class="fa fa-cog fa-spin"></i></a>');
-    	$('#list').html('<li><a class="item"><i class="fa fa-floppy-o" aria-hidden="true"></i></a></li><li><a id="load" class="item"><i class="fa fa-upload" aria-hidden="true"></i><input type="file" id="file-upload" multiple size="10" style="display: none; margin-left: 3%"></a></li><li><a id="save-as" class="item"><i class="fa fa-download" aria-hidden="true"></i></a></li><li><a id="gDrive-save" class="item"><i class="fa fa-cloud-upload" aria-hidden="true"></i></a></li><li><a id="gDrive-open" class="item"><i class="fa fa-cloud-download" aria-hidden="true"></i></a></li><li><a id="rename" class="item" ><i class="fa fa-files-o" aria-hidden="true"></i><div id="ins" style="font-size: 10px; display: none;">Click the tab you want to rename</div><form id="rename-form" style="display: none;"><input id="rename-input" type="text"><input id="rename-submit" type="submit"></form><button id="cancel" style="display: none;"></button></a></li><li><a id="theme" class="item"><i class="fa fa-picture-o" aria-hidden="true"></i> <div id="color-panel"><span id="green" class="colors light" style="background-color: #1A6;"></span><span id="red" class="colors light" style="background-color: #A53;"></span><span id="blue" class="colors light" style="background-color: #56D;"></span><span id="black" class="colors dark" style="background-color: #556;"></span><span id="purple" class="colors dark" style="background-color: #92A;"></span><span id="random" class="colors" style="background-color: black;"></span></div></a></li><li><a id="preview" class="item"><i class="fa fa-television" aria-hidden="true"></i></a></li><li><a class="item"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></a></li>');
-    	// $('#list').children().text('');
+    	$('.menu-word').css({
+    		'display': 'none'
+    	});
 
     	$('#left_container').animate({
-      		'width': '5%',
+      		'width': '5%'
+      	}, 500);
+
+      	// $('#left_container > li').animate({
+      	// 	'text-align': 'center',
+      	// 	'padding-left': '0'
+      	// }, 500);
+
+      	$('#left_container i').animate({
       		'font-size': '130%'
       	}, 500);
 
@@ -280,12 +285,21 @@
 
     let expand = () => {
     	setTimeout(() => {
-    		$('#settings').html('<a><i class="fa fa-cog fa-spin"></i> MENU</a>');
-    		$('#list').html('<li><a class="item"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</a></li><li><a id="load" class="item"><i class="fa fa-upload" aria-hidden="true"></i> Upload<input type="file" id="file-upload" multiple size="10" style="display: none; margin-left: 3%"></a></li><li><a id="save-as" class="item"><i class="fa fa-download" aria-hidden="true"></i> Download</a></li><li><a id="gDrive-save" class="item"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Export</a></li><li><a id="gDrive-open" class="item"><i class="fa fa-cloud-download" aria-hidden="true"></i> Import</a></li><li><a id="rename" class="item" ><i class="fa fa-files-o" aria-hidden="true"></i> Rename<div id="ins" style="font-size: 10px; display: none;">Click the tab you want to rename</div><form id="rename-form" style="display: none;"><input id="rename-input" type="text"><input id="rename-submit" type="submit"></form><button id="cancel" style="display: none;">Cancel</button></a></li><li><a id="theme" class="item"><i class="fa fa-picture-o" aria-hidden="true"></i> Theme<div id="color-panel"><span id="green" class="colors light" style="background-color: #1A6;"></span><span id="red" class="colors light" style="background-color: #A53;"></span><span id="blue" class="colors light" style="background-color: #56D;"></span><span id="black" class="colors dark" style="background-color: #556;"></span><span id="purple" class="colors dark" style="background-color: #92A;"></span><span id="random" class="colors" style="background-color: black;"></span></div></a></li><li><a id="preview" class="item"><i class="fa fa-television" aria-hidden="true"></i> Preview</a></li><li><a class="item"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Invite</a></li>');
+    		$('.menu-word').css({
+	    		'display': 'inline'
+	    	});
     	}, 500);	
 
     	$('#left_container').animate({
       		'width': '15%',
+      	}, 500);
+
+      	// $('#left_container > li').animate({
+      	// 	'text-align': 'center',
+      	// 	'padding-left': '0'
+      	// }, 500);
+
+      	$('#left_container i').animate({
       		'font-size': '100%'
       	}, 500);
 
