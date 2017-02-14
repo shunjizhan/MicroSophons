@@ -68,6 +68,32 @@ function socket_function(){
         filenames=msg.filenames;
     });
 
+    $("#invite").click(function(){
+        $("#invite-box").show();
+    });
+    $("#invite-form").submit(function(){
+        var sender = "trexluan@gmail.com";
+        var emails = $("#emails").val().split(",");
+        var subject = "Invitation from " + projectID;
+        var say = "Dear Collaborator,\n" +
+        "You are invited to join our project: " + projectID + " in Microsophons.\n" +
+        "Click the link below to help us to code!\n" + window.location.href + "\n";
+        var token = "2cf52e22-800d-4f46-8d04-b8401fe62119";
+        var smtp = "smtp-mail.outlook.com";
+
+        for(var i=0;i<emails.length;i++){
+            console.log(emails[i]);
+            Email.send(sender, emails[i], subject, say, {token: token});
+        }
+        $("#invite-box").hide();
+        console.log("email sent");
+        return false;
+    });
+    $("#invite-cancel").click(function(){
+        $("#invite-box").hide();
+		return false;
+    });
+
 
     // default name
     /*

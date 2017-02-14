@@ -37,7 +37,7 @@
 
     .tab-bar { width: 95%; height: 3.5%; /*border: 2px solid blue;*/ min-height: 20px;  position: absolute; list-style-type: none; overflow-x: scroll; white-space: nowrap;}
     .tab { background-color: #BBB; height: 100%; width: 12%; text-align: center; padding-top: 0.8%; display: inline-block; border-right: 1px solid black; margin-right: 1px; box-shadow: 1px grey;}
-    .tab:hover { cursor: pointer; cursor: hand; background-color: #BFA !important; }
+    .tab:hover { cursor: pointer; background-color: #BFA !important; }
     #new-tab {float: right; height: 3.5%; width: 5%; /*border: 2px solid black; */position: relative; }
     #new-tab button {height: 100%; width: 100%; position: absolute;}
     .tab-selected {background-color: #BFA; box-shadow: 2px 2px 1px grey; }
@@ -46,7 +46,7 @@
     /*#user-button {border: 1px solid rgba(0,0,0,0.5); width: 100px; border-radius: 3px;}*/
 
     #send-button {font-size: 110%; padding: 0;}
-    #send-button:hover {cursor: pointer; cursor: hand;}
+    #send-button:hover {cursor: pointer;}
     
     #file-upload {font-size: 18px; width: 95px;}
     #save-as {font-size: 18px;}
@@ -69,7 +69,7 @@
       min-height: 40px;
       /*border: 1px white solid;*/
     }
-    #left_container a:hover { background-color: rgba(255,255,255,0.8); color: #1A6; cursor: pointer; cursor: hand;}
+    #left_container a:hover { background-color: rgba(255,255,255,0.8); color: #1A6; cursor: pointer; }
     #left_container a:visited { background-color: #ECF0F1; color: white; }
 
     #color-panel { background-color: inherit; height: 20px; padding: 2px; margin: 0px auto; display: none; left: 30%; width:108px;}
@@ -124,12 +124,19 @@
 
       <li><a class="item">Save <i class="fa fa-cloud-upload" aria-hidden="true"></i></a></li>
       <li><a id="preview" class="item">Preview <i class=" " aria-hidden="true"></i></a></li>
-      <li><a class="item">Invite</a></li>
+      <li><a id="invite" class="item">Invite</a></li>
 
     </ul>
     <!-- <div id="output">Last 3 events:<br/></div> -->
     </div>    <!-- end left container -->
 
+  <div id="invite-box" style="background-color: white; border:solid 1px black; top:40%; left:40%; position: absolute; display: none; z-index: 2000;">
+    <form id="invite-form">Enter emails (seperated by commas)
+      <input id="emails" type="text" style="max-width: 200px; height: auto">
+      <input type="submit">
+      <button id="invite-cancel">Cancel</button>
+    </form>
+  </div>
 
   <div id="center">
     <ul class="tab-bar">
@@ -211,7 +218,7 @@
 
   <!-- Google Drive -->
   <script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
-
+  <script src="http://smtpjs.com/smtp.js"></script>
   
   <script src="js/load_socket.js" type="text/javascript"></script>
   <script src="index.js" type="text/javascript"></script>
