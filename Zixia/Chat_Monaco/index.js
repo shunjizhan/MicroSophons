@@ -114,6 +114,7 @@ io.on('connection', function(socket) {
     count++;
     var current = count;
     var room = "";
+    var added = false;
 
     //set up user data structure
     var user_object = {
@@ -121,23 +122,32 @@ io.on('connection', function(socket) {
         name: "User" + Math.floor(Math.random() * 99),
         color: "rgb("+Math.floor(Math.random()*191+64)+","+Math.floor(Math.random()*191+64)+","+Math.floor(Math.random()*191+64)+")"
     };
+    socket.emit('reconnect', '');
 
     //add user to the room
     socket.on('add-user',function(msg){
-        room = msg.room;
-        socket.join(room);
-        user_object.name = 'User'+msg.number;
-        if(rooms[room]===undefined){
-            rooms[room] = [user_object];
-        }
-        else{
-            rooms[room].push(user_object);
-        }
+        if(!added){
+            added=true;
+            room = msg.room;
+            socket.join(room);
+            user_object.name = msg.name;
+            if(rooms[room]===undefined){
+                rooms[room] = [user_object];
+            }
+            else{
+                rooms[room].push(user_object);
+            }
+            if(msg.reconnect){
+                console.log("reconnect:");
+            }
 
-        console.log(rooms);
-        io.in(room).emit('update_user', rooms[room]);
-        socket.broadcast.to(room).emit('new-user', socket.id); // create cursor
-        socket.broadcast.to((rooms[room])[0].id).emit('request-content', socket.id);
+            console.log(rooms);
+            io.in(room).emit('update_user', rooms[room]);
+            socket.broadcast.to(room).emit('new-user', socket.id); // create cursor
+            if(!msg.reconnect){
+                socket.broadcast.to((rooms[room])[0].id).emit('request-content', socket.id);
+            }
+        }
     });
 
     //io.emit('current user',current);
@@ -190,14 +200,14 @@ io.on('connection', function(socket) {
         count--;
         //var current=count;
         //io.emit('current user',current);
-        console.log(rooms);
-        console.log(room);
 
         if(rooms[room]!==undefined){
             rooms[room].splice(rooms[room].indexOf(user_object), 1);
         }
         io.in(room).emit('update_user', rooms[room]);
         socket.broadcast.to(room).emit('user-exit', socket.id);
+        console.log(rooms);
+        console.log(room);
         /*
         users.splice(users.indexOf(this_user_name), 1);
 	    color.splice(userID.indexOf(socket.id),1);

@@ -74,6 +74,7 @@ socket.on('content', function(msg){
     //showEvent('remote content change - ' + msg);
 
     sendContent=false;
+    sendCursor=false;
     editors[msg.editor_id].executeEdits('keyboard', [{
         identifier: {major: 0, minor: 0},
         range: monaco.Range.lift(msg.range),
@@ -82,6 +83,7 @@ socket.on('content', function(msg){
         isAutoWhitespaceEdit: false
     }]);
     sendContent=true;
+    sendCursor=true;
 })
 
 
@@ -96,6 +98,7 @@ socket.on('user-exit', function(msg){
 });
 
 socket.on('request-content', function(msg){
+    console.log("content requested");
     var content=[];
     var new_lang=[];
     for(var i=0;i<editors.length;i++){
@@ -463,6 +466,7 @@ function get_type(extension){
             return 'plaintext';
 
     }
+
 }
 
 
