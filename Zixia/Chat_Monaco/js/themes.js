@@ -112,10 +112,14 @@ function dark() {
 	}	
 }
 
-$('#change-name').hover(() => {
+$('#chat-container').hover(() => {
 	$('#user_form').stop().fadeIn(300);
+	$('#user_id').stop().animate({'height': '70px'});
+	$('#lower-container').stop().animate({'top': '70px'}, 300);
 }, () => {
-	$('#user_form').stop().fadeOut(1000);
+	$('#user_form').stop().fadeOut(300);
+	$('#user_id').stop().animate({'height': '50px'});
+	$('#lower-container').stop().animate({'top': '50px'}, 300);
 });
 
 $('#user_form').hover(() => {
