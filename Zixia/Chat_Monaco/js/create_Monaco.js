@@ -75,6 +75,10 @@ socket.on('content', function(msg){
 
     sendContent=false;
     sendCursor=false;
+    var position = editors[msg.editor_id].getPosition();
+    var selection = editors[msg.editor_id].getSelection();
+    console.log(position);
+    console.log(msg.range);
     editors[msg.editor_id].executeEdits('keyboard', [{
         identifier: {major: 0, minor: 0},
         range: monaco.Range.lift(msg.range),
@@ -82,6 +86,12 @@ socket.on('content', function(msg){
         forceMoveMarkers: false,
         isAutoWhitespaceEdit: false
     }]);
+    
+    if(position.lineNumber===msg.range.startLineNumber&&position.column===msg.range.startColumn){
+        editors[msg.editor_id].setPosition(position);
+        editors[msg.editor_id].setSelection(selection);
+    }
+    
     sendContent=true;
     sendCursor=true;
 })
@@ -119,6 +129,21 @@ socket.on('new-tab', function(msg){
     sendTab=false;
     new_tab(msg.tab_name, msg.content, msg.language, false, msg.new_ID);
     sendTab=true;
+});
+
+socket.on('disconnect', function(msg){
+    $('#disconnect').show();
+    for (var i = editors.length - 1; i >= 0; i--) {
+        editors[i].updateOptions({readOnly:true});
+    }
+    socket.connect();
+});
+
+socket.on('reconnect', function(msg){
+    $('#disconnect').hide();
+    for (var i = editors.length - 1; i >= 0; i--) {
+        editors[i].updateOptions({readOnly:false});
+    }
 });
 
 $("#file-upload").on('change', function(e){
@@ -291,7 +316,7 @@ function setup_editor(div, content, language){
         language: language,
         glyphMargin: true,
         nativeContextMenu: false,
-        theme: light?'vs':'vs-dark',
+        theme: light?'vs':'hc-black',
         automaticLayout: true
      });
         var decorations = editor.deltaDecorations([], [
@@ -308,9 +333,8 @@ function setup_editor(div, content, language){
     // register two events
     editor.onDidChangeCursorPosition(function(e){
         //showEvent('cursor change - ' + e.position + e.reason);
-
-
-        if(e.reason!==0||sendCursor){
+        console.log(e.reason);
+        if(e.reason!==0&&e.reason!==2||sendCursor){
             socket.emit('cursor', { 
                 room: projectID,
                 id: socket.io.engine.id,
