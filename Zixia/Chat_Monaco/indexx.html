@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-  <title>Socket.IO chat</title>
+  <title>Sophons</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link href='./js/cursor.css' type='text/css' rel='stylesheet'/>
   <style>
@@ -16,7 +16,7 @@
     #messages li { padding: 5px 10px; }
     #messages li:nth-child(odd) { background: rgba(255, 255, 255, 0.4); }
 
-    .container { width:100%; height: 96.5%; top: 25px; /*border:1px solid red;*/ position: absolute; overflow: hidden; }  /* for Monaco */
+    .container { width:100%; height: 96.5%; top: 23px; /*border:1px solid red;*/ position: absolute; overflow: hidden; }  /* for Monaco */
 
     #user_id { position: absolute; top: 0px; right: 0px; /*border: 2px dotted red;*/ padding:3px; width: 100%; border-radius: 2px; padding: 5px; height: 50px;} /* upper container */
     #lower-container { position: absolute; top: 50px; /*border: 2px dotted blue;*/ height: calc(100% - 50px); width: 100%;} /*lower container*/
@@ -39,13 +39,13 @@
 
     #list { list-style: none; }
 
-    .tab-bar { width: 95%; height: 3.5%; /*border: 2px solid blue;*/ min-height: 25px;  position: absolute; list-style-type: none; overflow-x: scroll; white-space: nowrap;}
+    .tab-bar { width: 95%; height: 25px; /*border: 2px solid blue;*/  position: absolute; list-style-type: none; overflow-x: scroll; white-space: nowrap;}
 
 
-    .tab { background-color: #A2D9CE !important; height: 100%; width: auto; text-align: center; padding-top: 0.8%; display: inline-block; border-right: 1px solid black; margin-right: 1px; box-shadow: 1px grey; color: #566573 !important; overflow: scroll; padding-left: 5px; padding-right: 5px;}
-    .tab-selected { background-color: #A2D9CE !important; color: #2E86C1 !important; box-shadow: 2px 2px 1px grey; }
+    .tab { background-color: #A2D9CE; height: auto; width: auto; text-align: center; top:2px; margin-top: 2px; display: inline-block; margin-left: 2px; box-shadow: 1px grey; color: #566573; overflow: scroll; padding: 3px 5px; border-radius: 2px;}
+    .tab-selected { background-color: #A2D9CE; color: #2E86C1; }
 
-    .tab:hover { cursor: pointer; cursor: hand; color: #2E86C1 !important; }
+    .tab:hover { cursor: pointer; cursor: hand; color: #2E86C1; }
 
     #new-tab {float: right; height: 3.5%; width: 5%; /*border: 2px solid black; */position: relative; min-height: 25px;}
     #new-tab button {height: 100%; width: 100%; position: absolute;}
@@ -73,12 +73,13 @@
       height: auto;
       /*text-align: center;*/
       /*margin-left: 25%;*/
-      padding-left: 22%;
+      padding-left: 15%;
       font-size: 150%;
       /*color: white;*/
       text-decoration: none;
       line-height: 40px;
       min-height: 40px;
+
       /*border: 1px white solid;*/
     }
     #left_container a:visited { background-color: #ECF0F1; color: white; }
@@ -118,8 +119,11 @@
 
     <div id="left_container">
 
-	    <ul id='list'>  	
-	      <li id="settings" class="item"><i class="fa fa-cog" aria-hidden="true"></i><span class="menu-word"> Sophones</span></li>
+	    <ul id='list'>
+
+<!-- 	      <li id="settings" class="item"><i class="fa fa-cog" aria-hidden="true"></i><span class="menu-word"> Sophons</span></li> -->
+
+        <li class="item" style="font-family: serif; font-style: italic; font-weight: bold; margin: 5px 0px; font-size: 25px; padding-left: 10%;"><img src="images/logo.png" style="width: 25px; margin-right: 3px;" />Sophons</li>
 
 	      <li id="save" class="item"><i class="fa fa-floppy-o" aria-hidden="true"></i><span class="menu-word"> Save</span></li>
 
@@ -148,7 +152,7 @@
 	        <div id="color-panel">
 	          <span id="green" class="colors light" style="background-color: #1A6;"></span>
 	          <span id="red" class="colors light" style="background-color: #A53;"></span>
-	          <span id="blue" class="colors light" style="background-color: #56D;"></span>
+	          <span id="blue" class="colors" style="background-color: #56D;"></span>
 	          <span id="black" class="colors dark" style="background-color: #556;"></span>
 	          <span id="purple" class="colors dark" style="background-color: #92A;"></span>
 	          <span id="random" class="colors" style="background-color: black;"></span>
@@ -242,8 +246,8 @@
   <!-- <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
 
   <!-- Socket.io -->
-  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-  <!-- <script src="js/socket.js"></script> -->
+  <!-- <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script> -->
+  <script src="js/socket.js"></script>
 
   <!-- Google Drive -->
   <script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>

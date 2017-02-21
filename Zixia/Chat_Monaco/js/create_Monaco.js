@@ -1,13 +1,7 @@
 var default_content = [
-    '"use strict";',
-    'function Person(age) {',
-    '   if (age) {',
-    '       this.age = age;',
-    '   }',
-    '}',
-    'Person.prototype.getAge = function () {',
-    '   return this.age;',
-    '};'
+    'function hello() {',
+    '   alert("Hello World");',
+    '}'
 ].join('\n');
 
 var sendCursor=false;

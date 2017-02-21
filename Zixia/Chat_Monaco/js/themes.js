@@ -1,6 +1,8 @@
 var colors = ['green', 'red', 'blue', 'black', 'purple'];
 
 
+
+
 $('#theme').hover(function(){
 	//alert("hovered");
 	$('#color-panel').fadeIn(500);
@@ -36,12 +38,19 @@ $('#red').click(function(){
 	$('#send-button').css({'background-color':'#F8B'});
 });
 $('#blue').click(function(){
-	$('body').css({'background-color':'#DDE'});
-	$('#left_container').css({'background-color':'#56D'});
-	$('#messages').css({'background-color':'#BCE'});
-	$('#chat-box').css({'background-color':'#BAE'});
-	$('.tab-selected').css({'background-color':'#BAF'});
+	$('body').css({'background-color':'#6C8BB6'});
+	$('#left_container').css({'background-color':'#3A629E'});
+	$('#messages').css({'background-color':'#F3F3F3'});
+	$('#chat-box').css({'background-color':'#EEEEEE'});
+	$('.tab').css({'background-color':'#6C8BB6', 'color':'#FFF'})
+	$('.tab-selected').css({'background-color':'#EEF','color':'#3A629E'});
 	$('#send-button').css({'background-color':'#8DF'});
+	$('i').css({'color':'#3A629E'});
+	$('.item i').css({'color':'#FFF'});
+	$('.item').css({'color':'#FFF'});
+
+
+
 });
 $('#black').click(function(){
 	$('body').css({'background-color':'#444'});
@@ -128,4 +137,4 @@ $('#user_form').hover(() => {
 	$('#user_form').stop().fadeOut(1000);
 });
 
-
+$('#blue').click();

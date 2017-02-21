@@ -4,10 +4,12 @@ var socket = io();
 var splitURL = window.location.href.split('/');
 var projectID = splitURL[splitURL.length-1];
 
+
 $(document).ready(socket_function);
 
 function socket_function(){
     //alert(projectID);
+    document.title = projectID + " | Sophons";
     var num = Math.floor(Math.random()*99);
     $('#name').text('User'+num);
 
