@@ -42,7 +42,7 @@ function main(){
 		$('#position').show();					  
 	});
     console.log("after mousemove");
-    id = setInterval(move, 10);
+    id = setInterval(move, 15);
 }
 
 function move(){

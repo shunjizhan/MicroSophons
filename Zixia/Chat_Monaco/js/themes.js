@@ -108,7 +108,7 @@ function dark() {
 	$('#send-button').css({'color':'white'});
 	$('#messages').css({'color':'white'});
 	for(var i=0; i<editors.length;i++){
-		editors[i].updateOptions({'theme':'vs-dark'});
+		editors[i].updateOptions({'theme':'hc-black'});
 	}	
 }
 
