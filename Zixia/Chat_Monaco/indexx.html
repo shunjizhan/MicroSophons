@@ -42,7 +42,7 @@
     .tab-bar { width: 95%; height: 25px; /*border: 2px solid blue;*/  position: absolute; list-style-type: none; overflow-x: scroll; white-space: nowrap;}
 
 
-    .tab { background-color: #A2D9CE; height: auto; width: auto; text-align: center; top:2px; margin-top: 2px; display: inline-block; margin-left: 2px; box-shadow: 1px grey; color: #566573; overflow: scroll; padding: 3px 5px; border-radius: 2px;}
+    .tab { background-color: none; height: auto; width: auto; text-align: center; top:2px; margin-top: 2px; display: inline-block; margin-left: 2px; box-shadow: 1px grey; color: #566573; overflow: scroll; padding: 3px 5px; border-radius: 2px;}
     .tab-selected { background-color: #A2D9CE; color: #2E86C1; }
 
     .tab:hover { cursor: pointer; cursor: hand; color: #2E86C1; }
@@ -150,11 +150,11 @@
 	      <li id="theme" class="item">
 	      	<i class="fa fa-picture-o" aria-hidden="true"></i><span class="menu-word"> Theme</span> 
 	        <div id="color-panel">
-	          <span id="green" class="colors light" style="background-color: #1A6;"></span>
-	          <span id="red" class="colors light" style="background-color: #A53;"></span>
-	          <span id="blue" class="colors" style="background-color: #56D;"></span>
-	          <span id="black" class="colors dark" style="background-color: #556;"></span>
-	          <span id="purple" class="colors dark" style="background-color: #92A;"></span>
+	          <span id="green" class="colors" style="background-color: #307850;"></span>
+	          <span id="red" class="colors" style="background-color: #C64E36;"></span>
+	          <span id="blue" class="colors" style="background-color: #3A629E;"></span>
+	          <span id="black" class="colors" style="background-color: #444;"></span>
+	          <span id="purple" class="colors" style="background-color: #82407E;"></span>
 	          <span id="random" class="colors" style="background-color: black;"></span>
 	        </div>
 	      </li>
@@ -166,11 +166,12 @@
     <!-- <div id="output">Last 3 events:<br/></div> -->
     </div>    <!-- end left container -->
 
-  <div id="invite-box" style="background-color: white; border:solid 1px black; top:40%; left:40%; position: absolute; display: none; z-index: 2000;">
-    <form id="invite-form">Enter emails (seperated by commas)
+  <div id="invite-box" style="background-color: white; border:solid 1px black; margin:auto; top: 40%; left: 35%; padding: 10px 10px; position: fixed; display: none; z-index: 2000;">
+    <textarea id='url' rows='1' cols='50'></textarea><br/><button id='copy'>Copy Link</button>
+    <form id="invite-form">Enter emails (seperated by commas)<br/>
       <input id="emails" type="text" style="max-width: 200px; height: auto">
       <input type="submit">
-      <button id="invite-cancel">Cancel</button>
+      <button id="invite-cancel">Close</button>
     </form>
   </div>
 
@@ -258,10 +259,11 @@
 
   <!-- Monaco -->
   <script src="monaco-editor/min/vs/loader.js" type="text/javascript"></script>
+  <script type="text/javascript" src="js/themes.js"></script>
 	<script src="js/create_Monaco.js" type="text/javascript"></script>
 
   <script type="text/javascript" src="js/gdrive.js"></script>
-  <script type="text/javascript" src="js/themes.js"></script>
+
 
 <!--   <script type="text/javascript">
     var h = window.innerHeight

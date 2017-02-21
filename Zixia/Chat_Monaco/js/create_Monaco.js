@@ -441,10 +441,13 @@ function switch_tab(new_id){
     $('#container-' + new_id).css('visibility', 'visible');
     $('#tab-' + new_id).css({
         'background-color':$('#tab-' + current_ID).css('background-color'),
-        'color':light?'black':'white'
+        'color':$('#tab-' + current_ID).css('color')
     });
     $('#tab-' + current_ID).removeClass('tab-selected');
-    $('#tab-' + current_ID).css({'background-color':'#BBB','color':'#333'});
+    $('#tab-' + current_ID).css({
+        'background-color': $('body').css('background-color'),
+        'color':'#FFF'
+    });
     current_ID = new_id;
 }
 

@@ -80,27 +80,37 @@ function socket_function(){
 
     $("#invite").click(function(){
         $("#invite-box").show();
+        $("#url").text(window.location.href);
+        $("#url").focus();
+        $("#url").select();
     });
+    $("#copy").click(function(){
+        $("#url").focus();
+        $("#url").select();
+        try {
+            var successful = document.execCommand('copy');
+            var msg = successful ? 'successful' : 'unsuccessful';
+            console.log('Copying text command was ' + msg);
+        } 
+        catch (err) {
+            console.log('Oops, unable to copy');
+        }
+    });
+    
     $("#invite-form").submit(function(){
         var sender = "microsophons@outlook.com";
         var emails = $("#emails").val().split(",");
         var subject = "Invitation from " + projectID;
         var say = "Dear Collaborator,\n" +
-        "You are invited to join our project: " + projectID + " in Microsophons.\n" +
+        "You are invited to join our project: " + projectID + " in Sophons.\n" +
         "Click the link below to help us to code!\n" + window.location.href + "\n";
-        var token = "9bd9c09f-a64d-4d57-b590-835eb735e17a";
-        var smtp = "smtp-mail.outlook.com";
-
-        for(var i=0;i<emails.length;i++){
-            console.log(emails[i]);
-            //Email.send(sender, emails[i], subject, say, {token: token});
-            Email.send(sender, emails[i], subject, say, smtp, "microsophons", "ThreeBody");
-
-
+        say = encodeURIComponent(say);
+        var mailto_link = 'mailto:' + emails.join(';') + '?subject=' + subject + '&body=' + say;
+        var win = window.open(mailto_link, 'emailWindow');
+        if (win && win.open && !win.closed){
+            win.close();
         }
-        $("#invite-box").hide();
-        console.log("email sent");
-        return false;
+
     });
     $("#invite-cancel").click(function(){
         $("#invite-box").hide();
