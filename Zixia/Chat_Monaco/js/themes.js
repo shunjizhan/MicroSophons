@@ -14,7 +14,7 @@ var colors = {
 		left_container: '#3A629E',
 		body: '#6C8BB6',
 		messages: '#E8EAF6',
-		chat_box: '#C5CAE9',
+		chat_box: '#6C8BB6',
 		tab_select_bg: '#EEF',
 		item: '#FFF',
 		right_text: '#000',

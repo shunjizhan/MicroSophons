@@ -16,7 +16,7 @@
     #messages li { padding: 5px 10px; }
     #messages li:nth-child(odd) { background: rgba(255, 255, 255, 0.4); }
 
-    .container { width:100%; height: 96.5%; top: 23px; /*border:1px solid red;*/ position: absolute; overflow: hidden; }  /* for Monaco */
+    .container { width:100%; height: 96.5%; top: 50px; /*border:1px solid red;*/ position: absolute; overflow: hidden; }  /* for Monaco */
 
     #user_id { position: absolute; top: 0px; right: 0px; /*border: 2px dotted red;*/ padding:3px; width: 100%; border-radius: 2px; padding: 5px; height: 50px;} /* upper container */
     #lower-container { position: absolute; top: 50px; /*border: 2px dotted blue;*/ height: calc(100% - 50px); width: 100%;} /*lower container*/
@@ -39,15 +39,15 @@
 
     #list { list-style: none; }
 
-    .tab-bar { width: 95%; height: 25px; /*border: 2px solid blue;*/  position: absolute; list-style-type: none; overflow-x: scroll; white-space: nowrap;}
+    .tab-bar { width: 95%; height: 50px; /*border: 2px solid blue;*/  position: absolute; list-style-type: none; overflow-x: scroll; white-space: nowrap; }
 
 
-    .tab { background-color: none; height: auto; width: auto; text-align: center; top:2px; margin-top: 2px; display: inline-block; margin-left: 2px; box-shadow: 1px grey; color: #566573; overflow: scroll; padding: 3px 5px; border-radius: 2px;}
+    .tab { background-color: none; height: auto; width: auto; text-align: center; top:2px; margin-top: 2px; display: inline-block; margin-left: 2px; box-shadow: 1px grey; color: #566573; overflow: scroll; padding: 3px 5px; border-radius: 2px; margin-top: 25px; font-size: 130%;}
     .tab-selected { background-color: #A2D9CE; color: #2E86C1; }
 
     .tab:hover { cursor: pointer; cursor: hand; color: #2E86C1; }
 
-    #new-tab {float: right; height: 3.5%; width: 5%; /*border: 2px solid black; */position: relative; min-height: 25px;}
+    #new-tab {float: right; height: 3.5%; width: 5%; /*border: 2px solid black; */position: relative; min-height: 25px; margin-top: 25px; font-size: 130%;}
     #new-tab button {height: 100%; width: 100%; position: absolute;}
     /*#new {height: 100%; width: 100%;}*/
 
@@ -180,7 +180,7 @@
       <li id="tab-0" class="tab tab-selected">default.js
     </ul>
 
-    <div id="new-tab"><button type="button">new</button></div>
+    <div id="new-tab" style="color: white">+</div>
 
     <div id="container-0" class="container"></div>
 
