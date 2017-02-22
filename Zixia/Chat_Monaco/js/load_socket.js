@@ -74,12 +74,14 @@ function socket_function(){
         $('#' +msg.old_name).attr('id', msg.new_name).text(msg.new_name);
     });
 
-    socket.on('reply-content', function(msg){
+    socket.on('reply-content', function(msg){ // get information from other users
         content=msg.content;
         lang=msg.language;
         editorID=msg.editorID;
         filenames=msg.filenames;
     });
+
+
 
     $("#invite").click(function(){
         $("#invite-box").show();
@@ -119,6 +121,8 @@ function socket_function(){
         $("#invite-box").hide();
 		return false;
     });
+
+
 
     // default name
     /*

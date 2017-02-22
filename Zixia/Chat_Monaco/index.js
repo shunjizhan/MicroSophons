@@ -159,7 +159,6 @@ io.on('connection', function(socket) {
         var fname=obj.ffname;
         var pid=obj.ppid;
         var content=obj.ccontent;
-
         //fid
         var query = new azure.TableQuery().where("PartitionKey eq 'B' and PID eq '"+pid+"' and FN eq '"+fname+"'");
         tableSvc.queryEntities('myfile',query, null, function(error, result, response) {
@@ -169,54 +168,47 @@ io.on('connection', function(socket) {
                 if (result.entries.length==0){
                     console.log("need new");
                     insertnewfiletable(fname,pid,content);
-
                 }
                 else{
                     console.log("need not new");
                     var keyid=result.entries[0].RowKey;
                     console.log(keyid['_']);
                     updatefiletable(keyid['_'],fname,pid,content);
-
                 }
-
             }
             else{
                 console.log(error);
             }
         });
-
-
         //var keyid=(Math.floor((Math.random() * 1000) + 1)).toString();
     });
     
-        socket.on('get-save',function(ppid){
+
+    socket.on('get-saved',function(ppid){
         var query = new azure.TableQuery().where("PartitionKey eq 'B' and PID eq '"+ppid+"'");
         tableSvc.queryEntities('myfile',query, null, function(error, result, response) {
-        if (!error){
-            if (result.entries.length==0){
-                console.log("thats a new project, no file saved before");
-                true;                
+            if (!error){
+                console.log(result);
+                if (result.entries.length===0){
+                    console.log("thats a new project, no file saved before");               
+                }
+                else{
+                    var data = result.entries;
+                    var receive = {filename:[], content:[]};
+
+                    for (var i = 0; i < data.length; i++) {
+                        receive.filename.push(data[i].FN._);
+                        receive.content.push(data[i].CC._);
+                    }
+
+                    console.log(receive);
+                    socket.emit('receive-saved', receive);
+                }
             }
             else{
-                var data = result.entries;
-                var result = [];
-                for (var i = 0; i < data.length; i++) {
-                    file = data[i];
-                    result[i] = {
-                        'filename': file.FN._,
-                        'content': file.CC._
-                    };
-                }
-
-                // console.log(result);
-                io.emit('receive-save', result);
+                console.log(error);
             }
-        }
-        else{
-            console.log(error);
-        
-        }
-    });
+        });
 
     });
 

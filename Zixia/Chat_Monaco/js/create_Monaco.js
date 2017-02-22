@@ -1,6 +1,16 @@
 var default_content = [
     'function hello() {',
     '   alert("Hello World");',
+    '   hang_out_tomorrow();',
+    '}',
+    '',
+    'function hang_out_tomorrow(){',
+    '   if(weather_tomorrow() = "rainy"){',
+    '       return false;',
+    '   }',
+    '   else{',
+    '       return true;',
+    '   }',
     '}'
 ].join('\n');
 
@@ -9,26 +19,42 @@ var sendContent = true;
 var sendTab=true;
 
 require.config({ paths: { 'vs': 'monaco-editor/min/vs' }});
-require(['vs/editor/editor.main'], editor_function);
+require(['vs/editor/editor.main'], function(){
+    var timeoutID_1 = setTimeout(editor_function, 1000);
+});
 
 function editor_function() {
-    console.log(content.length);
-    if(content.length===0){
-        var editor = setup_editor('container-0', default_content, 'javascript');
-        editors.push(editor);
-        editorID.push(0);
-        filenames.push('default.js');
-    }
-    else{
-        var editor = setup_editor('container-0', content[0], lang[0]);
-        editors.push(editor);
-        sendTab = false;
-        for(var i=1;i<content.length;i++){
-            var editor_ = new_tab(filenames[i], content[i], lang[i], false, editorID[i]);
-        }
-        sendTab = true;
 
-    }
+    socket.on('receive-saved', function(msg){ // get information from database
+        content=msg.content;
+        filenames=msg.filename;
+        for(var i=0;i<filenames.length;i++){
+            lang.push(get_type_from_name(filenames[i]));
+            editorID.push(i);
+        }
+    })
+    console.log(content.length);
+
+    if(content.length===0){
+        socket.emit('get-saved', projectID);
+        var timeoutID_2 = setTimeout(function(){
+            if(content.length===0){
+                var editor = setup_editor('container-0', default_content, 'javascript');
+                editors.push(editor);
+                editorID.push(0);
+                filenames.push('default.js');
+            }
+            else{
+                var editor = setup_editor('container-0', content[0], lang[0]);
+                editors.push(editor);
+                sendTab = false;
+                for(var i=1;i<content.length;i++){
+                    var editor_ = new_tab(filenames[i], content[i], lang[i], false, editorID[i]);
+                }
+                sendTab = true;
+            }
+        }, 1000)
+    };
 }
 
 $('#new-tab').on('click', function(){
@@ -72,8 +98,6 @@ socket.on('content', function(msg){
     sendCursor=false;
     var position = editors[msg.editor_id].getPosition();
     var selection = editors[msg.editor_id].getSelection();
-    console.log(position);
-    console.log(msg.range);
     editors[msg.editor_id].executeEdits('keyboard', [{
         identifier: {major: 0, minor: 0},
         range: monaco.Range.lift(msg.range),
@@ -355,7 +379,6 @@ function setup_editor(div, content, language){
     // register two events
     editor.onDidChangeCursorPosition(function(e){
         //showEvent('cursor change - ' + e.position + e.reason);
-        console.log(e.reason);
         if(e.reason!==0&&e.reason!==2||sendCursor){
             socket.emit('cursor', { 
                 room: projectID,
@@ -417,7 +440,7 @@ function new_tab(tab_name, content, language, foreground, new_ID){
         'id': 'tab-' + new_ID,
         'class': 'tab',
         'text': tab_name,
-        //'css': {'background-color': foreground?'Yellow':'White'}
+        'css': {'color': 'white'}
     });
 
     $('.tab-bar').append(new_li);
@@ -477,6 +500,16 @@ function switch_tab(new_id){
         'color':'#FFF'
     });
     current_ID = new_id;
+}
+
+function get_type_from_name(name){
+    var split_name = name.split('.');
+    if(split_name.length===1){
+        return get_type('');
+    }
+    else{
+        return get_type(split_name[split_name.length-1]);
+    }
 }
 
 function get_type(extension){
