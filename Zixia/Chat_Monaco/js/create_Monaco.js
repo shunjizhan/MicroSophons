@@ -284,6 +284,32 @@ $('#user-button').hover(function(){
 });
 
 
+$("#save").on('click',function(){
+    alert("ssss");
+
+    //content
+    var savevalue=editors[current_ID].getValue();
+
+    //project id
+    var cid = window.location.pathname;
+    cid=cid.substring(1);
+    alert(cid);
+
+    socket.emit('savec',savevalue);
+    socket.emit('savec',cid);
+
+
+    //file name
+    var name=filenames[current_ID];
+    alert(name);
+
+    var obj = {ccontent:savevalue,ppid:cid,ffname:name};
+    socket.emit('cloud-save',obj);
+
+});
+
+
+
 $('#load').hover(function(){
     $("#file-upload").fadeIn(500);
     if($('#load').height()>40){

@@ -15,13 +15,14 @@ function checkReceive(){
 	        editors[i].updateOptions({readOnly:true});
 	    }
 	    socket.connect();
+
 	}
 	else{
 		$('#disconnect').hide();
 	    for (var i = editors.length - 1; i >= 0; i--) {
 	        editors[i].updateOptions({readOnly:false});
 	    }
-	    socket.connect();
+	   	
 	}
 }
 

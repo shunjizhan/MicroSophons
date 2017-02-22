@@ -1,6 +1,7 @@
 let collapsed = false;
 
 $('#settings').click(() => {
+  console.log("!!!!!")
   if(collapsed) {
     expand();
     collapsed = !collapsed;
