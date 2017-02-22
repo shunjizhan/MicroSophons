@@ -189,7 +189,36 @@ io.on('connection', function(socket) {
         //var keyid=(Math.floor((Math.random() * 1000) + 1)).toString();
     });
     /////////////////////////////////
+        socket.on('get-save',function(ppid){
+        var query = new azure.TableQuery().where("PartitionKey eq 'B' and PID eq '"+ppid+"'");
+        tableSvc.queryEntities('myfile',query, null, function(error, result, response) {
+        if (!error){
+            if (result.entries.length==0){
+                console.log("thats a new project, no file saved before");
+                true;                
+            }
+            else{
+                var data = result.entries;
+                var result = [];
+                for (var i = 0; i < data.length; i++) {
+                    file = data[i];
+                    result[i] = {
+                        'filename': file.FN._,
+                        'content': file.CC._
+                    };
+                }
 
+                // console.log(result);
+                io.emit('receive-save', result);
+            }
+        }
+        else{
+            console.log(error);
+        
+        }
+    });
+
+    });
 
 
     socket.on('disconnect', function() {
