@@ -12,6 +12,7 @@ require.config({ paths: { 'vs': 'monaco-editor/min/vs' }});
 require(['vs/editor/editor.main'], editor_function);
 
 function editor_function() {
+    console.log(content.length);
     if(content.length===0){
         var editor = setup_editor('container-0', default_content, 'javascript');
         editors.push(editor);
@@ -111,6 +112,7 @@ socket.on('request-content', function(msg){
     }
     socket.emit('reply-content', {
         room: projectID,
+        senderID: msg,
         content: content,
         language: new_lang,
         filenames: filenames,

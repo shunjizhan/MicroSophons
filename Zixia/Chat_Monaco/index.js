@@ -140,8 +140,8 @@ io.on('connection', function(socket) {
             if(msg.reconnect){
                 console.log("reconnect:");
             }
-
-            console.log(rooms);
+            console.log(io.sockets.adapter.rooms);
+            //console.log(rooms);
             io.in(room).emit('update_user', rooms[room]);
             socket.broadcast.to(room).emit('new-user', socket.id); // create cursor
             if(!msg.reconnect){
@@ -149,15 +149,12 @@ io.on('connection', function(socket) {
             }
         }
     });
-
-    //io.emit('current user',current);
-
-    //users.push(this_user_name);
-    //userID.push(socket.id);
     
+
     
     socket.on('reply-content', function(msg){
-        io.in(msg.room).emit('reply-content', msg);
+        console.log(msg);
+        socket.broadcast.to(msg.senderID).emit('reply-content', msg);
     });
 
     socket.on('chat message', function(msg) {
@@ -195,6 +192,10 @@ io.on('connection', function(socket) {
         io.in(room).emit('user-name', message);
     });
 
+    socket.on('ping', function(msg){
+        socket.emit('ping',msg);
+    })
+
     socket.on('disconnect', function() {
         console.log('disconnected:' + socket.id + ' ' + user_object.name);
         count--;
@@ -206,8 +207,9 @@ io.on('connection', function(socket) {
         }
         io.in(room).emit('update_user', rooms[room]);
         socket.broadcast.to(room).emit('user-exit', socket.id);
-        console.log(rooms);
-        console.log(room);
+        console.log(io.sockets.adapter.rooms);
+        //console.log(rooms);
+        //console.log(room);
         /*
         users.splice(users.indexOf(this_user_name), 1);
 	    color.splice(userID.indexOf(socket.id),1);

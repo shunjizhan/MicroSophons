@@ -3,6 +3,9 @@ var socket = io();
 
 var splitURL = window.location.href.split('/');
 var projectID = splitURL[splitURL.length-1];
+if(projectID.slice(-1)==='?'||projectID.slice(-1)==='#'){
+    projectID = projectID.substring(0, projectID(length));
+}
 
 
 $(document).ready(socket_function);
@@ -110,7 +113,7 @@ function socket_function(){
         if (win && win.open && !win.closed){
             win.close();
         }
-
+        return false;
     });
     $("#invite-cancel").click(function(){
         $("#invite-box").hide();
