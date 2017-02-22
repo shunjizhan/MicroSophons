@@ -13,6 +13,10 @@ var router = express.Router();
 var fs = require("fs");
 var ini = false;
 
+var azure = require("azure-storage");
+var tableSvc = azure.createTableService();
+var entityGen = azure.TableUtilities.entityGenerator;
+
 /*
 var userID = [];
 var users = [];
@@ -22,52 +26,6 @@ var color = [];
 */
 var rooms = {};
 
-
-//var globals = require('globals'); 
-//var address = globals.domain;
-
-//database connection
-    // var Connection = require('tedious').Connection;  
-    // var config = {  
-    //     userName: 'ucsbadmin@microsophon',  
-    //     password: 'Ucsb123456',  
-    //     server:'microsophon.database.windows.net',  
-    //     // If you are on Microsoft Azure, you need this:  
-    //     options: {encrypt: true, database: 'microsophon'}  
-    // }; 
-    // var connection = new Connection(config);  
-    // connection.on('connect', function(err) {  
-    //     // If no error, then good to proceed.
-    //     //if (err) return console.error(err);
-    //     console.log("Connected"); 
-    //     //executeStatement();  
-    // });
-    // var Request = require('tedious').Request;  
-    // var TYPES = require('tedious').TYPES;  
-  
-    // function executeStatement() {  
-    //     request = new Request("SELECT c.CustomerID, c.CompanyName,COUNT(soh.SalesOrderID) AS OrderCount FROM SalesLT.Customer AS c LEFT OUTER JOIN SalesLT.SalesOrderHeader AS soh ON c.CustomerID = soh.CustomerID GROUP BY c.CustomerID, c.CompanyName ORDER BY OrderCount DESC;", function(err) {  
-    //     if (err) {  
-    //         console.log(err);}  
-    //     });  
-    //     var result = "";  
-    //     request.on('row', function(columns) {  
-    //         columns.forEach(function(column) {  
-    //           if (column.value === null) {  
-    //             console.log('NULL');  
-    //           } else {  
-    //             result+= column.value + " ";  
-    //           }  
-    //         });  
-    //         console.log(result);  
-    //         result ="";  
-    //     });  
-  
-    //     request.on('done', function(rowCount, more) {  
-    //     console.log(rowCount + ' rows returned');  
-    //     });  
-    //     connection.execSql(request);  
-    // } 
 
 app.use(express.static(path.join(__dirname, '.'))); //app.use(express.static('js'));
 
@@ -195,6 +153,45 @@ io.on('connection', function(socket) {
         io.in(room).emit('user-name', message);
     });
 
+
+    ///////////////////////////////
+    socket.on('cloud-save',function(obj) {
+        var fname=obj.ffname;
+        var pid=obj.ppid;
+        var content=obj.ccontent;
+
+        //fid
+        var query = new azure.TableQuery().where("PartitionKey eq 'B' and PID eq '"+pid+"' and FN eq '"+fname+"'");
+        tableSvc.queryEntities('myfile',query, null, function(error, result, response) {
+            if(!error) {
+                console.log(result.entries.length);
+                console.log("find if need new");
+                if (result.entries.length==0){
+                    console.log("need new");
+                    insertnewfiletable(fname,pid,content);
+
+                }
+                else{
+                    console.log("need not new");
+                    var keyid=result.entries[0].RowKey;
+                    console.log(keyid['_']);
+                    updatefiletable(keyid['_'],fname,pid,content);
+
+                }
+
+            }
+            else{
+                console.log(error);
+            }
+        });
+
+
+        //var keyid=(Math.floor((Math.random() * 1000) + 1)).toString();
+    });
+    /////////////////////////////////
+
+
+
     socket.on('disconnect', function() {
         console.log('disconnected:' + socket.id + ' ' + user_object.name);
         count--;
@@ -223,3 +220,153 @@ function delete_user(name) {
     if (index > -1) { users.splice(index, 1); }
 }
 */
+
+// tableSvc.deleteTableIfExists('mytable', function(error){
+//   if(!error){
+//     console.log('table deleted!');
+//   }
+//   else{
+//     console.log('table deleted failllllll!');
+//   }
+// });
+
+// tableSvc.deleteTableIfExists('myfile', function(error){
+
+//   if(!error){
+//     console.log('file table deleted!');
+//   }
+//   else{
+//     console.log('file table deleted failllllll!');
+//   }
+// });
+
+// tableSvc.createTableIfNotExists('mytable', function(error,result,response){
+
+
+//   if(!error){
+//     console.log('id table created!');
+//   }
+//   else{
+//     console.log('id table created failllllll!');
+//   }
+// });
+
+// tableSvc.createTableIfNotExists('myfile', function(error,result,response){
+
+
+//   if(!error){
+//     console.log('file table created!');
+//   }
+//   else{
+//     console.log('file table created failllllll!');
+//   }
+
+// });
+
+
+function createPEntity(project_id, password){
+    var entity = {
+        PartitionKey: entityGen.String('A'),
+        RowKey: entityGen.String(project_id),
+        password: entityGen.String(password)
+    };
+    return entity;
+}
+
+
+function createFEntity(file_id, file_name, project_id, content){
+    var entity = {
+        PartitionKey: entityGen.String('B'),
+        RowKey: entityGen.String(file_id),
+        FN:entityGen.String(file_name),
+        PID:entityGen.String(project_id),
+        CC:entityGen.String(content)
+    };
+    return entity;
+}
+
+
+function insertatable(name,entity){
+    tableSvc.insertEntity(name,entity, function(error, result, response){
+
+
+    if(!error){
+        console.log(name+' inserted');
+    }
+    else{
+        console.log(name+' inserted failllllll');
+    }
+});   
+
+}
+
+
+function insertnewfiletable(file_name, p_id, c_ontent){
+
+        var keyid=(Math.floor((Math.random() * 100000) + 1)).toString();
+        console.log(keyid);
+
+    var newen=createFEntity(keyid,file_name,p_id,c_ontent);
+    tableSvc.insertEntity('myfile',newen, function(error, result, response){
+        if(!error){
+            console.log('new file inserted');
+        }
+        else{
+            console.log('new file inserted failllllll');
+        } 
+    });
+
+}
+
+
+
+function updatefiletable(key_id,file_name, p_id, c_ontent){
+
+    console.log(key_id);
+
+    var newen=createFEntity(key_id,file_name,p_id,c_ontent);
+    tableSvc.replaceEntity('myfile',newen, function(error, result, response){
+        if(!error){
+            console.log('new file updated');
+        }
+        else{
+            console.log('new file updated failllllll');
+        } 
+    });
+
+}
+
+
+
+
+// var myEntity = createPEntity('aaa','123456');
+// var myEntity2 = createFEntity('1','default.js','aaa','hello world!');
+
+
+// tableSvc.insertEntity('mytable',myEntity, function(error, result, response){
+
+
+//     if(!error){
+//         console.log('mytable inserted');
+//     }
+//     else{
+//         console.log(error);
+//         console.log('mytable inserted failllllll');
+//         insertatable('mytable',myEntity);
+//     }
+// });
+
+// tableSvc.insertEntity('myfile',myEntity2, function(error, result, response){
+
+
+//     if(!error){
+//         console.log('myfile inserted');
+//     }
+//     else{
+//         console.log(error);
+//         console.log('myfile inserted failllllll');
+//         insertatable('myfile',myEntity2);
+//     }
+// });
+
+
