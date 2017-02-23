@@ -198,9 +198,9 @@ function setDark() {
 	}	
 }
 
-let expand = false;
+let expand2 = false;
 $('#change-name').click(() => {
-	if (!expand) {
+	if (!expand2) {
 		$('#user_form').stop().fadeIn(300);
 		$('#user_id').stop().animate({'height': '70px'});
 		$('#lower-container').stop().animate({'top': '70px'}, 300);
@@ -211,7 +211,7 @@ $('#change-name').click(() => {
 		$('#lower-container').stop().animate({'top': '50px'}, 300);
 		$('#user_form').stop().fadeOut(300);
 	}
-	expand = !expand;
+	expand2 = !expand2;
 });
 
 $('#blue').click();
