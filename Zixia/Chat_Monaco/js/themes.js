@@ -14,7 +14,7 @@ var colors = {
 		left_container: '#3A629E',
 		body: '#6C8BB6',
 		messages: '#E8EAF6',
-		chat_box: '#C5CAE9',
+		chat_box: '#6C8BB6',
 		tab_select_bg: '#EEF',
 		item: '#FFF',
 		right_text: '#000',
@@ -198,20 +198,20 @@ function setDark() {
 	}	
 }
 
-$('#chat-container').hover(() => {
-	$('#user_form').stop().fadeIn(300);
-	$('#user_id').stop().animate({'height': '70px'});
-	$('#lower-container').stop().animate({'top': '70px'}, 300);
-}, () => {
-	$('#user_form').stop().fadeOut(300);
-	$('#user_id').stop().animate({'height': '50px'});
-	$('#lower-container').stop().animate({'top': '50px'}, 300);
-});
-
-$('#user_form').hover(() => {
-	$('#user_form').stop().fadeIn(300);
-}, () => {
-	$('#user_form').stop().fadeOut(1000);
+let expand2 = false;
+$('#change-name').click(() => {
+	if (!expand2) {
+		$('#user_form').stop().fadeIn(300);
+		$('#user_id').stop().animate({'height': '70px'});
+		$('#lower-container').stop().animate({'top': '70px'}, 300);
+		$('#user_form').stop().fadeIn(300);
+	} else {
+		$('#user_form').stop().fadeOut(300);
+		$('#user_id').stop().animate({'height': '50px'});
+		$('#lower-container').stop().animate({'top': '50px'}, 300);
+		$('#user_form').stop().fadeOut(300);
+	}
+	expand2 = !expand2;
 });
 
 $('#blue').click();
