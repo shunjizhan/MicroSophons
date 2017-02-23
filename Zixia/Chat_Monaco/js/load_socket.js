@@ -3,6 +3,9 @@ var socket = io();
 
 var splitURL = window.location.href.split('/');
 var projectID = splitURL[splitURL.length-1];
+if(projectID.slice(-1)==='?'||projectID.slice(-1)==='#'){
+    projectID = projectID.substring(0, projectID(length));
+}
 
 
 $(document).ready(socket_function);
@@ -71,12 +74,14 @@ function socket_function(){
         $('#' +msg.old_name).attr('id', msg.new_name).text(msg.new_name);
     });
 
-    socket.on('reply-content', function(msg){
+    socket.on('reply-content', function(msg){ // get information from other users
         content=msg.content;
         lang=msg.language;
         editorID=msg.editorID;
         filenames=msg.filenames;
     });
+
+
 
     $("#invite").click(function(){
         $("#invite-box").show();
@@ -110,12 +115,14 @@ function socket_function(){
         if (win && win.open && !win.closed){
             win.close();
         }
-
+        return false;
     });
     $("#invite-cancel").click(function(){
         $("#invite-box").hide();
 		return false;
     });
+
+
 
     // default name
     /*

@@ -1,0 +1,3 @@
+export AZURE_STORAGE_ACCOUNT='microsophonsdiag877'
+export AZURE_STORAGE_ACCESS_KEY='eOrjWq2kwMdBWLFvZbZ7iBIjbfOaCDoGCfzK3qIAkBVjE7bEzOgNU4h+qvHWP2IoVccZGOEYbvkGbvCjjpm/Ww=='
+export AZURE_STORAGE_CONNECTION_STRING='DefaultEndpointsProtocol=https;AccountName=microsophonsdiag877;AccountKey=eOrjWq2kwMdBWLFvZbZ7iBIjbfOaCDoGCfzK3qIAkBVjE7bEzOgNU4h+qvHWP2IoVccZGOEYbvkGbvCjjpm/Ww==;'

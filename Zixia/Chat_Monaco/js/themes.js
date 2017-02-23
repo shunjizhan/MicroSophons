@@ -198,20 +198,20 @@ function setDark() {
 	}	
 }
 
-$('#chat-container').hover(() => {
-	$('#user_form').stop().fadeIn(300);
-	$('#user_id').stop().animate({'height': '70px'});
-	$('#lower-container').stop().animate({'top': '70px'}, 300);
-}, () => {
-	$('#user_form').stop().fadeOut(300);
-	$('#user_id').stop().animate({'height': '50px'});
-	$('#lower-container').stop().animate({'top': '50px'}, 300);
-});
-
-$('#user_form').hover(() => {
-	$('#user_form').stop().fadeIn(300);
-}, () => {
-	$('#user_form').stop().fadeOut(1000);
+let expand = false;
+$('#change-name').click(() => {
+	if (!expand) {
+		$('#user_form').stop().fadeIn(300);
+		$('#user_id').stop().animate({'height': '70px'});
+		$('#lower-container').stop().animate({'top': '70px'}, 300);
+		$('#user_form').stop().fadeIn(300);
+	} else {
+		$('#user_form').stop().fadeOut(300);
+		$('#user_id').stop().animate({'height': '50px'});
+		$('#lower-container').stop().animate({'top': '50px'}, 300);
+		$('#user_form').stop().fadeOut(300);
+	}
+	expand = !expand;
 });
 
 $('#blue').click();

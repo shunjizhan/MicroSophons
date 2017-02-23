@@ -98,8 +98,8 @@ io.on('connection', function(socket) {
             if(msg.reconnect){
                 console.log("reconnect:");
             }
-
-            console.log(rooms);
+            console.log(io.sockets.adapter.rooms);
+            //console.log(rooms);
             io.in(room).emit('update_user', rooms[room]);
             socket.broadcast.to(room).emit('new-user', socket.id); // create cursor
             if(!msg.reconnect){
@@ -107,15 +107,12 @@ io.on('connection', function(socket) {
             }
         }
     });
-
-    //io.emit('current user',current);
-
-    //users.push(this_user_name);
-    //userID.push(socket.id);
     
+
     
     socket.on('reply-content', function(msg){
-        io.in(msg.room).emit('reply-content', msg);
+        console.log(msg);
+        socket.broadcast.to(msg.senderID).emit('reply-content', msg);
     });
 
     socket.on('chat message', function(msg) {
@@ -153,13 +150,15 @@ io.on('connection', function(socket) {
         io.in(room).emit('user-name', message);
     });
 
+    socket.on('ping', function(msg){
+        socket.emit('ping',msg);
+    })
 
-    ///////////////////////////////
+
     socket.on('cloud-save',function(obj) {
         var fname=obj.ffname;
         var pid=obj.ppid;
         var content=obj.ccontent;
-
         //fid
         var query = new azure.TableQuery().where("PartitionKey eq 'B' and PID eq '"+pid+"' and FN eq '"+fname+"'");
         tableSvc.queryEntities('myfile',query, null, function(error, result, response) {
@@ -169,27 +168,49 @@ io.on('connection', function(socket) {
                 if (result.entries.length==0){
                     console.log("need new");
                     insertnewfiletable(fname,pid,content);
-
                 }
                 else{
                     console.log("need not new");
                     var keyid=result.entries[0].RowKey;
                     console.log(keyid['_']);
                     updatefiletable(keyid['_'],fname,pid,content);
-
                 }
+            }
+            else{
+                console.log(error);
+            }
+        });
+        //var keyid=(Math.floor((Math.random() * 1000) + 1)).toString();
+    });
+    
 
+    socket.on('get-saved',function(ppid){
+        var query = new azure.TableQuery().where("PartitionKey eq 'B' and PID eq '"+ppid+"'");
+        tableSvc.queryEntities('myfile',query, null, function(error, result, response) {
+            if (!error){
+                console.log(result);
+                if (result.entries.length===0){
+                    console.log("thats a new project, no file saved before");               
+                }
+                else{
+                    var data = result.entries;
+                    var receive = {filename:[], content:[]};
+
+                    for (var i = 0; i < data.length; i++) {
+                        receive.filename.push(data[i].FN._);
+                        receive.content.push(data[i].CC._);
+                    }
+
+                    console.log(receive);
+                    socket.emit('receive-saved', receive);
+                }
             }
             else{
                 console.log(error);
             }
         });
 
-
-        //var keyid=(Math.floor((Math.random() * 1000) + 1)).toString();
     });
-    /////////////////////////////////
-
 
 
     socket.on('disconnect', function() {
@@ -203,8 +224,9 @@ io.on('connection', function(socket) {
         }
         io.in(room).emit('update_user', rooms[room]);
         socket.broadcast.to(room).emit('user-exit', socket.id);
-        console.log(rooms);
-        console.log(room);
+        console.log(io.sockets.adapter.rooms);
+        //console.log(rooms);
+        //console.log(room);
         /*
         users.splice(users.indexOf(this_user_name), 1);
 	    color.splice(userID.indexOf(socket.id),1);

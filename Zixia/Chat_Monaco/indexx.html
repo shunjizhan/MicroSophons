@@ -42,6 +42,7 @@
     .tab-bar { width: 95%; height: 50px; /*border: 2px solid blue;*/  position: absolute; list-style-type: none; overflow-x: scroll; white-space: nowrap; }
 
 
+
     .tab { background-color: none; height: auto; width: auto; text-align: center; top:2px; margin-top: 2px; display: inline-block; margin-left: 2px; box-shadow: 1px grey; color: #566573; overflow: scroll; padding: 3px 5px; border-radius: 2px; margin-top: 25px; font-size: 130%;}
     .tab-selected { background-color: #A2D9CE; color: #2E86C1; }
 
@@ -91,7 +92,7 @@
 
     #current-container {/*border: 1px solid red;*/ position: absolute; width: 50%; height: 100%; right: 0; top: 0; text-align: center; padding-top: 3%;}
     #user-number {text-align: center; font-size: 140%;}
-    #chat-container {/*border: 1px solid blue;*/ width: 50%; height: 100%; padding: 2%; text-align: center; font-size: 130%;}
+    #chat-container {/*border: 1px solid blue;*/ width: 50%; height: 100%; padding: 2%; text-align: center; font-size: 130%; cursor: pointer; cursor: hand;}
     
     #user_form {text-align: center;}
 
@@ -117,6 +118,26 @@
 
 <body>
 
+<script>
+    window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1879804398926803',
+      xfbml      : true,
+      version    : 'v2.8'
+    });
+    FB.AppEvents.logPageView();
+  };
+
+</script>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=1879804398926803";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
     <div id="left_container">
 
 	    <ul id='list'>
@@ -161,7 +182,9 @@
 
 	      <li id="preview" class="item"><i class="fa fa-television" aria-hidden="true"></i><span class="menu-word"> Preview</span></li>
 	      <li id="invite" class="item"><i class="fa fa-paper-plane-o" aria-hidden="true"></i><span class="menu-word"> Invite</span></li>
+<!--	      <li id="Share" class="fb-share-button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i><span class="menu-word"> Share</span></li>-->
 
+            <li id="invite" class="item"> <div class="fb-share-button" data-href="http://microsophons.westus.cloudapp.azure.com" data-layout="button" data-size="large" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fmicrosophons.westus.cloudapp.azure.com%2F&amp;src=sdkpreparse">Share On FB</a></div></li>
 	    </ul>
     <!-- <div id="output">Last 3 events:<br/></div> -->
     </div>    <!-- end left container -->
@@ -272,6 +295,7 @@
 	console.log(h);
   </script> -->
   <script type="text/javascript" src='js/left-bar.js'></script>
+  <script type="text/javascript" src='js/ping.js'></script>
 
 </body>
 
