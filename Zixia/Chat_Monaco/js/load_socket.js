@@ -16,10 +16,32 @@ function socket_function(){
     var num = Math.floor(Math.random()*99);
     $('#name').text('User'+num);
 
+    socket.on('error', function(err){
+        console.log('error: ');
+        console.log(err);
+    })
+
+    socket.on('reconnecting', function(times){
+        console.log("attempting to reconnect: " + times);
+    })
+
+    socket.on('reconnect_error', function(err){
+        console.log("reconnect error");
+        console.log(err);
+    })
+
+    socket.on('reconnect_failed', function(msg){
+        console.log("reconnect failed");
+    })
+
+    socket.io.on('pong', function(latency){
+        console.log("latency: "+latency);
+    })
+
     socket.emit('add-user', {room: projectID, name: 'User'+num, reconnect: false });
 
     socket.on('reconnect', function(msg){
-        console.log("in reconnect");
+        console.log("reconnect successful");
         if(editors.length>0){
             socket.emit('add-user', {room: projectID, name: $('#name').text(), reconnect: true });
             console.log("reconnected!");

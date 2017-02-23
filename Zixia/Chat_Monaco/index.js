@@ -80,7 +80,7 @@ io.on('connection', function(socket) {
         name: "User" + Math.floor(Math.random() * 99),
         color: "rgb("+Math.floor(Math.random()*191+64)+","+Math.floor(Math.random()*191+64)+","+Math.floor(Math.random()*191+64)+")"
     };
-    socket.emit('reconnect', '');
+
 
     //add user to the room
     socket.on('add-user',function(msg){
@@ -150,8 +150,8 @@ io.on('connection', function(socket) {
         io.in(room).emit('user-name', message);
     });
 
-    socket.on('ping', function(msg){
-        socket.emit('ping',msg);
+    socket.on('my-ping', function(msg){
+        socket.emit('my-ping',msg);
     })
 
 

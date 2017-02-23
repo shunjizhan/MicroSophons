@@ -36,6 +36,7 @@ function editor_function() {
     console.log(content.length);
 
     if(content.length===0){
+        console.log("not found from other user");
         socket.emit('get-saved', projectID);
         var timeoutID_2 = setTimeout(function(){
             if(content.length===0){
@@ -54,7 +55,16 @@ function editor_function() {
                 sendTab = true;
             }
         }, 1000)
-    };
+    }
+    else{
+        var editor = setup_editor('container-0', content[0], lang[0]);
+        editors.push(editor);
+        sendTab = false;
+        for(var i=1;i<content.length;i++){
+            var editor_ = new_tab(filenames[i], content[i], lang[i], false, editorID[i]);
+        }
+        sendTab = true;
+    }
 }
 
 $('#new-tab').on('click', function(){
@@ -152,6 +162,7 @@ socket.on('new-tab', function(msg){
 });
 
 socket.on('disconnect', function(msg){
+    console.log('disconnected');
     $('#disconnect').show();
     for (var i = editors.length - 1; i >= 0; i--) {
         editors[i].updateOptions({readOnly:true});
@@ -307,32 +318,15 @@ $('#user-button').hover(function(){
     $("#online_users").slideUp(200);
 });
 
-
 $("#save").on('click',function(){
-    alert("ssss");
-
-    //content
-    var savevalue=editors[current_ID].getValue();
-
-    //project id
-    var cid = window.location.pathname;
-    cid=cid.substring(1);
-    alert(cid);
-
-    socket.emit('savec',savevalue);
-    socket.emit('savec',cid);
-
-
-    //file name
-    var name=filenames[current_ID];
-    alert(name);
-
-    var obj = {ccontent:savevalue,ppid:cid,ffname:name};
-    socket.emit('cloud-save',obj);
-
+    for(var i=0;i<editors.length;i++){
+        socket.emit('cloud-save', {
+            ccontent: editors.getValue(),
+            ppid: projectID,
+            ffname: filenames[i]
+        });
+    }
 });
-
-
 
 $('#load').hover(function(){
     $("#file-upload").fadeIn(500);
@@ -343,7 +337,6 @@ $('#load').hover(function(){
     $("#file-upload").hide();
     $('#load').css({'line-height':'40px'});
 });
-
 
 
 function showEvent(str) {
@@ -445,7 +438,9 @@ function new_tab(tab_name, content, language, foreground, new_ID){
 
     $('.tab-bar').append(new_li);
 
-    filenames.push(tab_name);
+    if(filenames.indexOf(tab_name)===-1){
+        filenames.push(tab_name);
+    }
 
     var new_editor_ID = 'container-' + new_ID;
 
@@ -458,8 +453,11 @@ function new_tab(tab_name, content, language, foreground, new_ID){
     new_div.insertAfter('#container-' + current_ID);
     // setup up new editor
     var editor = setup_editor(new_editor_ID, content, language);
+
     editors.push(editor);
-    editorID.push(new_ID);
+    if(editorID.indexOf(new_ID)===-1){
+        editorID.push(new_ID);
+    }
     
     if(foreground){
         // hide original editor
