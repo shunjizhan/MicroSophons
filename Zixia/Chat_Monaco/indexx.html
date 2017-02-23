@@ -117,6 +117,26 @@
 
 <body>
 
+<script>
+    window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1879804398926803',
+      xfbml      : true,
+      version    : 'v2.8'
+    });
+    FB.AppEvents.logPageView();
+  };
+
+</script>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=1879804398926803";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
     <div id="left_container">
 
 	    <ul id='list'>
@@ -161,7 +181,9 @@
 
 	      <li id="preview" class="item"><i class="fa fa-television" aria-hidden="true"></i><span class="menu-word"> Preview</span></li>
 	      <li id="invite" class="item"><i class="fa fa-paper-plane-o" aria-hidden="true"></i><span class="menu-word"> Invite</span></li>
+<!--	      <li id="Share" class="fb-share-button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i><span class="menu-word"> Share</span></li>-->
 
+            <li id="invite" class="item"> <div class="fb-share-button" data-href="http://microsophons.westus.cloudapp.azure.com" data-layout="button_count" data-size="large" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fmicrosophons.westus.cloudapp.azure.com%2F&amp;src=sdkpreparse">Share On FB</a></div></li>
 	    </ul>
     <!-- <div id="output">Last 3 events:<br/></div> -->
     </div>    <!-- end left container -->
