@@ -1,17 +1,12 @@
 var default_content = [
-    'function hello() {',
-    '   alert("Hello World");',
-    '   hang_out_tomorrow();',
-    '}',
-    '',
-    'function hang_out_tomorrow(){',
-    '   if(weather_tomorrow() = "rainy"){',
-    '       return false;',
-    '   }',
-    '   else{',
-    '       return true;',
-    '   }',
-    '}'
+"<p id='text'>text</p>",
+"<button id='button'></button>",
+"<script src='http://code.jquery.com/jquery-1.11.1.js'></script>",
+"<script>",
+"    $('#button').click( () => {",
+"        $('#text').css({});",
+"    });",
+"</script>"
 ].join('\n');
 
 var sendCursor=false;
@@ -40,10 +35,10 @@ function editor_function() {
         socket.emit('get-saved', projectID);
         var timeoutID_2 = setTimeout(function(){
             if(content.length===0){
-                var editor = setup_editor('container-0', default_content, 'javascript');
+                var editor = setup_editor('container-0', default_content, 'html');
                 editors.push(editor);
                 editorID.push(0);
-                filenames.push('default.js');
+                filenames.push('default.html');
             }
             else{
                 var editor = setup_editor('container-0', content[0], lang[0]);
