@@ -1,6 +1,6 @@
 var default_content = [
-"<p id='text' style='font-size: 24px'>This is a text</p>",
-"<button id='button' style='font-size: 20px'></button>",
+"<p id='text' style='font-size: 24px'>Guess what color I am</p>",
+"<button id='button' style='font-size: 20px'>Click me</button>",
 "<script src='http://code.jquery.com/jquery-1.11.1.js'></script>",
 "<script>",
 "    $('#button').click( () => {",
