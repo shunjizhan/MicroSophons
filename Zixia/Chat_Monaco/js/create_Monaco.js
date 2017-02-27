@@ -1,11 +1,12 @@
 var default_content = [
-"<p id='text'>text</p>",
-"<button id='button'></button>",
+"<p id='text' style='font-size: 24px'>This is a text</p>",
+"<button id='button' style='font-size: 20px'></button>",
 "<script src='http://code.jquery.com/jquery-1.11.1.js'></script>",
 "<script>",
 "    $('#button').click( () => {",
 "        $('#text').css({});",
 "    });",
+"",
 "</script>"
 ].join('\n');
 
@@ -316,11 +317,12 @@ $('#user-button').hover(function(){
 $("#save").on('click',function(){
     for(var i=0;i<editors.length;i++){
         socket.emit('cloud-save', {
-            ccontent: editors.getValue(),
+            ccontent: editors[i].getValue(),
             ppid: projectID,
             ffname: filenames[i]
         });
     }
+    alert("File saved");
 });
 
 $('#load').hover(function(){
