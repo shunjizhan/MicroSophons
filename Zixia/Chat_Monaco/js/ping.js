@@ -22,13 +22,12 @@ function checkReceive(){
 	    // socket.connect();
 
 	}
-	// else{
-	// 	$('#disconnect').hide();
-	//     for (var i = editors.length - 1; i >= 0; i--) {
-	//         editors[i].updateOptions({readOnly:false});
-	//     }
-	   	
-	// }
+	else{
+		$('#disconnect').hide();
+	    for (var i = editors.length - 1; i >= 0; i--) {
+	        editors[i].updateOptions({readOnly:false});
+	    }
+	}
 }
 
 socket.on('my-ping', function(msg){
