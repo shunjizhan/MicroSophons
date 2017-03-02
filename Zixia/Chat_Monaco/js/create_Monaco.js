@@ -1,4 +1,4 @@
-var default_content = [
+var default_content_html = [
 "<p id='text' style='font-size: 24px'>Guess what color I am</p>",
 "<button id='button' style='font-size: 20px'>Click me</button>",
 "<script src='http://code.jquery.com/jquery-1.11.1.js'></script>",
@@ -8,6 +8,22 @@ var default_content = [
 "    });",
 "",
 "</script>"
+].join('\n');
+
+var default_content = [
+'function hello() {',
+'   alert("Hello World");',
+'   console.log("hang out: " + hang_out_tomorrow());',
+'}',
+'',
+'function hang_out_tomorrow(){',
+'   if(weather_tomorrow() = "rainy"){',
+'       return false;',
+'   }',
+'   else{',
+'       return true;',
+'   }',
+'}'
 ].join('\n');
 
 var sendCursor=false;
@@ -36,13 +52,16 @@ function editor_function() {
         socket.emit('get-saved', projectID);
         var timeoutID_2 = setTimeout(function(){
             if(content.length===0){
-                var editor = setup_editor('container-0', default_content, 'html');
+                var editor = setup_editor('container-0', default_content_html, 'html');
+                $("#tab-0").css({"visibility":"visible"});
                 editors.push(editor);
                 editorID.push(0);
                 filenames.push('default.html');
             }
             else{
                 var editor = setup_editor('container-0', content[0], lang[0]);
+                $("#tab-0").text(filenames[0]);
+                $("#tab-0").css({"visibility":"visible"});
                 editors.push(editor);
                 sendTab = false;
                 for(var i=1;i<content.length;i++){
@@ -54,6 +73,8 @@ function editor_function() {
     }
     else{
         var editor = setup_editor('container-0', content[0], lang[0]);
+        $("#tab-0").text(filenames[0]);
+        $("#tab-0").css({"visibility":"visible"});
         editors.push(editor);
         sendTab = false;
         for(var i=1;i<content.length;i++){
@@ -61,6 +82,7 @@ function editor_function() {
         }
         sendTab = true;
     }
+
 }
 
 $('#new-tab').on('click', function(){
