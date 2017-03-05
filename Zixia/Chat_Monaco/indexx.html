@@ -16,7 +16,7 @@
     #messages li { padding: 5px 10px; }
     #messages li:nth-child(odd) { background: rgba(255, 255, 255, 0.4); }
 
-    .container { width:100%; height: 96.5%; top: 50px; /*border:1px solid red;*/ position: absolute; overflow: hidden; }  /* for Monaco */
+    .container { width:100%; height: calc(100% - 50px); top: 50px; /*border:1px solid red;*/ position: absolute; overflow: hidden; }  /* for Monaco */
 
     #user_id { position: absolute; top: 0px; right: 0px; /*border: 2px dotted red;*/ padding:3px; width: 100%; border-radius: 2px; padding: 5px; height: 50px;} /* upper container */
     #lower-container { position: absolute; top: 50px; /*border: 2px dotted blue;*/ height: calc(100% - 50px); width: 100%;} /*lower container*/
@@ -194,6 +194,8 @@
   </div>
 
   <div id="center">
+    <div id="auto-save" style="position: fixed; top:50px; display: none;"><input type="checkbox" name="auto-save">Auto-save</div>
+
     <ul class="tab-bar">
       <li id="tab-0" class="tab tab-selected" style="visibility: hidden;">default.html
     </ul>
