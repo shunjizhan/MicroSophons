@@ -1,12 +1,16 @@
 var default_content_html = [
 "<p id='text' style='font-size: 24px'>Guess what color I am</p>",
-"<button id='button' style='font-size: 20px'>Click me</button>",
 "<script src='http://code.jquery.com/jquery-1.11.1.js'></script>",
 "<script>",
-"    $('#button').click( () => {",
+"    $('button').click( () => {",
 "        $('#text').css({});",
 "    });",
 "",
+"function randomColor(){",
+"        return 'rgb('+Math.floor(Math.random()*255)+','",
+"        + Math.floor(Math.random()*255)+','",
+"        + Math.floor(Math.random()*255)+')';",
+"    }",
 "</script>"
 ].join('\n');
 
