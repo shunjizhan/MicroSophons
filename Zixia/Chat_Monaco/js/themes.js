@@ -18,7 +18,7 @@ var colors = {
 		tab_select_bg: '#EEF',
 		item: '#FFF',
 		right_text: '#000',
-		send_button: '#8DF',
+		send_button: '#3A629E',
 		editor_theme_light:true
 	}, 
 	'red':{
