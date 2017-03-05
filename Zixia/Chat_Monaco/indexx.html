@@ -8,9 +8,9 @@
     * { margin: 0; padding: 0; box-sizing: border-box; /*border: none !important;*/}
     body { font: 13px Helvetica, Arial; background-color: #E8F6F3;}
 
-    form#send { background: #555; padding: 3px; position: absolute; width: 100%; bottom: 0; height: 40px; /*border: 2px solid yellow;*/}
+    form#send { background: #555; padding: 0px; position: absolute; width: 100%; bottom: 0; height: 40px; /*border: 2px solid yellow;*/}
     form#send input { padding: 5px 10px; width: 75%; height: 100%; /*margin-right: .5%; */}
-    form#send button { position: absolute; left: 75%; width: 25%; background-color: #8FD;  padding: 1%; height: 88%;}
+    form#send button { position: absolute; left: 75%; width: 25%; background-color: #182764 ;  padding: 1%; height: 100%;}
 
     #messages { position: absolute; height: calc(100% - 40px); /*border: 2px solid black;*/ overflow: auto; width: 100%; background-color: #D1F2EB}
     #messages li { padding: 5px 10px; }
@@ -107,7 +107,7 @@
     }*/
 
     i {
-    	color: #3498DB;
+    	color: white !important;
     }
 
     .fb-xfbml-parse-ignore {
@@ -133,12 +133,12 @@
 
 <!-- 	      <li id="settings" class="item"><i class="fa fa-cog" aria-hidden="true"></i><span class="menu-word"> Sophons</span></li> -->
 
-        <li class="item" id='settings' style="font-family: serif; font-style: italic; font-weight: bold; margin: 5px 0px; font-size: 25px; padding-left: 10%;"><img src="images/logo.png" style="width: 25px; margin-right: 3px;" /><span class="menu-word">Sophons</span></li>
+        <li class="item" id='settings' style="font-family: serif; font-style: None; font-weight: None; margin: 5px 0px; font-size: 25px; padding-left: 10%;"><img src="images/logo3.png" class="icon" style="width: 25px; margin-right: 3px;" /><span class="menu-word">Sophons</span></li>
 
 	      <li id="save" class="item"><i class="fa fa-floppy-o" aria-hidden="true"></i><span class="menu-word"> Save</span></li>
 
 	      <li id="load" class="item">
-	      	<i class="fa fa-upload" aria-hidden="true"></i><span class="menu-word"> Upload</span>
+	      	<i class="fa fa-upload icon" aria-hidden="true"></i><span class="menu-word"> Upload</span>
 	      	<input type="file" id="file-upload" multiple size="10" style="display: none; margin-left: 3%">
 	      </li> 
 
@@ -214,7 +214,7 @@
     <div id="user_id">
 
       <div id="chat-container">   <!-- should be on the left -->
-        <p id="change-name"><i class="fa fa-user-o" aria-hidden="true"></i> <span id="name">User</span> </p>
+        <p id="change-name"><i class="fa fa-user-o" aria-hidden="true"></i> <span id="name" style = "color:white !important">User</span> </p>
         <form id="user_form" action="" style="display: none">
           <input id="user_name" autocomplete="User" />
         </form>
@@ -226,7 +226,7 @@
         <p id="currentsquare"> 
         <div id="user-number">
         <i class="fa fa-users" aria-hidden="true" id="user-button"></i>
-          <span id="currentcount">0</span>
+          <span id="currentcount" style = "color:white !important">0</span>
         </div>
 
         <ul id="online_users"></ul> 
