@@ -220,6 +220,8 @@ $("#file-upload").on('change', function(e){
     sendContent=true;
 });
 
+
+
 $("#save-as").on('click',function(){
     var file_blob = new Blob([editors[current_ID].getValue()], {type:'text/plaint'});
     var file_name = filenames[current_ID];
@@ -350,6 +352,15 @@ $("#save").on('click',function(){
     }
     alert("File saved");
 });
+
+$("#save").hover(function(){
+    $("#auto-save").css({"background-color":$("#left_container").css('background-color')});
+    $("#auto-save").fadeIn(400);
+
+}, function(){
+    $("auto-save").fadeOut(400);
+})
+
 
 $('#load').hover(function(){
     $("#file-upload").fadeIn(500);
