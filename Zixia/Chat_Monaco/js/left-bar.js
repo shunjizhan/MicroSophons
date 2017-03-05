@@ -25,7 +25,7 @@ $('#settings').click(() => {
       	// 	'padding-left': '0'
       	// }, 500);
 
-        $('#left_container .icon').animate({
+        $('#left_container i').animate({
           'font-size': '130%'
         }, 500);
 
@@ -51,7 +51,7 @@ $('#settings').click(() => {
       	// 	'padding-left': '0'
       	// }, 500);
 
-      	$('#left_container .icon').animate({
+      	$('#left_container i').animate({
       		'font-size': '100%'
       	}, 500);
 
