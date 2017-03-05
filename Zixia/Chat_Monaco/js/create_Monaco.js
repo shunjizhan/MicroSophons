@@ -350,16 +350,38 @@ $("#save").on('click',function(){
             ffname: filenames[i]
         });
     }
-    alert("File saved");
+    $('#save-confirm').show();
+    $('#save-confirm').fadeOut(5000);
 });
 
 $("#save").hover(function(){
     $("#auto-save").css({"background-color":$("#left_container").css('background-color')});
-    $("#auto-save").fadeIn(400);
+    $("#auto-save").show();
 
 }, function(){
-    $("auto-save").fadeOut(400);
-})
+    $("#auto-save").hide();
+});
+$("#auto-save").hover(function(){
+    $("#auto-save").css({"background-color":$("#left_container").css('background-color')});
+    $("#auto-save").show();
+
+}, function(){
+    $("#auto-save").hide();
+});
+
+var auto_save_id;
+
+$("#auto-save-check").change(function(){
+    if(this.checked){
+        auto_save_id = setInterval(function(){
+            document.getElementById('save').click();
+        }, 60000);
+    }
+    else{
+        clearInterval(auto_save_id);
+    }
+});
+
 
 
 $('#load').hover(function(){

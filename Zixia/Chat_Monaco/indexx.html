@@ -194,7 +194,9 @@
   </div>
 
   <div id="center">
-    <div id="auto-save" style="position: fixed; top:50px; display: none;"><input type="checkbox" name="auto-save">Auto-save</div>
+    <div id="auto-save" style="position: absolute; top:50px; left: -2px; z-index: 2000; display: none; font-size: 20px; padding: 5px 5px; color: white;"><input id="auto-save-check" type="checkbox" name="auto-save">Auto-save</div>
+    <div id="save-confirm" style="position: fixed; bottom: 0px; border: solid 1px black; width: auto; height: auto; font-size: 10px; display: none; z-index: 2000;">Project files are saved!</div>
+
 
     <ul class="tab-bar">
       <li id="tab-0" class="tab tab-selected" style="visibility: hidden;">default.html
@@ -204,7 +206,7 @@
 
     <div id="container-0" class="container"></div>
 
-    <div id="disconnect" style="position: fixed; bottom: 0px; border: solid 1px black; width: auto; height: auto; font-size: 10px; display: none;">You are in read-only mode due to disconnection. Please check your network!</div>
+    <div id="disconnect" style="position: fixed; bottom: 0px; border: solid 1px black; width: auto; height: auto; font-size: 10px; display: none; z-index: 2000;">You are in read-only mode due to disconnection. Please check your network!</div>
   </div>    <!-- end center -->
 
 
