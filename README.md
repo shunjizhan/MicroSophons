@@ -1,12 +1,15 @@
-# Microsoft-Capstone
+# Sophons
+
+A read-time, browser-based collaborative online editor
 
 This is git repo for Microsoft Capstone Project: 
 https://github.com/shunjizhan/Microsoft-Capstone
 
 The final version is in Public folder
 
-Product: Sophons
-Team members: Shunji Zhan, Bo Luan, Chunqing Liu, Zixia Weng, Zehao Li
+Product: Sophons<br/>
+Team members: Shunji Zhan, Bo Luan, Chunqing Liu, Zixia Weng, Zehao Li<br/>
+University of California, Santa Barbara
 Mentor: Microsoft
 
 Primary product features:<br/>
@@ -16,8 +19,8 @@ Primary product features:<br/>
 4. Auto-saving<br/>
 5. Chatting<br/>
 
-Technologies:
+Major technologies:<br/>
 Monaco Editor: https://microsoft.github.io/monaco-editor/index.html <br/>
 Socket.io <br/>
 Node.js <br/>
-Microsoft Azure Table Storage <br/>
+Microsoft Azure Table Storage
