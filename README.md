@@ -9,7 +9,7 @@ The final version is in Public folder
 
 Product: Sophons<br/>
 Team members: Shunji Zhan, Bo Luan, Chunqing Liu, Zixia Weng, Zehao Li<br/>
-University of California, Santa Barbara
+University of California, Santa Barbara<br/>
 Mentor: Microsoft
 
 Primary product features:<br/>
