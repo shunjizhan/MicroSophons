@@ -1,14 +1,6 @@
-check it out! some introduction to node.js:<br>
-http://hectorcorrea.com/blog/introduction-to-node-js/51<br>
+# Microsoft-Capstone
+Directory for Zixia(Eric) Test
 
+10.16 what have done: continuing learning Js and html,and preparing to take a look on the documentation of Monaco; Successfully running the monaco-editor-examples from https://github.com/Microsoft/monaco-editor-samples!; Successfully complete the chat room by socket io individually and it works well, moreover, it supports several users chatting(2+ tabs on the browser) in the same time.; Try to combine the monaco features into socket io chat room, it kind of works but occurs some problems(can't load monaco editor by simply editing js), gonna take a look after.
 
-Note:<br>
-don't call node.js in html file, but use node.js to load the HTML!! (not 100% sure though)<br>
-http://expressjs.com/en/api.html this framework is used in socket.io example.
-
-Things to do: <br>
-- Try example of socket.io, and understand how it works. (link above about node.js might help!) <br>
-- Try example of Monaco, and understand how it works.
-
-Next Step: <br>
-- integrate monaco and socket.io, to create a webpage that has both functionality in it.
+10.16 evening: successfully combine monaco and socket io chat room with custom ui

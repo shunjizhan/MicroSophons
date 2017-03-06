@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!-- Template by quackit.com -->
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>3 Column Layout</title>
+	<style type="text/css">
+		/* Layout */
+		body { min-width: 630px;}
+		#container { padding-left: 200px; padding-right: 190px; }
+		#container .column { position: relative; float: left; }
+		#center { padding: 10px 20px; width: 80%; }
+		#left { width: 180px; padding: 0 10px; right: 240px; margin-left: -100%; }
+		#right { width: 230px; padding: 0 20px; margin-right: -100%; }
+		#footer { clear: both; }
+		/* IE hack */
+		* html #left { left: 150px; }
+		/* Make the columns the same height as each other */
+		#container { overflow: hidden;}
+		#container .column { padding-bottom: 1001em; margin-bottom: -1000em;}
+		/* Fix for the footer */
+		* html body { overflow: hidden; }
+		* html #footer-wrapper { float: left; position: relative; width: 100%; padding-bottom: 10010px; margin-bottom: -10000px; background: #fff; }
+		/* Aesthetics */
+		body { margin: 0; padding: 0; font-family:Sans-serif; line-height: 1.5em; }
+		p { color: #555; }
+		nav ul { list-style-type: none; margin: 0; padding: 0; }
+		nav ul a { color: darkgreen; text-decoration: none; }
+		#header, #footer { font-size: large; padding: 0.3em; background: #BCCE98; }
+		#left { background: #DAE9BC; }
+		#right { background: #F7FDEB; }
+		#center { background: #fff; }
+		#container .column { padding-top: 1em; }
+
+	</style>
+
+
+</head>
+
+<body>
+	<header id="header"><p>Project Microsophons</p></header>
+
+	<div id="container">
+
+		<main id="center" class="column">
+						<div id="container_m" style="height:600px;border:2px solid gray; top ">
+
+						</div>
+  						<div id="output" style="height:29%;font-family:'Courier New', monospace; border: 2px solid red;">Last 3 events:<br/></div>
+  						<div style="background:#ccc;height:1%"></div>
+
+		</main>
+
+		<nav id="left" class="column">
+			<h3>Left heading</h3>
+			<ul>
+				<li><a href="http://zixia.me" id="top-link" >Overview</span></a></li>
+				<li><a href="#">Contributors</a></li>
+				<li><a href="#">Comments</a></li>
+				<li><a href="#">Files</a></li>
+				<li><a href="#">Description</a></li>
+			</ul>
+			<h3>Left heading</h3>
+			<ul>
+				<li><a href="https://microsoft.github.io/monaco-editor/api/index.html">Resources</a></li>
+				<li><a href="http://socket.io">Tools</a></li>
+				<li><a href="https://github.com/shunjizhan/Microsoft-Capstone/issues">Issues</a></li>
+				<li><a href="#">Other Projects</a></li>
+				<li><a href="#">Log Out</a></li>
+			</ul>
+            <form id="submit-file">
+                <input type="file" id="file-upload" multiple size="10">
+            </form>
+            <button id="save-as" type="button">Save As</button>
+
+		</nav>
+
+
+
+    <div id="right" class="column">
+    <div id="user_id">
+      <p id="name"><span id="my_name">Guess which ShaB is you</span> | <span id="currentcount">0</span></p>
+        <form id="user_form" action="">
+          <input id="user_name" autocomplete="ShaB" /><button>Set Name</button>
+        </form>
+
+        <ul id="online_users"> </ul>
+      </div>
+
+        <!-- Message -->
+      <div id="message_bar">
+      <ul id="messages">
+        <li>This is the first line of Socket.io</li>
+      </ul>
+
+      <form id="send" action="">
+        <input id="m" autocomplete="off" /><button>Send</button>
+      </form>
+      </div>
+    </div>
+
+	</div>
+
+	<div id="footer-wrapper">
+		<footer id="footer"><p>Footer...</p></footer>
+	</div>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+	<script src="load_socket.js"></script>
+	<script src="monaco-editor/min/vs/loader.js"></script>
+  	<script src="create_Monaco.js"></script>
+  	<script src="mouse.js"></script>
+</body>
+
+</html>
